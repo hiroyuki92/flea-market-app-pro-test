@@ -1,0 +1,9 @@
+.header {
+    background: #000;
+}
+
+.header__inner {
+    margin: 0 10px;
+    padding: 20px 5px;
+    max-width: 1230px;
+}
