@@ -56,14 +56,16 @@ erDiagram
     ITEMS {
         bigint id PK 
         bigint category_id FK
-        bigint condition_id FK
         bigint user_id FK
-        bigint address_id FK
+        bigint address_id FK 
+	bigint favorites_id FK 
+	bigint comments_id FK 
         VARCHAR(255) name 
         VARCHAR(255) brand 
         decimal price 
         text description 
-        VARCHAR(255) image_url 
+        VARCHAR(255) image_url
+	int condition 
         datetime created_at 
         datetime updated_at 
     }
@@ -74,20 +76,13 @@ erDiagram
         datetime created_at 
         datetime updated_at 
  　　}
- 
-    CONDITIONS{
-		    bigint id PK
-		    varchar(255) name　UK
-        datetime created_at 
-        datetime updated_at 
-    }
-    
+
     PURCHASES{
         bigint id PK
         bigint user_id FK
         bigint item_id FK
         bigint address_id FK
-        varchar(255)　payment_method　
+        int　payment_method　
         datetime created_at 
         datetime updated_at
     }
@@ -126,7 +121,6 @@ erDiagram
     USERS ||--o{ COMMENTS : ""
     USERS ||--o{ FAVORITES : ""
     CATEGORIES ||--o{ ITEMS : ""
-    CONDITIONS ||--o{ ITEMS : ""
     ITEMS ||--o{ COMMENTS : ""
     ITEMS ||--o{ FAVORITES : ""
     ITEMS ||--o{ USERS : ""
