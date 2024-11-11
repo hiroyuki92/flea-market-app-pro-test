@@ -9,7 +9,6 @@
 <a class="header__link" href="/login">ログイン</a>
 <a class="header__link" href="/register">マイページ</a>
 <a class="header__link-create" href="/register">出品</a>
-</div>
 @endsection
 
 @section('content')
