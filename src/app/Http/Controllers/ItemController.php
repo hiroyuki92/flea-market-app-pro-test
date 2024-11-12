@@ -15,4 +15,12 @@ public function create()
     {
         return view('create');
     }
+
+public function show()
+    {
+        return view('show');
+    }
 }
+
+
+

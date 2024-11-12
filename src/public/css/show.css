@@ -1,0 +1,115 @@
+.item-show-form__content {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+}
+
+.item-show-form__image {
+    width: 50%;
+    text-align: center;
+    padding: 30px;
+}
+.item-show-form__info {
+    width: 50%;
+    padding-left: 30px;
+    padding-top: 30px;
+}
+h2{
+    margin: 5px 0;
+}
+
+.item-show-form__brand {
+    margin: 5px 0;
+}
+
+.item-show-form__price {
+    margin: 5px 0;
+    font-size: 20px;
+}
+
+.ratings {
+    padding: 5px 20px;
+    display: flex;
+}
+
+.stars {
+    padding-left: 10px;
+    font-size: 20px;
+    display: flex;
+    /* アイコンとテキストを横並びに */
+    flex-direction: column;
+    /* アイコンを縦に並べる */
+    align-items: center;
+    /* 水平中央に配置 */
+}
+
+.comments {
+    padding-left: 30px;
+    font-size: 20px;
+    display: flex;
+    /* アイコンとテキストを横並びに */
+    flex-direction: column;
+    /* アイコンを縦に並べる */
+    align-items: center;
+    /* 水平中央に配置 */
+}
+
+.purchase-button-group {
+    outline: none;
+    border: none;
+    margin-top: 20px;
+    width: 80%;
+    background-color: #FF5555;
+    height: 40px;
+    border-radius: 3px;
+    text-align: center;
+    padding: 5px;
+    font-size: 20px;
+}
+
+.purchase-button {
+    text-decoration: none;
+    color: #FFF;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+.content__group {
+    display: flex;
+    margin-bottom: 30px;
+}
+
+.content__title {
+    font-weight: bold;
+    margin-right: 20px;
+}
+
+.comment-list__title {
+    color: #5f5f5f;
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.content__title-comment {
+    font-weight: bold;
+}
+
+.content-comment {
+    width: 80%;
+    height: 200px;
+}
+
+.submit-button {
+    outline: none;
+    border: none;
+    margin-top: 10%;
+    width: 80%;
+    background-color: #FF5555;
+    color: #FFF;
+    height: 40px;
+    border-radius: 3px;
+    font-size: 15px;
+    font-weight: bold;
+}
