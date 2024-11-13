@@ -1,0 +1,133 @@
+.purchase-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    display: flex;
+}
+
+.container-group {
+    width: 60%;
+    margin-right: 100px;
+}
+
+.item-detail {
+    display: flex;
+    margin: 50px 0 20px 0;
+    border-bottom: 1px solid #000;
+}
+
+.item-image img {
+    max-width: 200px;
+    height: auto;
+    margin-right: 50px;
+}
+
+.item-info h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0 20px 20px 20px;
+}
+
+.item-price {
+    font-size: 22px;
+    margin: 0 20px 20px 20px;
+}
+
+.payment-details {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #000;
+}
+
+.payment-title {
+    font-size: 18px;
+    margin: 20px;
+    font-weight: bold;
+}
+
+.payment-details select {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid #5f5f5f;
+    border-radius: 5px;
+    margin: 0 0 50px 80px;
+    font-size: 15px;
+    font-weight: bold;
+    color: #5f5f5f;
+}
+
+.shipping-details {
+    border-bottom: 1px solid #000;
+    padding-bottom: 30px;
+}
+
+.shipping-group {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 50px 20px;
+    padding-right: 20px;
+}
+
+.shipping-title {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.shipping-details a {
+    color: #3498db;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.shipping-details p {
+    margin: 10px 0 5px 50px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+
+/* テーブル全体のスタイル */
+.summary table {
+    width: 100%;
+    margin-bottom: 20px;
+    border-collapse: collapse;
+    height: 200px;
+}
+
+/* セルの基本スタイル */
+.summary table td {
+    padding: 10px;
+    border: 1px solid #000;
+    /* すべてのセルに枠線 */
+    text-align: center;
+}
+
+.summary table td:nth-child(1) {
+    border-right: none;
+}
+
+.summary table td:nth-child(2) {
+    border-left: none;
+}
+
+
+.summary {
+    width: 40%;
+    margin: 50px 0 20px 0;
+    padding: 12px;
+    font-size: 18px;
+}
+
+.purchase-btn {
+    width: 100%;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    height: 40px;
+    border-radius: 3px;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 50px;
+}

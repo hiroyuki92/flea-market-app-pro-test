@@ -1,0 +1,50 @@
+.address-change-form {
+    width: 80%;
+    text-align: center;
+    padding: 20px;
+    margin: 0 auto;
+}
+
+.address-change-form-content {
+    width: 40%;
+    margin: 0 auto;
+}
+
+h2 {
+    margin-bottom: 50px;
+}
+
+.form-group {
+    margin-bottom: 50px;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align:left;
+}
+
+.postal-code-input,
+.address-input,
+.building-input {
+    width: 100%;
+    border: 1px solid #5f5f5f;
+    height: 40px;
+    text-decoration: none;
+    border-radius: 3px;
+}
+
+.update-btn {
+    outline: none;
+    border: none;
+    margin-top: 10%;
+    width: 100%;
+    background-color: #FF5555;
+    color: #FFF;
+    height: 40px;
+    border-radius: 3px;
+    font-size: 15px;
+    font-weight: bold;
+}

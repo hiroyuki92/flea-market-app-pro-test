@@ -20,6 +20,16 @@ public function show()
     {
         return view('show');
     }
+
+public function purchase()
+    {
+        return view('confirm');
+    }
+
+public function update()
+    {
+        return view('address');
+    }
 }
 
 
