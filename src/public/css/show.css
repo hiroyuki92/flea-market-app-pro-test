@@ -9,11 +9,13 @@
     text-align: center;
     padding: 30px;
 }
+
 .item-show-form__info {
     width: 50%;
     padding-left: 30px;
     padding-top: 30px;
 }
+
 h2{
     margin: 5px 0;
 }

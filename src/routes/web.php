@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,3 +20,5 @@ Route::get('/sell', [ItemController::class, 'create']);
 Route::get('/item', [ItemController::class, 'show']);
 Route::get('/purchase', [ItemController::class, 'purchase']);
 Route::get('/purchase/address', [ItemController::class, 'update']);
+Route::get('/mypage', [ProfileController::class, 'show']);
+Route::get('/mypage/profile', [ProfileController::class, 'update']);
