@@ -27,6 +27,7 @@ h2 {
     height: 40px;
     border-radius: 3px;
     border: 1px solid #000;
+    padding: 0 20px;
 }
 
 .form__group--btn,
@@ -53,4 +54,5 @@ h2 {
     background-color: #FFF;
     color: #2e9aec;
     font-size: 15px;
+    text-decoration: none;
 }

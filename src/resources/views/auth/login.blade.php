@@ -36,7 +36,7 @@
         </div>
     </form>
     <div class="form__group--register">
-        <button type="submit" class="register-btn">会員登録はこちら</button>
+        <a href="/register" class="register-btn">会員登録はこちら</a>
     </div>
 </div>
 

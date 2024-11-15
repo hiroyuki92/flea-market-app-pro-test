@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,11 +15,15 @@ use App\Http\Controllers\ProfileController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::get('/', [ItemController::class, 'index']);
 Route::get('/sell', [ItemController::class, 'create']);
 Route::get('/item', [ItemController::class, 'show']);
 Route::get('/purchase', [ItemController::class, 'purchase']);
 Route::get('/purchase/address', [ItemController::class, 'update']);
-Route::get('/mypage', [ProfileController::class, 'show']);
-Route::get('/mypage/profile', [ProfileController::class, 'update']);
+
+Route::middleware('auth')->group(function () {
+    Route::get('/mypage', [ProfileController::class, 'show']);
+    Route::get('/mypage/profile', [ProfileController::class, 'update'])->name('profile');
+});
