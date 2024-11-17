@@ -6,7 +6,10 @@
 
 @section('link')
 <input type="text" class="search-input" name="keyword" value="{{ old('keyword') }}" placeholder="なにをお探しですか？">
-<a class="header__link" href="/login">ログイン</a>
+<form action="{{ route('logout') }}" method="POST">
+    @csrf
+    <button type="submit" class="header__link-logout">ログアウト</button>
+</form>
 <a class="header__link" href="/register">マイページ</a>
 <a class="header__link-create" href="/register">出品</a>
 @endsection
