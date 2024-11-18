@@ -19,6 +19,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
 Route::get('/', [ItemController::class, 'index']);
 Route::get('/sell', [ItemController::class, 'create']);
 Route::get('/item', [ItemController::class, 'show']);

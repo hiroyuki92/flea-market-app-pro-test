@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use App\Http\Requests\RegisterRequest;
 
 class RegisteredUserController extends Controller
 {
@@ -24,19 +25,15 @@ class RegisteredUserController extends Controller
     /**
      * 新しいユーザーを登録
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Http\Requests\RegisterRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function store(RegisterRequest $request)
     {
-        // バリデーション
-        $validatedData = $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8','confirmed'],
-        ]);
+        // バリデーション済みのデータを取得
+        $validatedData = $request->validated();
 
-        // ユーザーの作成
+        // ユーザーを作成
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
@@ -46,6 +43,7 @@ class RegisteredUserController extends Controller
         // ユーザー登録後にログイン
         auth()->login($user);
 
+        // プロフィールページにリダイレクト
         return redirect()->route('profile');
     }
 }
