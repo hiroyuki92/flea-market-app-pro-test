@@ -50,7 +50,8 @@ erDiagram
         varchar(255) password 
         varchar(255) profile_image 
         datetime created_at 
-        datetime updated_at 
+        datetime updated_at
+　　　　　boolean first_login  
     }
 
     ITEMS {
