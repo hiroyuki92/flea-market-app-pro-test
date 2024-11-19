@@ -27,7 +27,20 @@ class AuthenticatedSessionController extends Controller
             'password' => $validated['password'],  // バリデーションされたパスワード
         ], $request->filled('remember'))) {
             // ログイン成功した場合、元々アクセスしようとしていたページにリダイレクト
-            return redirect()->intended('/');
+
+            $user = Auth::user();  // ログインユーザーを取得
+
+            // 初回ログインの場合、会員登録画面にリダイレクト
+            if ($user->first_login) {
+                // 初回ログイン後、first_loginフラグをfalseに更新
+                $user->first_login = false;
+                $user->save();
+
+                return redirect()->route('profile');  // プロフィール設定画面にリダイレクト
+            }
+
+            // それ以外の場合は商品一覧ページにリダイレクト
+            return redirect()->intended('/');  // 商品一覧ページなど
         }
 
         // ログイン失敗した場合

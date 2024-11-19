@@ -6,7 +6,20 @@
 
 @section('link')
 <input type="text" class="search-input" name="keyword" value="{{ old('keyword') }}" placeholder="なにをお探しですか？">
-<a class="header__link" href="/login">ログイン</a>
+<div class="header-links">
+    @if (Auth::check())
+        <!-- ログインしている場合はログアウトボタン -->
+        <a class="header__link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            ログアウト
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    @else
+        <!-- ログインしていない場合はログインボタン -->
+        <a class="header__link" href="{{ route('login') }}">ログイン</a>
+    @endif
+</div>
 <a class="header__link" href="/register">マイページ</a>
 <a class="header__link-create" href="/register">出品</a>
 @endsection
