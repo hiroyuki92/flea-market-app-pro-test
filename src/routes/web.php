@@ -21,7 +21,6 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
 Route::get('/', [ItemController::class, 'index']);
-Route::get('/sell', [ItemController::class, 'create']);
 Route::get('/item', [ItemController::class, 'show']);
 Route::get('/purchase', [ItemController::class, 'purchase']);
 Route::get('/purchase/address', [ItemController::class, 'update']);
@@ -29,4 +28,5 @@ Route::get('/purchase/address', [ItemController::class, 'update']);
 Route::middleware('auth')->group(function () {
     Route::get('/mypage', [ProfileController::class, 'show']);
     Route::get('/mypage/profile', [ProfileController::class, 'update'])->name('profile');
+    Route::get('/sell', [ItemController::class, 'create'])->name('create');
 });

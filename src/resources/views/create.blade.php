@@ -10,8 +10,8 @@
     @csrf
     <button type="submit" class="header__link-logout">ログアウト</button>
 </form>
-<a class="header__link" href="/register">マイページ</a>
-<a class="header__link-create" href="/sell">出品</a>
+<a class="header__link" href="{{ route('login') }}">マイページ</a>
+<a class="header__link-create" href="{{ route('create') }}">出品</a>
 @endsection
 
 @section('content')

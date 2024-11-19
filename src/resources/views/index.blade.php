@@ -20,8 +20,23 @@
         <a class="header__link" href="{{ route('login') }}">ログイン</a>
     @endif
 </div>
-<a class="header__link" href="/register">マイページ</a>
-<a class="header__link-create" href="/register">出品</a>
+<div class="header-links">
+@if (Auth::check())
+    <!-- ログインしている場合はマイページにリダイレクト -->
+        <a class="header__link" href="{{ route('profile') }}">マイページ</a>
+@else
+    <!-- ログインしていない場合はログインページにリダイレクト -->
+        <a class="header__link" href="{{ route('login') }}">マイページ</a>
+@endif
+</div>
+<div class="header-links">
+@if (Auth::check())
+    <!-- ログインしている場合は商品出品ページにリダイレクト -->
+        <a class="header__link-create" href="{{ route('create') }}">出品</a>
+@else
+    <!-- ログインしていない場合はログインページにリダイレクト -->
+        <a class="header__link-create" href="{{ route('login') }}">出品</a>
+@endif
 @endsection
 
 @section('content')
