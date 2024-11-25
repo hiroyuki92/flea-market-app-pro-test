@@ -21,6 +21,10 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'profile_image',
+        'postal_code',
+        'address_line',
+        'building',
     ];
 
     /**
@@ -41,4 +45,29 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    // ユーザーが複数の購入を行う
+    public function purchases()
+    {
+        return $this->hasMany(Purchase::class);
+    }
+
+    // ユーザーが複数の商品を出品する
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    // ユーザーが複数の「いいね」を持つ
+    public function favorites()
+    {
+        return $this->belongsToMany(Item::class, 'favorites');
+    }
+
+    // ユーザーが複数のコメントを投稿する
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
