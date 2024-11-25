@@ -50,7 +50,11 @@ class ProfileController extends Controller
             $user->profile_image = basename($imagePath);  // ストレージに保存されたファイル名を保存
         }
 
-        // ユーザーの他の情報も更新する場合
+        $user->name = $request->name;
+        $user->postal_code = $request->postal_code;
+        $user->address_line = $request->address_line;
+        $user->building = $request->building;
+
         $user->save();
 
         return redirect()->route('index');

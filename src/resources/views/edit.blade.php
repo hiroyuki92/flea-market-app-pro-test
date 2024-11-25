@@ -10,8 +10,8 @@
     @csrf
     <button type="submit" class="header__link">ログアウト</button>
 </form>
-<a class="header__link" href="/register">マイページ</a>
-<a class="header__link-create" href="/register">出品</a>
+<a class="header__link" href="{{ route('profile.show') }}">マイページ</a>
+<a class="header__link-create" href="{{ route('create') }}">出品</a>
 @endsection
 
 @section('content')
@@ -20,61 +20,79 @@
     <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
+        
         <div class="profile-image-container">
             <!-- プロフィール画像の表示 -->
-            <img id="profile-image-preview" src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="" class="profile-picture" />
+            <img id="profile-image-preview" 
+                 src="{{ $user->profile_image ? asset('storage/profile_images/' . $user->profile_image) : asset('storage/profile_images/default.png') }}" 
+                 alt="プロフィール画像" class="profile-picture" />
             
             <!-- 非表示のファイル入力 -->
             <input type="file" name="profile_image" id="profile-image" accept="image/*" class="picture-input" onchange="previewImage(event)" style="display: none;" />
             
             <!-- 画像選択ボタン（カスタム） -->
             <button type="button" class="picture-select-btn" onclick="document.getElementById('profile-image').click();">画像を選択する</button>
+            
             @error('profile_image')
-            <div class="error">{{ $message }}</div>
+                <div class="error">{{ $message }}</div>
             @enderror
         </div>
+
+        <!-- ユーザー名 -->
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">ユーザー名</span>
             </div>
             <div class="form__group-content">
-                <div class="form__input--text">
-                    <input class="form__input" type="text" name="name" value="{{ old('name') }}" />
-                </div>
+                <input class="form__input" type="text" name="name" value="{{ old('name', $user->name) }}" />
+                @error('name')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
             </div>
         </div>
+
+        <!-- 郵便番号 -->
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">郵便番号</span>
             </div>
             <div class="form__group-content">
-                <div class="form__input--text">
-                    <input class="form__input" type="text" name="postal-code" value="{{ old('postal-code') }}" />
-                </div>
+                <input class="form__input" type="text" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}" />
+                @error('postal_code')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
             </div>
         </div>
+
+        <!-- 住所 -->
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">住所</span>
             </div>
             <div class="form__group-content">
-                <div class="form__input--text">
-                    <input class="form__input" type="text" name="address" value="{{ old('address') }}" />
-                </div>
+                <input class="form__input" type="text" name="address_line" value="{{ old('address_line', $user->address_line) }}" />
+                @error('address_line')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
             </div>
         </div>
+
+        <!-- 建物名 -->
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">建物名</span>
             </div>
             <div class="form__group-content">
-                <div class="form__input--text">
-                    <input class="form__input" type="text" name="building" value="{{ old('building') }}" />
-                </div>
+                <input class="form__input" type="text" name="building" value="{{ old('building', $user->building) }}" />
+                @error('building')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
             </div>
         </div>
+
         <button type="submit" class="update-btn">更新する</button>
     </form>
+
     <script>
     // プロフィール画像のプレビューを表示
     function previewImage(event) {
