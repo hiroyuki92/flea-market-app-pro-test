@@ -19,7 +19,7 @@
     <div class="item-create-form__heading">
         <h2>商品の出品</h2>
     </div>
-        <form class="item-create-form" >
+        <form class="item-create-form" action="{{ route('item.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="item-create-form__group">
             <div class="form__label">商品画像</div>

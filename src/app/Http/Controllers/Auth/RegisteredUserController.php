@@ -44,6 +44,6 @@ class RegisteredUserController extends Controller
         auth()->login($user);
 
         // プロフィールページにリダイレクト
-        return redirect()->route('profile');
+        return redirect()->route('profile.edit');
     }
 }

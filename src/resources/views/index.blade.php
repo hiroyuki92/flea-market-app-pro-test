@@ -23,7 +23,7 @@
 <div class="header-links">
 @if (Auth::check())
     <!-- ログインしている場合はマイページにリダイレクト -->
-        <a class="header__link" href="{{ route('profile') }}">マイページ</a>
+        <a class="header__link" href="{{ route('profile.show') }}">マイページ</a>
 @else
     <!-- ログインしていない場合はログインページにリダイレクト -->
         <a class="header__link" href="{{ route('login') }}">マイページ</a>

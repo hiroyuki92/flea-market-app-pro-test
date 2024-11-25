@@ -18,15 +18,18 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 */
 Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
 Route::post('/register', [RegisteredUserController::class, 'store']);
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+/* Route::get('/login', [AuthenticatedSessionController::class, 'create']); */
 Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('login');
-Route::get('/', [ItemController::class, 'index']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+Route::get('/', [ItemController::class, 'index'])->name('index');
 Route::get('/item', [ItemController::class, 'show']);
 Route::get('/purchase', [ItemController::class, 'purchase']);
 Route::get('/purchase/address', [ItemController::class, 'update']);
 
 Route::middleware('auth')->group(function () {
-    Route::get('/mypage', [ProfileController::class, 'show']);
-    Route::get('/mypage/profile', [ProfileController::class, 'update'])->name('profile');
+    Route::get('/mypage', [ProfileController::class, 'show'])->name('profile.show');
+    Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::put('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/sell', [ItemController::class, 'create'])->name('create');
+    Route::post('/sell', [ItemController::class, 'store'])->name('item.store');
 });

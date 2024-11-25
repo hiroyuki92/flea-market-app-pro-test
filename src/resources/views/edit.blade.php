@@ -17,18 +17,29 @@
 @section('content')
 <div class="profile-settings-container">
     <h2>プロフィール設定</h2>
-    <div class="profile-image-container">
-        <img src="path/to/profile-image.jpg" alt="プロフィール画像" class="profile-picture">
-        <button class="picture-select-btn">画像を選択する</button>
-    </div>
-    <form class="form" action="#" method="POST">
+    <form action="{{ route('profile.update') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="profile-image-container">
+            <!-- プロフィール画像の表示 -->
+            <img id="profile-image-preview" src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}" alt="" class="profile-picture" />
+            
+            <!-- 非表示のファイル入力 -->
+            <input type="file" name="profile_image" id="profile-image" accept="image/*" class="picture-input" onchange="previewImage(event)" style="display: none;" />
+            
+            <!-- 画像選択ボタン（カスタム） -->
+            <button type="button" class="picture-select-btn" onclick="document.getElementById('profile-image').click();">画像を選択する</button>
+            @error('profile_image')
+            <div class="error">{{ $message }}</div>
+            @enderror
+        </div>
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">ユーザー名</span>
             </div>
             <div class="form__group-content">
                 <div class="form__input--text">
-                    <input class="form__input" type="text" name="username" value="{{ old('username') }}" />
+                    <input class="form__input" type="text" name="name" value="{{ old('name') }}" />
                 </div>
             </div>
         </div>
@@ -64,6 +75,19 @@
         </div>
         <button type="submit" class="update-btn">更新する</button>
     </form>
+    <script>
+    // プロフィール画像のプレビューを表示
+    function previewImage(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profile-image-preview').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    </script>
 </div>
 
 @endsection('content')

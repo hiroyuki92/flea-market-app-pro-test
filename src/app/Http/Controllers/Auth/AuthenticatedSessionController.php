@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
                 $user->first_login = false;
                 $user->save();
 
-                return redirect()->route('profile');  // プロフィール設定画面にリダイレクト
+                return redirect()->route('profile.edit');  // プロフィール設定画面にリダイレクト
             }
 
             // それ以外の場合は商品一覧ページにリダイレクト
