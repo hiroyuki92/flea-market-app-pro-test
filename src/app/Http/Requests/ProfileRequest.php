@@ -24,7 +24,7 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'profile_image' => 'required|image|mimes:jpeg,png|max:2048', // 画像は必須、jpeg, pngの形式で最大2MB
+            'profile_image' => 'nullable|image|mimes:jpeg,png|max:2048', // 画像は必須、jpeg, pngの形式で最大2MB
             'name' => 'required|string|max:255', // ユーザー名は必須、最大255文字
             'postal_code' => 'required|regex:/^\d{3}-\d{4}$/', // 郵便番号は必須、ハイフンを含む8文字の形式
             'address_line' => 'required|string|max:255', // 住所は必須、最大255文字
