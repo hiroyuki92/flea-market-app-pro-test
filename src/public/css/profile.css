@@ -8,11 +8,12 @@
 }
 
 .profile-picture {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
     overflow: hidden;
-    margin-right: 20px;
+    margin-right: 50px;
+    background-color: #D9D9D9;
 }
 
 .profile-info {

@@ -10,17 +10,15 @@
     @csrf
     <button type="submit" class="header__link">ログアウト</button>
 </form>
-<a class="header__link" href="/register">マイページ</a>
-<a class="header__link-create" href="/register">出品</a>
+<a class="header__link" href="{{ route('profile.show') }}">マイページ</a>
+<a class="header__link-create" href="{{ route('create') }}">出品</a>
 @endsection
 
 @section('content')
 <div class="profile-container">
     <div class="profile-header">
-        <div class="profile-picture">
-            <img src="" alt="ユーザーのプロフィール写真">
-        </div>
-        <div class="profile-info">ユーザー名</div>
+        <img class="profile-picture"src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"  alt="ユーザーのプロフィール写真">
+        <div class="profile-info">{{ Auth::user()->name }}</div>
         <div class="profile-edit">
             <a href="/mypage/profile" class="edit-profile-btn">プロフィールを編集</a>
         </div>
