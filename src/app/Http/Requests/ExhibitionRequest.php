@@ -30,7 +30,7 @@ class ExhibitionRequest extends FormRequest
             'price' => 'required|numeric|min:0',  // 商品価格（必須、0円以上の数値）
             'description' => 'required|string|max:255',  // 商品説明（必須、最大255文字）
             'image_url' => 'required|image|mimes:jpeg,png|max:2048',  // 商品画像（必須、拡張子jpegかpng、最大2MB）
-            'condition' => 'required|integer',  // 商品の状態（必須）
+            'condition' => 'required|in:1,2,3,4',  // 商品の状態（必須）
         ];
     }
 
