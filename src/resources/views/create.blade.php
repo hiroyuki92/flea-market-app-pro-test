@@ -19,7 +19,7 @@
     <div class="item-create-form__heading">
         <h2>商品の出品</h2>
     </div>
-    <form class="item-create-form" action="{{ route('item.store') }}" method="POST" enctype="multipart/form-data">
+    <form class="item-create-form" method="POST" action="{{ route('item.store') }}" enctype="multipart/form-data">
         @csrf
         <div class="item-create-form__group">
             <div class="form__label">商品画像</div>
@@ -28,7 +28,7 @@
                 <input type="file" id="imageUpload" class="img-upload" name="image" accept="image/*" onchange="previewImage(event)" />
                 <img id="preview" class="preview" src="" alt="選択した画像のプレビュー" style="display: none;" />
             </div>
-            @error('image_url')
+            @error('image')
             <div class="error-message">{{ $message }}</div>
             @enderror
         </div>
@@ -125,6 +125,9 @@
     // 選択されたカテゴリーのIDを隠しインプットに設定
     const selectedCategoryId = element.getAttribute('data-id');
     document.getElementById('selected-category-id').value = selectedCategoryId;
+
+    // デバッグ：コンソールに選択されたIDを出力
+    console.log(selectedCategoryId);
 }
 
     // 画像プレビューの表示

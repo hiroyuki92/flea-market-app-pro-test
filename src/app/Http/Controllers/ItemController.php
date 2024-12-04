@@ -25,24 +25,39 @@ public function create()
 
 public function store(ExhibitionRequest $request)
     {
-        // 商品を作成
-        $item = new Item();
-        $item->name = $validatedData['name'];
-        $item->price = $validatedData['price'];
-        $item->category_id = $validatedData['category_id'];
-        $item->description = $validatedData['description'];
+    // 画像名を事前に初期化
+    $imageName = null;
 
-        // 画像がアップロードされている場合は保存
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('public/item_images');
-            $item->image_url = basename($imagePath);
-        }
-
-        $item->save();
-
-        // 商品を保存後、一覧ページなどへリダイレクト
-        return redirect()->route('profile.show');
+    // 画像がアップロードされている場合
+    if ($request->hasFile('image')) {
+        // 画像を保存し、ファイル名を取得
+        $imagePath = $request->file('image')->store('item_images', 'public');
+        $imageName = basename($imagePath);  // ストレージに保存されたファイル名を取得
+    } else {
+        // 画像がアップロードされていない場合にエラーを表示する
+        return back()->withErrors(['image' => '商品画像は必須です。']);
     }
+    $itemData = array_merge(
+        $request->only([
+            'category_id',
+            'name',
+            'brand',
+            'price',
+            'description',
+            'condition',
+        ]),
+        [
+            'user_id' => auth()->id(),  // ログインしているユーザーのIDを追加
+            'image_url' => $imageName,
+        ]
+    );
+
+/*     dd($itemData);  // 保存されるデータを確認 */
+Item::create($itemData);
+
+    // 商品を保存後、プロフィールページなどにリダイレクト
+    return redirect()->route('profile.show');  // 出品後はプロフィールページにリダイレクト
+}
 
 public function show()
     {

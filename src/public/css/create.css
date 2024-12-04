@@ -151,3 +151,7 @@ h3 {
     border-radius: 3px;
     font-size: 15px;
 }
+
+.error-message {
+    color: #FF5555;
+}
