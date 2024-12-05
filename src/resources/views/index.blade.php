@@ -48,10 +48,11 @@
     <div class="item-grid">
         <!-- おすすめ商品の表示 -->
         @foreach ($items as $item)
-        <div class="item-card">
+        <div class="item-card recommended">
             <div class="item-image">
-                <img class="item-image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
-
+                <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
+                    <img class="item-image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                </a>
             </div>
             <div class="item-name">
                 {{ $item->name }}

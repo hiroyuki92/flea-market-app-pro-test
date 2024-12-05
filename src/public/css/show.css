@@ -6,8 +6,13 @@
 
 .item-show-form__image {
     width: 50%;
+    height: auto;
     text-align: center;
     padding: 30px;
+}
+
+.image-picture {
+    width: 100%;
 }
 
 .item-show-form__info {
@@ -16,8 +21,20 @@
     padding-top: 30px;
 }
 
-h2{
+.item-name{
     margin: 5px 0;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.item-brand {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.item-price {
+    font-size: 25px;
+    margin-bottom: 10px;
 }
 
 .item-show-form__brand {
@@ -76,14 +93,29 @@ h2{
     font-weight: bold;
 }
 
+.item-show-form__title {
+    margin: 20px 0 10px 0;
+    font-size: 20px;
+    font-weight: bold;
+}
 
 .content__group {
     display: flex;
     margin-bottom: 30px;
+    align-items: center;
 }
 
 .content__title {
     font-weight: bold;
+    margin-right: 50px;
+}
+
+.category__choices {
+    display: inline-block;
+    background-color: #d9d9d9;
+    padding: 5px 20px;
+    border-radius: 50px;
+    text-align: center;
     margin-right: 20px;
 }
 

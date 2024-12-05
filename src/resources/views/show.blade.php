@@ -15,12 +15,18 @@
 @section('content')
 <div class="item-show-form__content">
     <div class="item-show-form__image">
-        <img src="path/to/product-image.jpg" alt="商品画像" />
+        <img class="image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="商品画像" />
     </div>
     <div class="item-show-form__info">
-        <h2>商品名</h2>
-        <p class="item-show-form__brand">ブランド名</p>
-        <p class="item-show-form__price">¥47,000 (税込)</p>
+        <div class="item-name">
+            {{ $item->name }}
+        </div>
+        <div class="item-brand">
+            {{ $item->brand }}
+        </div>
+        <div class="item-price">
+            ¥{{ number_format($item->price) }} (税込)
+        </div>
         <div class="ratings">
             <div class="stars">
                 <i class="far fa-star"></i>
@@ -34,19 +40,37 @@
         <div class="purchase-button-group">
         <a href="#" class="purchase-button">購入手続きへ</a>
         </div>
-        <h3>商品説明</h3>
-        <div class="item-show-form__description">新品。商品の状態は良好です。</div>
-        <h3>商品の情報</h3>
+        <div class="item-show-form__title">
+            商品説明
+        </div>
+        <div class="item-description">
+            {{ $item->description }}
+        </div>
+        <div class="item-show-form__title">
+            商品の情報
+        </div>
         <div class="item-show-form__content-detail">
             <div class="content__group">
                 <div class="content__title">カテゴリー</div>
-                <input class="content__text-category" >
+                <div class="category__choices">
+                    {{ $item->category->name }}
+                </div>
             </div>
             <div class="content__group">
                 <div class="content__title">商品の状態</div>
-                <input class="content__text" >
+                    @if ($item->condition == 1)
+                    良好
+                    @elseif ($item->condition == 2)
+                    目立った傷や汚れなし
+                    @elseif ($item->condition == 3)
+                    やや傷や汚れあり
+                    @elseif ($item->condition == 4)
+                    状態が悪い
+                    @else
+                    不明
+                    @endif
             </div>
-            <div class="content__group-comment-list">
+                <div class="content__group-comment-list">
                 <div class="comment-list__title">コメント</div>
             </div>
             <div class="content__group-comment">

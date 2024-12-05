@@ -56,16 +56,16 @@ public function store(ExhibitionRequest $request)
         ]
     );
 
-/*     dd($itemData);  // 保存されるデータを確認 */
-Item::create($itemData);
+    Item::create($itemData);
 
     // 商品を保存後、プロフィールページなどにリダイレクト
     return redirect()->route('profile.show');  // 出品後はプロフィールページにリダイレクト
 }
 
-public function show()
+public function show($item_id)
     {
-        return view('show');
+        $item = Item::findOrFail($item_id);
+        return view('show', compact('item'));
     }
 
 public function purchase()
