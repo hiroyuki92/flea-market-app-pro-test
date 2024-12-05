@@ -11,7 +11,11 @@ class ItemController extends Controller
 {
 public function index()
     {
-        return view('index');
+        $items = Item::all();
+        /* foreach ($items as $item) {
+        dd($item->image_url);  // 画像を表示する
+    } */
+        return view('index',compact('items'));
     }
 
 public function create()

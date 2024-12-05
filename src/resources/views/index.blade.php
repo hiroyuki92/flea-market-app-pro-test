@@ -47,13 +47,20 @@
     </div>
     <div class="item-grid">
         <!-- おすすめ商品の表示 -->
-        <div class="item-card recommended">商品画像<br>商品名1</div>
-        <div class="item-card recommended">商品画像<br>商品名2</div>
-        <div class="item-card recommended">商品画像<br>商品名3</div>
-        <div class="item-card recommended">商品画像<br>商品名4</div>
+        @foreach ($items as $item)
+        <div class="item-card">
+            <div class="item-image">
+                <img class="item-image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+
+            </div>
+            <div class="item-name">
+                {{ $item->name }}
+            </div>
+        </div>
+        @endforeach
         <!-- マイリスト商品（いいねした商品） -->
-        <div class="item-card mylist" style="display: none;">商品画像<br>いいね商品1</div>
-        <div class="item-card mylist" style="display: none;">商品画像<br>いいね商品2</div>
+        <!-- <div class="item-card mylist" style="display: none;">商品画像<br>いいね商品1</div>
+        <div class="item-card mylist" style="display: none;">商品画像<br>いいね商品2</div> -->
     </div>
     <script>
         function showProducts(type) {
