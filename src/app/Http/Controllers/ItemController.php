@@ -6,15 +6,14 @@ use Illuminate\Http\Request;
 use App\Http\Requests\ExhibitionRequest;
 use App\Models\Item;
 use App\Models\Category;
+use App\Models\Favorite;
+use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
 public function index()
     {
         $items = Item::all();
-        /* foreach ($items as $item) {
-        dd($item->image_url);  // 画像を表示する
-    } */
         return view('index',compact('items'));
     }
 
@@ -67,6 +66,47 @@ public function show($item_id)
         $item = Item::findOrFail($item_id);
         return view('show', compact('item'));
     }
+
+public function toggleLike($itemId)
+{
+    try {
+        $user = auth()->user();
+        $item = Item::findOrFail($itemId);
+        
+        $existingFavorite = Favorite::where('user_id', $user->id)
+            ->where('item_id', $item->id)
+            ->first();
+        
+        $favorited = false;
+        
+        if ($existingFavorite) {
+            // すでにいいねしている場合は削除
+            $existingFavorite->delete();
+        } else {
+            // いいねしていない場合は追加
+            Favorite::create([
+                'user_id' => $user->id,
+                'item_id' => $item->id
+            ]);
+            $favorited = true;
+        }
+        
+        // 常に最新のいいね数を取得
+        $favoritesCount = $item->favorites()->count();
+        
+        return response()->json([
+            'favorited' => $favorited,
+            'favoritesCount' => max(0, $favoritesCount) // マイナスにならないよう保証
+        ]);
+    } catch (\Exception $e) {
+        \Log::error('Toggle like error: ' . $e->getMessage());
+        
+        return response()->json([
+            'error' => 'An error occurred',
+            'message' => $e->getMessage()
+        ], 500);
+    }
+}
 
 public function purchase()
     {

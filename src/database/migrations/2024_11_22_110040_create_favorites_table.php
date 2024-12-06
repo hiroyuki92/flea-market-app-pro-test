@@ -11,7 +11,22 @@ class CreateFavoritesTable extends Migration
      *
      * @return void
      */
-    public function up()
+
+     public function up()
+{
+    Schema::create('favorites', function (Blueprint $table) {
+        $table->id();
+        $table->unsignedBigInteger('user_id'); // ユーザーIDを追加
+        $table->unsignedBigInteger('item_id'); // アイテムIDを追加
+        $table->timestamps();
+
+        // 外部キー制約の追加
+        $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+        $table->foreign('item_id')->references('id')->on('items')->onDelete('cascade');
+    });
+}
+
+    /* public function up()
     {
         Schema::create('favorites', function (Blueprint $table) {
             $table->id();
@@ -22,7 +37,7 @@ class CreateFavoritesTable extends Migration
             // user_id と item_id の組み合わせで一意制約を追加
             $table->unique(['user_id', 'item_id']);
         });
-    }
+    } */
 
     /**
      * Reverse the migrations.

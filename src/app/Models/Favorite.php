@@ -9,7 +9,7 @@ class Favorite extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'item_id'];  // ユーザーID、商品IDをfillableに設定
+    protected $fillable = ['user_id', 'item_id'];
 
     // ユーザーとのリレーション
     public function user()

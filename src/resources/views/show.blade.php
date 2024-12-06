@@ -29,8 +29,17 @@
         </div>
         <div class="ratings">
             <div class="stars">
-                <i class="far fa-star"></i>
-                <span class="comment-count">3</span> <!-- いいね数 -->
+                <form class="form-stars" action="{{ route('item.toggleLike', $item->id) }}" method="POST">
+                @csrf
+                <button type="submit" class="favorite-button">
+                    @if ($item->favorites()->where('user_id', Auth::id())->exists())
+                        <i class="fas fa-star liked"></i> <!-- いいねしている場合 -->
+                    @else
+                        <i class="far fa-star"></i> <!-- いいねしていない場合 -->
+                    @endif
+                </button>
+                <span class="favorites-count">{{ $item->favorites()->count() }}</span>
+            </form>
             </div>
             <div class="comments">
                 <i class="far fa-comment"></i>
@@ -81,5 +90,54 @@
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const favoriteButton = document.querySelector('.favorite-button');
+    if (favoriteButton) {
+        favoriteButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const itemId = {{ $item->id }};
+            const favoritesCountElement = this.querySelector('.favorites-count');
+            
+            fetch(`/items/${itemId}/toggle-like`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    console.error('Error:', data.error);
+                    return;
+                }
+
+                const currentCount = parseInt(favoritesCountElement.textContent);
+                // 現在の数値が0未満にならないよう保証
+                const newCount = data.favorited 
+                    ? Math.max(0, currentCount + 1)
+                    : Math.max(0, currentCount - 1);
+                
+                favoritesCountElement.textContent = newCount;
+
+                // アイコンの切り替え
+                const icon = this.querySelector('i');
+                if (data.favorited) {
+                    icon.classList.remove('far');
+                    icon.classList.add('fas', 'liked');
+                } else {
+                    icon.classList.remove('fas', 'liked');
+                    icon.classList.add('far');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    }
+});
+</script>
 
 @endsection('content')

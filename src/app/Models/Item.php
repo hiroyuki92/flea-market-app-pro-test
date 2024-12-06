@@ -35,6 +35,11 @@ class Item extends Model
         return $this->belongsToMany(User::class, 'favorites');
     }
 
+    public function favoritesCount()
+    {
+        return $this->favorites()->count();
+    }
+
     public function comments()
     {
         return $this->hasMany(Comment::class);
