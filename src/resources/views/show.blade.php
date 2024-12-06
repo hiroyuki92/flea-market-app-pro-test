@@ -43,7 +43,7 @@
             </div>
             <div class="comments">
                 <i class="far fa-comment"></i>
-                <span class="comment-count">3</span> <!-- コメント数 -->
+                <span class="comment-count">{{ $commentsCount }}</span>
             </div>
         </div>
         <div class="purchase-button-group">
@@ -79,12 +79,31 @@
                     不明
                     @endif
             </div>
-                <div class="content__group-comment-list">
-                <div class="comment-list__title">コメント</div>
+            <div class="content__group-comment-list">
+                <div class="comment-list">
+                    <div class="comment-list__title">コメント</div>
+                    <div class="comment-list__count">({{ $commentsCount }})</div>
+                </div>
+                @foreach($item->comments as $comment)
+                    <div class="comment">
+                        <div class ="comment-user">
+                            <img class="profile-image" src="{{ asset('storage/profile_images/' . $comment->user->profile_image) }}" alt="{{ $comment->user->name }}" >
+                            {{ $comment->user->name }}
+                        </div>
+                        <div class="comment-content">
+                            {{ $comment->content }}
+                        </div>
+                    </div>
+                @endforeach
             </div>
             <div class="content__group-comment">
                 <div class="content__title-comment">商品へのコメント</div>
-                <textarea class="content-comment" name="comment" required>{{ old('comment') }}</textarea>
+                <form action="{{ route('comment.store', $item->id) }}" method="POST">
+                    @csrf
+                    <textarea class="content-comment" name="comment">{{ old('comment') }}</textarea>
+                    @error('comment')
+                    <div class="error-message">{{ $message }}</div>
+                    @enderror
             </div>
             <button type="submit" class="submit-button">コメントを送信する</button>
         </div>
@@ -98,8 +117,14 @@ document.addEventListener('DOMContentLoaded', function() {
         favoriteButton.addEventListener('click', function(event) {
             event.preventDefault();
             const itemId = {{ $item->id }};
-            const favoritesCountElement = this.querySelector('.favorites-count');
+            // form-stars クラスの中から favoritesCountElement を探す
+            const favoritesCountElement = this.closest('.form-stars').querySelector('.favorites-count');
             
+            if (!favoritesCountElement) {
+                console.error('Favorites count element not found');
+                return;
+            }
+
             fetch(`/items/${itemId}/toggle-like`, {
                 method: 'POST',
                 headers: {

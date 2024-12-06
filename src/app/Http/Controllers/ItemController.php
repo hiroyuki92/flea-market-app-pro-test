@@ -64,7 +64,9 @@ public function store(ExhibitionRequest $request)
 public function show($item_id)
     {
         $item = Item::findOrFail($item_id);
-        return view('show', compact('item'));
+        $comments = $item->comments()->with('user')->get();
+        $commentsCount = $comments->count();
+        return view('show', compact('item', 'comments', 'commentsCount'));
     }
 
 public function toggleLike($itemId)

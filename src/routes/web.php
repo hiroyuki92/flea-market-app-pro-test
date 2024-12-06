@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -33,4 +34,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/sell', [ItemController::class, 'create'])->name('create');
     Route::post('/sell', [ItemController::class, 'store'])->name('item.store');
     Route::post('/items/{item}/toggle-like', [ItemController::class, 'toggleLike'])->name('item.toggleLike');
+    Route::post('/item/{itemId}/comment', [CommentController::class, 'store'])->name('comment.store');
 });
