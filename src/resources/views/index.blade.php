@@ -59,10 +59,19 @@
             </div>
         </div>
         @endforeach
-        <!-- マイリスト商品（いいねした商品） -->
-        <!-- <div class="item-card mylist" style="display: none;">商品画像<br>いいね商品1</div>
-        <div class="item-card mylist" style="display: none;">商品画像<br>いいね商品2</div> -->
-    </div>
+        <!--マイリスト商品（いいねした商品） -->
+        @foreach ($myListItems as $item)
+        <div class="item-card mylist" style="display: none;">
+            <div class="item-image">
+                <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
+                <img class="item-image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                </a>
+                <div class="item-name">
+                {{ $item->name }}
+                </div>
+            </div>
+        </div>
+    @endforeach
     <script>
         function showProducts(type) {
             const recommendedItems = document.querySelectorAll('.item-card.recommended');

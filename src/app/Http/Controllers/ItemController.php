@@ -14,7 +14,13 @@ class ItemController extends Controller
 public function index()
     {
         $items = Item::all();
-        return view('index',compact('items'));
+        if (Auth::check()) {
+        // ログインしているユーザーがいいねした商品（マイリスト）を取得
+        $myListItems = Auth::user()->favorites()->get();
+        } else {
+        $myListItems = collect(); // ログインしていない場合は空のコレクション
+        }
+        return view('index',compact('items', 'myListItems'));
     }
 
 public function create()
