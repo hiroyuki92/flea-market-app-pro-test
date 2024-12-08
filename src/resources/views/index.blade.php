@@ -5,8 +5,11 @@
 @endsection
 
 @section('link')
-<input type="text" class="search-input" name="keyword" value="{{ old('keyword') }}" placeholder="なにをお探しですか？">
-<div class="header-links">
+<form method="GET" action="{{ route('index') }}" class="search-form">
+    <input type="text" class="search-input" name="keyword" value="{{ $keyword  }}" placeholder="なにをお探しですか？" onkeydown="if(event.key === 'Enter'){this.form.submit();}">
+</form>
+<div class="header-links-group">
+    <div class="header-links">
     @if (Auth::check())
         <!-- ログインしている場合はログアウトボタン -->
         <a class="header__link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -19,24 +22,26 @@
         <!-- ログインしていない場合はログインボタン -->
         <a class="header__link" href="{{ route('login') }}">ログイン</a>
     @endif
-</div>
-<div class="header-links">
-@if (Auth::check())
-    <!-- ログインしている場合はマイページにリダイレクト -->
+    </div>
+    <div class="header-links">
+    @if (Auth::check())
+        <!-- ログインしている場合はマイページにリダイレクト -->
         <a class="header__link" href="{{ route('profile.show') }}">マイページ</a>
-@else
-    <!-- ログインしていない場合はログインページにリダイレクト -->
+    @else
+        <!-- ログインしていない場合はログインページにリダイレクト -->
         <a class="header__link" href="{{ route('login') }}">マイページ</a>
-@endif
-</div>
-<div class="header-links">
-@if (Auth::check())
-    <!-- ログインしている場合は商品出品ページにリダイレクト -->
+    @endif
+    </div>
+    <div class="header-links">
+    @if (Auth::check())
+        <!-- ログインしている場合は商品出品ページにリダイレクト -->
         <a class="header__link-create" href="{{ route('create') }}">出品</a>
-@else
-    <!-- ログインしていない場合はログインページにリダイレクト -->
+    @else
+        <!-- ログインしていない場合はログインページにリダイレクト -->
         <a class="header__link-create" href="{{ route('login') }}">出品</a>
-@endif
+    @endif
+    </div>
+</div>
 @endsection
 
 @section('content')
@@ -60,8 +65,8 @@
         </div>
         @endforeach
         <!--マイリスト商品（いいねした商品） -->
-        @foreach ($myListItems as $item)
-        <div class="item-card mylist" style="display: none;">
+        @foreach ($items as $item)
+        <div class="item-card {{ in_array($item->id, $myListItems->pluck('id')->toArray()) ? 'mylist' : '' }}"  style="display:none;">
             <div class="item-image">
                 <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
                 <img class="item-image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
@@ -96,6 +101,14 @@
                 item.style.display = type === 'mylist' ? 'block' : 'none';
             });
         }
+    </script>
+    <script>
+        document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // ページリロードを防ぐ
+            document.getElementById('searchForm').submit();  // フォーム送信
+        }
+    });
     </script>
 
 </div>

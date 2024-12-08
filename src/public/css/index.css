@@ -44,6 +44,7 @@
 .item-image-picture {
     width: 100%;
     height: auto;
+    margin-bottom: 10px;
 }
 
 .item-name {

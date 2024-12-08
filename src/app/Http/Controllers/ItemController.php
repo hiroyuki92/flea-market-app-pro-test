@@ -11,16 +11,21 @@ use Illuminate\Support\Facades\Auth;
 
 class ItemController extends Controller
 {
-public function index()
+public function index(Request $request)
     {
-        $items = Item::all();
-        if (Auth::check()) {
-        // ログインしているユーザーがいいねした商品（マイリスト）を取得
+    // 入力されたキーワードを取得
+    $keyword = $request->input('keyword', '');
+    $items = Item::keywordsearch($keyword)->get();
+
+    // ログインしているユーザーがいいねした商品（マイリスト）を取得
+    if (Auth::check()) {
         $myListItems = Auth::user()->favorites()->get();
-        } else {
+    } else {
         $myListItems = collect(); // ログインしていない場合は空のコレクション
-        }
-        return view('index',compact('items', 'myListItems'));
+    }
+
+    // 検索結果とマイリスト商品をビューに渡す
+    return view('index', compact('items', 'myListItems',  'keyword'));
     }
 
 public function create()

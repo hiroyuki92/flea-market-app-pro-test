@@ -49,4 +49,13 @@ class Item extends Model
     {
         return $this->hasMany(Purchase::class);
     }
+
+    public function scopeKeywordSearch($query, $keyword)
+    {
+    if (!empty($keyword)) {
+    $query->where('name', 'like', '%' . $keyword . '%')
+    ->orWhere('description', 'like', '%' . $keyword . '%');
+  }
+    }
 }
+
