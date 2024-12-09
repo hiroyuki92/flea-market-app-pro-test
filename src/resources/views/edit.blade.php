@@ -24,7 +24,7 @@
         <div class="profile-image-container">
             <!-- プロフィール画像の表示 -->
             <img id="profile-image-preview"
-                src="{{ $user->profile_image ? asset('storage/profile_images/' . $user->profile_image) : asset('storage/profile_images/default.png') }}"
+                src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('storage/profile_images/default.png') }}"
                 alt="" class="profile-picture" />
             
             <!-- 非表示のファイル入力 -->

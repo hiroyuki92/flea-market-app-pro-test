@@ -17,7 +17,7 @@
 @section('content')
 <div class="profile-container">
     <div class="profile-header">
-        <img class="profile-picture"src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"  alt="ユーザーのプロフィール写真">
+        <img class="profile-picture"src="{{ asset('storage/' . Auth::user()->profile_image) }}"  alt="ユーザーのプロフィール写真">
         <div class="profile-info">{{ Auth::user()->name }}</div>
         <div class="profile-edit">
             <a href="/mypage/profile" class="edit-profile-btn">プロフィールを編集</a>

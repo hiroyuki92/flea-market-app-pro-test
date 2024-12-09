@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -30,15 +31,6 @@ class AuthenticatedSessionController extends Controller
 
             $user = Auth::user();  // ログインユーザーを取得
 
-            /* // 初回ログインの場合、会員登録画面にリダイレクト
-            if ($user->first_login) {
-                // 初回ログイン後、first_loginフラグをfalseに更新
-                $user->first_login = false;
-                $user->save();
-
-                return redirect()->route('profile.edit');  // プロフィール設定画面にリダイレクト
-            } */
-
             // それ以外の場合は商品一覧ページにリダイレクト
             return redirect()->intended('/');  // 商品一覧ページなど
         }
@@ -58,5 +50,12 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();  // CSRFトークンを再生成
 
         return redirect('/login');  // ログアウト後のリダイレクト先
+    }
+
+    public function loginWithDummyUser()
+    {
+        $user = User::factory()->create();
+        Auth::login($user);
+        return redirect()->route('index');
     }
 }
