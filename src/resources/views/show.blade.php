@@ -6,10 +6,23 @@
 @endsection
 
 @section('link')
-<input type="text" class="search-input" name="keyword" value="{{ old('keyword') }}" placeholder="なにをお探しですか？">
-<a class="header__link" href="/login">ログイン</a>
-<a class="header__link" href="/register">マイページ</a>
-<a class="header__link-create" href="/sell">出品</a>
+<form method="GET" action="{{ route('index') }}" class="search-form">
+    <input type="text" class="search-input" name="keyword" value="{{ old('keyword', '') }}" placeholder="なにをお探しですか？" onkeydown="if(event.key === 'Enter'){this.form.submit();}">
+</form>
+<div class="header-links-group">
+    <div class="header-links">
+        <form action="{{ route('logout') }}" method="POST">
+        @csrf
+        <button type="submit" class="header__link">ログアウト</button>
+        </form>
+    </div>
+    <div class="header-links">
+        <a class="header__link" href="{{ route('profile.show') }}">マイページ</a>
+    </div>
+    <div class="header-links">
+        <a class="header__link-create" href="{{ route('create') }}">出品</a>
+    </div>
+</div>
 @endsection
 
 @section('content')
@@ -164,5 +177,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+<script>
+        document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault(); // ページリロードを防ぐ
+            document.getElementById('searchForm').submit();  // フォーム送信
+        }
+    });
+    </script>
 
 @endsection('content')
