@@ -121,7 +121,7 @@ public function toggleLike($itemId)
     }
 }
 
-public function purchase()
+/* public function purchase()
     {
         return view('confirm');
     }
@@ -129,7 +129,7 @@ public function purchase()
 public function update()
     {
         return view('address');
-    }
+    } */
 }
 
 

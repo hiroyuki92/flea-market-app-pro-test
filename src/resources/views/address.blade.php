@@ -27,18 +27,29 @@
 @section('content')
 <div class="address-change-form">
     <h2>住所の変更</h2>
-    <form class="address-change-form-content">
+    <form class="address-change-form-content" action="{{ route('address.update', ['item_id' => $item->id]) }}"  method="POST">
+        @csrf
+        @method('PUT')
         <div class="form-group">
-            <label for="postal-code">郵便番号</label>
-            <input class="postal-code-input" type="text" name="postal-code">
+            <label for="postal_code">郵便番号</label>
+            <input class="postal_code-input" type="text" name="postal_code">
+            @error('postal_code')
+                <div class="error-message">{{ $message }}</div>
+            @enderror
         </div>
         <div class="form-group">
             <label for="address">住所</label>
-            <input class="address-input" type="text" name="address">
+            <input class="address-input" type="text" name="address_line">
+            @error('address_line')
+                <div class="error-message">{{ $message }}</div>
+            @enderror
         </div>
         <div class="form-group">
             <label for="building">建物名</label>
             <input class="building-input" type="text" name="building">
+            @error('building')
+                <div class="error-message">{{ $message }}</div>
+            @enderror
         </div>
         <button type="submit" class="update-btn">更新する</button>
     </form>

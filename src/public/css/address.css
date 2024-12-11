@@ -26,7 +26,7 @@ label {
     text-align:left;
 }
 
-.postal-code-input,
+.postal_code-input,
 .address-input,
 .building-input {
     width: 100%;

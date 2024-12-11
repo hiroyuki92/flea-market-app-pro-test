@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
@@ -23,8 +24,6 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('l
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 Route::get('/', [ItemController::class, 'index'])->name('index');
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show');
-Route::get('/purchase', [ItemController::class, 'purchase']);
-Route::get('/purchase/address', [ItemController::class, 'update']);
 
 Route::middleware('auth')->group(function () {
     Route::get('/mypage', [ProfileController::class, 'show'])->name('profile.show');
@@ -34,4 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/sell', [ItemController::class, 'store'])->name('item.store');
     Route::post('/items/{item}/toggle-like', [ItemController::class, 'toggleLike'])->name('item.toggleLike');
     Route::post('/item/{itemId}/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::get('/purchase/{item_id}', [PurchaseController::class, 'show'])->name('purchase.index');
+    Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('address.edit');
+    Route::put('/purchase/address/{item_id}', [PurchaseController::class, 'update'])->name('address.update');
 });

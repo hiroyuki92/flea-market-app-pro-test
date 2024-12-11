@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="purchase-button-group">
-        <a href="#" class="purchase-button">購入手続きへ</a>
+            <a href="{{ url('/purchase/' . $item->id) }}" class="purchase-button">購入手続きへ</a>
         </div>
         <div class="item-show-form__title">
             商品説明
@@ -100,7 +100,7 @@
                 @foreach($item->comments as $comment)
                     <div class="comment">
                         <div class ="comment-user">
-                            <img class="profile-image" src="{{ asset('storage/profile_images/' . $comment->user->profile_image) }}" alt="{{ $comment->user->name }}" >
+                            <img class="profile-image" src="{{ asset('storage/' . $comment->user->profile_image) }}" alt="{{ $comment->user->name }}" >
                             {{ $comment->user->name }}
                         </div>
                         <div class="comment-content">

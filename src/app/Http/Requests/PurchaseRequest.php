@@ -24,8 +24,10 @@ class PurchaseRequest extends FormRequest
     public function rules()
     {
         return [
-            'payment_method' => 'required|in:convenience_store,credit_card',  // 支払い方法は必須、選べるのは「コンビニ支払い」または「カード支払い」
-            'shipping_address_id' => 'required|exists:addresses,id',  // 配送先住所は必須で、`addresses` テーブルに存在するID
+            'postal_code' => 'required|regex:/^\d{3}-\d{4}$/',
+            'address_line' => 'required|string|max:255',
+            'building' => 'required|string|max:255',
+            /* 'payment_method' => 'required|in:convenience_store,credit_card',  // 支払い方法は必須、選べるのは「コンビニ支払い」または「カード支払い」 */
         ];
     }
     

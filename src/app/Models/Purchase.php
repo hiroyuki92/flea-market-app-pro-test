@@ -8,7 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Purchase extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'item_id', 'shipping_address_id', 'payment_method'];
+    protected $fillable = [
+        'user_id',
+        'item_id',
+        'shipping_postal_code',
+        'shipping_address_line',
+        'shipping_building',
+        'payment_method'];
 
     // ユーザーとのリレーション
     public function user()
@@ -22,9 +28,9 @@ class Purchase extends Model
         return $this->belongsTo(Item::class);
     }
 
-    // 配送先住所とのリレーション
+    /* // 配送先住所とのリレーション
     public function shippingAddress()
     {
         return $this->belongsTo(Address::class, 'shipping_address_id');
-    }
+    } */
 }
