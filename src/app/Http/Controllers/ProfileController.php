@@ -11,7 +11,10 @@ class ProfileController extends Controller
 {
     public function show()
     {
-        return view('profile');
+        $user = auth()->user();
+        $purchases = $user->purchases;
+        $items = $user->items;
+        return view('profile', compact('purchases', 'items'));
     }
 
     /**
