@@ -42,4 +42,27 @@ class PurchaseController extends Controller
         return redirect()->route('purchase.index', ['item_id' => $item_id]);
     }
 
+    public function store(Request $request, $item_id)
+    {
+        $item = Item::findOrFail($item_id);
+        $user = Auth::user();
+        $shippingAddress = session('shipping_address');
+        if (!$shippingAddress) {
+        $shippingAddress = [
+            'shipping_postal_code' => $user->postal_code,
+            'shipping_address_line' => $user->address_line,
+            'shipping_building' => $user->building,
+        ];
+    }
+        $purchaseData = array_merge(
+        $request->only(['payment_method']),
+        $shippingAddress,
+        ['user_id' => $user->id, 'item_id' => $item_id]
+    );
+        Purchase::create($purchaseData);
+        $item->sold_out = true;
+        $item->save();
+        return redirect()->route('profile.show');
+    }
+
 }

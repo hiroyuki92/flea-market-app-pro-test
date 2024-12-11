@@ -36,6 +36,11 @@ label {
     border-radius: 3px;
 }
 
+.error-message {
+    color: #FF5555;
+    text-align: left;
+}
+
 .update-btn {
     outline: none;
     border: none;

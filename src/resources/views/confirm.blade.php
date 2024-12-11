@@ -25,6 +25,8 @@
 @endsection
 
 @section('content')
+<form action="{{ route('purchase.store', ['item_id' => $item->id]) }}" method="POST">
+    @csrf
 <div class="purchase-container">
     <div class="container-group">
         <div class="item-detail">
@@ -71,8 +73,9 @@
                 <td id="payment-method-display"></td>
             </tr>
         </table>
-        <button class="purchase-btn">購入する</button>
+        <button class="purchase-btn" type="submit" >購入する</button>
     </div>
+</form>
     <script>
         document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {
@@ -102,5 +105,6 @@
     });
 </script>
 </div>
+</form>
 
 @endsection('content')

@@ -62,6 +62,9 @@
             <div class="item-name">
                 {{ $item->name }}
             </div>
+            @if($item->sold_out)
+            <div class="sold-out-label">Sold Out</div>
+            @endif
         </div>
         @endforeach
         <!--マイリスト商品（いいねした商品） -->
