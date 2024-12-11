@@ -44,7 +44,7 @@
             <div class="stars">
                 <form class="form-stars" action="{{ route('item.toggleLike', $item->id) }}" method="POST">
                 @csrf
-                <button type="submit" class="favorite-button">
+                <button type="submit" class="favorite-button" data-item-id="{{ $item->id }}">
                     @if ($item->favorites()->where('user_id', Auth::id())->exists())
                         <i class="fas fa-star liked"></i> <!-- いいねしている場合 -->
                     @else
@@ -125,11 +125,14 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const favoriteButton = document.querySelector('.favorite-button');
-    if (favoriteButton) {
-        favoriteButton.addEventListener('click', function(event) {
+    // 複数のいいねボタンに対応できるようにする
+    document.querySelectorAll('.favorite-button').forEach(button => {
+        button.addEventListener('click', function(event) {
             event.preventDefault();
-            const itemId = {{ $item->id }};
+
+            // data-item-id 属性から item_id を取得
+            const itemId = this.getAttribute('data-item-id');
+
             // form-stars クラスの中から favoritesCountElement を探す
             const favoritesCountElement = this.closest('.form-stars').querySelector('.favorites-count');
             
@@ -138,7 +141,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            fetch(`/items/${itemId}/toggle-like`, {
+            // 動的にURLを生成
+            const url = "{{ route('item.toggleLike', ':item_id') }}".replace(':item_id', itemId);
+
+            fetch(url, {
                 method: 'POST',
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
@@ -174,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
             });
         });
-    }
+    });
 });
 </script>
 <script>

@@ -10,15 +10,15 @@ use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
-    public function store(CommentRequest $request, $itemId)
+    public function store(CommentRequest $request, $item_id)
     {
         Comment::create([
-            'item_id' => $itemId,  // コメント対象のアイテムID
+            'item_id' => $item_id,  // コメント対象のアイテムID
             'user_id' => Auth::id(),  // 現在ログインしているユーザーのID
             'content' => $request->comment,  // コメント内容
         ]);
 
-        return redirect()->route('item.show', ['item_id' => $itemId]);
+        return redirect()->route('item.show', ['item_id' => $item_id]);
     }
 
 }

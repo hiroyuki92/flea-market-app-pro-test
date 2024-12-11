@@ -80,11 +80,11 @@ public function show($item_id)
         return view('show', compact('item', 'comments', 'commentsCount'));
     }
 
-public function toggleLike($itemId)
+public function toggleLike($item_id)
 {
     try {
         $user = auth()->user();
-        $item = Item::findOrFail($itemId);
+        $item = Item::findOrFail($item_id);
         
         $existingFavorite = Favorite::where('user_id', $user->id)
             ->where('item_id', $item->id)
@@ -120,16 +120,6 @@ public function toggleLike($itemId)
         ], 500);
     }
 }
-
-/* public function purchase()
-    {
-        return view('confirm');
-    }
-
-public function update()
-    {
-        return view('address');
-    } */
 }
 
 

@@ -31,8 +31,8 @@ Route::middleware('auth')->group(function () {
     Route::put('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::get('/sell', [ItemController::class, 'create'])->name('create');
     Route::post('/sell', [ItemController::class, 'store'])->name('item.store');
-    Route::post('/items/{item}/toggle-like', [ItemController::class, 'toggleLike'])->name('item.toggleLike');
-    Route::post('/item/{itemId}/comment', [CommentController::class, 'store'])->name('comment.store');
+    Route::post('/item/{item_id}/toggle-like', [ItemController::class, 'toggleLike'])->name('item.toggleLike');
+    Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'show'])->name('purchase.index');
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('address.edit');
     Route::put('/purchase/address/{item_id}', [PurchaseController::class, 'update'])->name('address.update');
