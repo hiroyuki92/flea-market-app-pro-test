@@ -46,14 +46,12 @@ public function store(ExhibitionRequest $request)
     if ($request->hasFile('image')) {
         // 画像を保存し、ファイル名を取得
         $imagePath = $request->file('image')->store('item_images', 'public');
-        $imageName = basename($imagePath);  // ストレージに保存されたファイル名を取得
+        $imageName = basename($imagePath);
     } else {
-        // 画像がアップロードされていない場合にエラーを表示する
         return back()->withErrors(['image' => '商品画像は必須です。']);
     }
     $itemData = array_merge(
         $request->only([
-            'category_id',
             'name',
             'brand',
             'price',
@@ -61,15 +59,15 @@ public function store(ExhibitionRequest $request)
             'condition',
         ]),
         [
-            'user_id' => auth()->id(),  // ログインしているユーザーのIDを追加
+            'user_id' => auth()->id(),
             'image_url' => $imageName,
         ]
     );
+    $item = Item::create($itemData);
+    $categoryIds = explode(',', $request->input('category_ids'));
+    $item->categories()->attach($categoryIds);
 
-    Item::create($itemData);
-
-    // 商品を保存後、プロフィールページなどにリダイレクト
-    return redirect()->route('profile.show');  // 出品後はプロフィールページにリダイレクト
+    return redirect()->route('profile.show');
 }
 
 public function show($item_id)

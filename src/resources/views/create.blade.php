@@ -55,7 +55,7 @@
                     </span>
                     @endforeach
                 </div>
-                <input type="hidden" name="category_id" id="selected-category-id" value="">
+                <input type="hidden" name="category_ids" id="selected-category-ids" value="">
                 @error('category_id')
                 <div class="error-message">{{ $message }}</div>
                 @enderror
@@ -121,7 +121,26 @@
         </div>
     </form>
     <script>
-    function selectCategory(element) {
+        let selectedCategories = [];
+
+function selectCategory(element) {
+    const categoryId = element.getAttribute('data-id');
+    
+    // 選択済みのカテゴリーIDを配列に追加
+    if (!selectedCategories.includes(categoryId)) {
+        selectedCategories.push(categoryId);
+        element.classList.add('selected');  // 選択されたカテゴリーにクラスを追加
+    } else {
+        // すでに選択されている場合、選択を解除
+        selectedCategories = selectedCategories.filter(id => id !== categoryId);
+        element.classList.remove('selected');
+    }
+
+    // 選択されたカテゴリーIDを隠しフィールドに設定
+    document.getElementById('selected-category-ids').value = selectedCategories.join(',');
+}
+
+    /* function selectCategory(element) {
     // すべてのカテゴリータグから'selected'クラスを削除
     const categoryTags = document.querySelectorAll('.category__tag .tag');
     categoryTags.forEach(tag => {
@@ -138,7 +157,7 @@
 
     // デバッグ：コンソールに選択されたIDを出力
     console.log(selectedCategoryId);
-}
+} */
 
     // 画像プレビューの表示
     function previewImage(event) {

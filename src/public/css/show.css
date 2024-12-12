@@ -131,10 +131,10 @@
     margin-right: 50px;
 }
 
-.category__choices {
+.category-name {
     display: inline-block;
     background-color: #d9d9d9;
-    padding: 5px 20px;
+    padding: 3px 20px;
     border-radius: 50px;
     text-align: center;
     margin-right: 20px;

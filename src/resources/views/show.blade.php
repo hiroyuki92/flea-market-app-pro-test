@@ -75,7 +75,9 @@
             <div class="content__group">
                 <div class="content__title">カテゴリー</div>
                 <div class="category__choices">
-                    {{ $item->category->name }}
+                    @foreach($item->categories as $category)
+                    <span  class="category-name">{{ $category->name }}</span>
+                    @endforeach
                 </div>
             </div>
             <div class="content__group">

@@ -24,13 +24,13 @@ class ExhibitionRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => 'required|exists:categories,id',  // カテゴリーは必須、存在するカテゴリー
-            'name' => 'required|string|max:255',  // 商品名は必須、最大255文字
-            'brand' => 'required|string|max:255',  // ブランド名は任意
-            'price' => 'required|numeric|min:0',  // 商品価格は必須、数値で0円以上
-            'description' => 'required|string|max:255',  // 商品説明は必須、最大255文字
-            'image' => 'required|image|mimes:jpeg,png|max:2048',  // 商品画像は必須、画像形式、最大2MB
-            'condition' => 'required|integer',  // 商品の状態は必須、整数
+            'category_ids' => 'required',
+            'name' => 'required|string|max:255',
+            'brand' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+            'description' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png|max:2048',
+            'condition' => 'required|integer',
         ];
     }
 
@@ -42,7 +42,7 @@ class ExhibitionRequest extends FormRequest
     public function messages()
     {
         return [
-            'category_id.required' => 'カテゴリーは必須です。',
+            'category_ids.required' => 'カテゴリーは必須です。',
             'name.required' => '商品名は必須です。',
             'name.string' => '商品名は文字列で入力してください。',
             'name.max' => '商品名は255文字以内で入力してください。',
