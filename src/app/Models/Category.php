@@ -14,6 +14,6 @@ class Category extends Model
     // 商品とのリレーション
     public function items()
     {
-        return $this->hasMany(Item::class);
+        return $this->belongsToMany(Item::class, 'category_item');
     }
 }

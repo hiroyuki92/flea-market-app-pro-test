@@ -16,7 +16,6 @@ class CreateItemsTable extends Migration
         Schema::create('items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');  // ユーザーとのリレーション（商品を出品したユーザー）
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');  // カテゴリーテーブルとのリレーション
             $table->string('name');  // 商品名
             $table->string('brand');  // ブランド名
             $table->decimal('price', 10, 2);  // 商品価格（小数点2桁）
