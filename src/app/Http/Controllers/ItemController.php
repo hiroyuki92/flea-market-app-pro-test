@@ -15,7 +15,9 @@ public function index(Request $request)
     {
     // 入力されたキーワードを取得
     $keyword = $request->input('keyword', '');
-    $items = Item::keywordsearch($keyword)->get();
+    $items = Item::keywordsearch($keyword)
+        ->where('user_id', '!=', Auth::id())  // 自分が出品した商品を除外
+        ->get();
 
     // ログインしているユーザーがいいねした商品（マイリスト）を取得
     if (Auth::check()) {
@@ -24,7 +26,6 @@ public function index(Request $request)
         $myListItems = collect(); // ログインしていない場合は空のコレクション
     }
 
-    // 検索結果とマイリスト商品をビューに渡す
     return view('index', compact('items', 'myListItems',  'keyword'));
     }
 

@@ -12,7 +12,7 @@
     <div class="header-links">
         <form action="{{ route('logout') }}" method="POST">
         @csrf
-        <button type="submit" class="header__link">ログアウト</button>
+            <button type="submit" class="header__link">ログアウト</button>
         </form>
     </div>
     <div class="header-links">
@@ -57,7 +57,7 @@
                 </div>
                 <input type="hidden" name="category_ids" id="selected-category-ids" value="">
                 @error('category_id')
-                <div class="error-message">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
             <div class="item-create-form__group">
@@ -72,7 +72,7 @@
                     </select>
                 </div>
                 @error('condition')
-                <div class="error-message">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
         </div>
@@ -86,7 +86,7 @@
                     <input class="form__input" type="text" name="name" value="{{ old('name') }}" />
                 </div>
                 @error('name')
-                <div class="error-message">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
             <div class="item-create-form__group">
@@ -95,7 +95,7 @@
                     <input class="form__input" type="text" name="brand" value="{{ old('brand') }}" />
                 </div>
                 @error('brand')
-                <div class="error-message">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
             <div class="item-create-form__group">
@@ -104,7 +104,7 @@
                     <textarea class="form__input--description-content" name="description" >{{ old('description') }}</textarea>
                 </div>
                 @error('description')
-                <div class="error-message">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
             <div class="item-create-form__group">
@@ -114,7 +114,7 @@
                     <input class="form__input--price-content" type="number" name="price" value="{{ old('price') }}" />
                 </div>
                 @error('price')
-                <div class="error-message">{{ $message }}</div>
+                    <div class="error-message">{{ $message }}</div>
                 @enderror
             </div>
             <button type="submit" class="submit-button">出品する</button>
@@ -123,7 +123,7 @@
     <script>
         let selectedCategories = [];
 
-function selectCategory(element) {
+    function selectCategory(element) {
     const categoryId = element.getAttribute('data-id');
     
     // 選択済みのカテゴリーIDを配列に追加
@@ -139,25 +139,6 @@ function selectCategory(element) {
     // 選択されたカテゴリーIDを隠しフィールドに設定
     document.getElementById('selected-category-ids').value = selectedCategories.join(',');
 }
-
-    /* function selectCategory(element) {
-    // すべてのカテゴリータグから'selected'クラスを削除
-    const categoryTags = document.querySelectorAll('.category__tag .tag');
-    categoryTags.forEach(tag => {
-        tag.classList.remove('selected');
-    });
-
-    // クリックされたタグに'selected'クラスを追加
-    element.classList.add('selected');
-    console.log('Selected class added:', element);
-
-    // 選択されたカテゴリーのIDを隠しインプットに設定
-    const selectedCategoryId = element.getAttribute('data-id');
-    document.getElementById('selected-category-id').value = selectedCategoryId;
-
-    // デバッグ：コンソールに選択されたIDを出力
-    console.log(selectedCategoryId);
-} */
 
     // 画像プレビューの表示
     function previewImage(event) {
