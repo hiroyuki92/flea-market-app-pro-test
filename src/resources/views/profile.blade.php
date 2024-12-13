@@ -27,7 +27,7 @@
 @section('content')
 <div class="profile-container">
     <div class="profile-header">
-        <img class="profile-picture"src="{{ asset('storage/' . Auth::user()->profile_image) }}"  alt="ユーザーのプロフィール写真">
+        <img class="profile-picture"src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"  alt="ユーザーのプロフィール写真">
         <div class="profile-info">{{ Auth::user()->name }}</div>
         <div class="profile-edit">
             <a href="/mypage/profile" class="edit-profile-btn">プロフィールを編集</a>
@@ -42,7 +42,7 @@
         @foreach ($items as $item)
         <div class="item-card listed">
             <div class="item-image">
-                <img class="item-image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                <img class="item-image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
             </div>
             <div class="item-name">
                 {{ $item->name }}

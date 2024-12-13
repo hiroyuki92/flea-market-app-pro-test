@@ -23,7 +23,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 15000,
             'description' => 'スタイリッシュなデザインのメンズ腕時計',
             'condition' => '1',
-            'image_url' => 'item_images/Armani+Mens+Clock.jpg',
+            'image_url' => 'Armani+Mens+Clock.jpg',
             'categories' => [1, 5]
         ],
         [
@@ -33,7 +33,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 5000,
             'description' => '高速で信頼性の高いハードディスク',
             'condition' => '2',
-            'image_url' => 'item_images/HDD+Hard+Disk.jpg',
+            'image_url' => 'HDD+Hard+Disk.jpg',
             'categories' => [2]
         ],
         [
@@ -43,7 +43,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 300,
             'description' => '新鮮な玉ねぎ3束のセット',
             'condition' => '3',
-            'image_url' => 'item_images/iLoveIMG+d.jpg',
+            'image_url' => 'iLoveIMG+d.jpg',
             'categories' => [10]
         ],
         [
@@ -53,7 +53,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 4000,
             'description' => 'クラシックなデザインの革靴',
             'condition' => '4',
-            'image_url' => 'item_images/Leather+Shoes+Product+Photo.jpg',
+            'image_url' => 'Leather+Shoes+Product+Photo.jpg',
             'categories' => [1, 5]
         ],
         [
@@ -63,7 +63,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 45000,
             'description' => '高性能なノートパソコン',
             'condition' => '1',
-            'image_url' => 'item_images/Living+Room+Laptop.jpg',
+            'image_url' => 'Living+Room+Laptop.jpg',
             'categories' => [2]
         ],
         [
@@ -73,7 +73,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 8000,
             'description' => '高音質のレコーディング用マイク',
             'condition' => '2',
-            'image_url' => 'item_images/Music+Mic+4632231.jpg',
+            'image_url' => 'Music+Mic+4632231.jpg',
             'categories' => [2]
         ],
         [
@@ -83,7 +83,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 3500,
             'description' => 'おしゃれなショルダーバッグ',
             'condition' => '3',
-            'image_url' => 'item_images/Purse+fashion+pocket.jpg',
+            'image_url' => 'Purse+fashion+pocket.jpg',
             'categories' => [1, 4]
         ],
         [
@@ -93,7 +93,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 500,
             'description' => '使いやすいタンブラー',
             'condition' => '4',
-            'image_url' => 'item_images/Tumbler+souvenir.jpg',
+            'image_url' => 'Tumbler+souvenir.jpg',
             'categories' => [10]
         ],
         [
@@ -103,7 +103,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 4000,
             'description' => '手動のコーヒーミル',
             'condition' => '1',
-            'image_url' => 'item_images/Waitress+with+Coffee+Grinder.jpg',
+            'image_url' => 'Waitress+with+Coffee+Grinder.jpg',
             'categories' => [10]
         ],
         [
@@ -113,7 +113,7 @@ class ItemsTableSeeder extends Seeder
             'price' => 2500,
             'description' => '便利なメイクアップセット',
             'condition' => '2',
-            'image_url' => 'item_images/外出メイクアップセット.jpg',
+            'image_url' => '外出メイクアップセット.jpg',
             'categories' => [4, 6]
         ],
     ];

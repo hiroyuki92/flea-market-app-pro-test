@@ -56,7 +56,7 @@
         <div class="item-card recommended">
             <div class="item-image">
                 <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
-                    <img class="item-image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                    <img class="item-image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
                 </a>
             </div>
             <div class="item-name">
@@ -72,7 +72,7 @@
         <div class="item-card {{ in_array($item->id, $myListItems->pluck('id')->toArray()) ? 'mylist' : '' }}"  style="display:none;">
             <div class="item-image">
                 <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
-                <img class="item-image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="{{ $item->name }}">
+                <img class="item-image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
                 </a>
                 <div class="item-name">
                 {{ $item->name }}
