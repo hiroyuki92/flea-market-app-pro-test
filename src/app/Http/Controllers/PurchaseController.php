@@ -8,6 +8,8 @@ use App\Models\Item;
 use App\Models\Purchase;
 use App\Http\Requests\PurchaseRequest;
 use App\Http\Requests\AddressRequest;
+use Stripe\Stripe;
+use Stripe\Checkout\Session;
 
 class PurchaseController extends Controller
 {
@@ -42,27 +44,55 @@ class PurchaseController extends Controller
         return redirect()->route('purchase.index', ['item_id' => $item_id]);
     }
 
-    public function store(Request $request, $item_id)
+    public function store(PurchaseRequest $request, $item_id)
     {
         $item = Item::findOrFail($item_id);
         $user = Auth::user();
         $shippingAddress = session('shipping_address');
         if (!$shippingAddress) {
-        $shippingAddress = [
-            'shipping_postal_code' => $user->postal_code,
-            'shipping_address_line' => $user->address_line,
-            'shipping_building' => $user->building,
-        ];
-    }
+            $shippingAddress = [
+                'shipping_postal_code' => $user->postal_code,
+                'shipping_address_line' => $user->address_line,
+                'shipping_building' => $user->building,
+            ];
+        }
         $purchaseData = array_merge(
-        $request->only(['payment_method']),
-        $shippingAddress,
-        ['user_id' => $user->id, 'item_id' => $item_id]
-    );
+            $request->only(['payment_method']),
+            $shippingAddress,
+            ['user_id' => $user->id, 'item_id' => $item_id]
+        );
         Purchase::create($purchaseData);
         $item->sold_out = true;
         $item->save();
-        return redirect()->route('profile.show');
+
+        Stripe::setApiKey(env('STRIPE_SECRET'));
+        $amount = $item->price * 100;
+        $paymentMethod = $request->input('payment_method');
+        $paymentMethods = ['card'];
+        if ($paymentMethod === 'konbini') {
+        $paymentMethods = ['konbini'];
+        }
+        $session = Session::create([
+        'payment_method_types' => $paymentMethods,
+        'line_items' => [
+            [
+                'price_data' => [
+                    'currency' => 'jpy',
+                    'product_data' => [
+                        'name' => $item->name,
+                    ],
+                    'unit_amount' => $amount,
+                ],
+                'quantity' => 1,
+            ],
+        ],
+        'mode' => 'payment',
+        'success_url' => route('profile.show', ['item_id' => $item_id]),
+        'cancel_url' => route('profile.show', ['item_id' => $item_id]),
+    ]);
+
+    // Stripeの決済画面にリダイレクト
+    return redirect()->away($session->url);
     }
 
 }

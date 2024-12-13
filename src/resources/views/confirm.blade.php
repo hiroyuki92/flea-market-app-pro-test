@@ -44,11 +44,14 @@
         </div>
         <div class="payment-details">
             <div class="payment-title">支払い方法</div>
-            <select name="payment-method"  id="payment-method">>
+            <select name="payment_method"  id="payment-method">>
                 <option value=""hidden>選択してください</option>
-                <option value="convenience">コンビニ払い</option>
-                <option value="credit-card">カード支払い</option>
+                <option value="konbini">コンビニ払い</option>
+                <option value="card">カード支払い</option>
             </select>
+            @error('payment_method')
+                    <div class="error-message">{{ $message }}</div>
+            @enderror
         </div>
         <div class="shipping-details">
             <div class="shipping-group">

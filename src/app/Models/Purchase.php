@@ -27,10 +27,4 @@ class Purchase extends Model
     {
         return $this->belongsTo(Item::class);
     }
-
-    /* // 配送先住所とのリレーション
-    public function shippingAddress()
-    {
-        return $this->belongsTo(Address::class, 'shipping_address_id');
-    } */
 }

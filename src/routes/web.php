@@ -37,4 +37,15 @@ Route::middleware('auth')->group(function () {
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('address.edit');
     Route::put('/purchase/address/{item_id}', [PurchaseController::class, 'update'])->name('address.update');
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
+    // 購入成功時
+Route::get('/purchase/success/{item_id}', function ($item_id) {
+    // 購入処理が成功した場合の処理
+    return "購入が成功しました！ 商品ID: " . $item_id;
+})->name('purchase.success');
+
+// 購入キャンセル時
+Route::get('/purchase/cancel/{item_id}', function ($item_id) {
+    // 購入がキャンセルされた場合の処理
+    return "購入がキャンセルされました。 商品ID: " . $item_id;
+})->name('purchase.cancel');
 });

@@ -20,7 +20,7 @@ class CreatePurchasesTable extends Migration
             $table->string('shipping_postal_code', 10);  // 郵便番号
             $table->string('shipping_address_line');  // 住所
             $table->string('shipping_building');  // 建物名
-            $table->enum('payment_method', ['convenience_store', 'credit_card']); // 支払い方法の選択肢を制限
+            $table->enum('payment_method', ['konbini', 'card']); // 支払い方法の選択肢を制限
             $table->timestamps();
         });
     }
