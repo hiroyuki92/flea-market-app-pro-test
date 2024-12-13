@@ -106,6 +106,12 @@
     padding: 5px;
     font-size: 20px;
 }
+.sold-out {
+    text-decoration: none;
+    color: #FFF;
+    font-size: 18px;
+    font-weight: bold;
+}
 
 .purchase-button {
     text-decoration: none;

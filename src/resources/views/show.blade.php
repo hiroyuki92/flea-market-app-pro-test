@@ -11,16 +11,36 @@
 </form>
 <div class="header-links-group">
     <div class="header-links">
-        <form action="{{ route('logout') }}" method="POST">
-        @csrf
-        <button type="submit" class="header__link">ログアウト</button>
+    @if (Auth::check())
+        <!-- ログインしている場合はログアウトボタン -->
+        <a class="header__link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            ログアウト
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
         </form>
+    @else
+        <!-- ログインしていない場合はログインボタン -->
+        <a class="header__link" href="{{ route('login') }}">ログイン</a>
+    @endif
     </div>
     <div class="header-links">
+    @if (Auth::check())
+        <!-- ログインしている場合はマイページにリダイレクト -->
         <a class="header__link" href="{{ route('profile.show') }}">マイページ</a>
+    @else
+        <!-- ログインしていない場合はログインページにリダイレクト -->
+        <a class="header__link" href="{{ route('login') }}">マイページ</a>
+    @endif
     </div>
     <div class="header-links">
+    @if (Auth::check())
+        <!-- ログインしている場合は商品出品ページにリダイレクト -->
         <a class="header__link-create" href="{{ route('create') }}">出品</a>
+    @else
+        <!-- ログインしていない場合はログインページにリダイレクト -->
+        <a class="header__link-create" href="{{ route('login') }}">出品</a>
+    @endif
     </div>
 </div>
 @endsection
@@ -60,7 +80,11 @@
             </div>
         </div>
         <div class="purchase-button-group">
+            @if ($item->sold_out)
+            <div class="sold-out">Sold Out</div>
+            @else
             <a href="{{ url('/purchase/' . $item->id) }}" class="purchase-button">購入手続きへ</a>
+            @endif
         </div>
         <div class="item-show-form__title">
             商品説明
