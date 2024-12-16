@@ -68,17 +68,18 @@ h3 {
     flex-wrap: wrap;
     gap: 5px;
     justify-content: flex-start;
+    padding-left: 15px;
 }
 
 .tag {
     margin-bottom: 15px;
+    margin-right: 10px;
     color: #ff5555;
     border: 1px solid #ff5555;
     font-weight: lighter;
     border-radius: 20px;
     padding: 5px 15px;
     cursor: pointer;
-    width: calc(16.666% - 5px);
     text-align: center;
     font-size: 12px;
 }
@@ -154,4 +155,10 @@ h3 {
 
 .error-message {
     color: #FF5555;
+}
+
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .item-create-form__content {
+        padding: 30px 10%;
+    }
 }

@@ -12,11 +12,11 @@
     <div class="header-links">
         <form action="{{ route('logout') }}" method="POST">
         @csrf
-        <button type="submit" class="header__link">ログアウト</button>
+        <button type="submit"   class="header__link">ログアウト</button>
         </form>
     </div>
     <div class="header-links">
-        <a class="header__link" href="{{ route('profile.show') }}">マイページ</a>
+        <a class="header__link-mypage" href="{{ route('profile.show') }}">マイページ</a>
     </div>
     <div class="header-links">
         <a class="header__link-create" href="{{ route('create') }}">出品</a>

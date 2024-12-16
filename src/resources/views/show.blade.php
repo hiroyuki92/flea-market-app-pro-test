@@ -48,7 +48,7 @@
 @section('content')
 <div class="item-show-form__content">
     <div class="item-show-form__image">
-        <img class="image-picture" src="{{ asset('storage/' . $item->image_url) }}" alt="商品画像" />
+        <img class="image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="商品画像" />
     </div>
     <div class="item-show-form__info">
         <div class="item-name">
@@ -148,7 +148,6 @@
         </div>
     </div>
 </div>
-
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     // 複数のいいねボタンに対応できるようにする
@@ -210,12 +209,12 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script>
-        document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
+    document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
             event.preventDefault(); // ページリロードを防ぐ
             document.getElementById('searchForm').submit();  // フォーム送信
         }
     });
-    </script>
+</script>
 
 @endsection('content')

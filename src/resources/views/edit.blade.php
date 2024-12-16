@@ -16,7 +16,7 @@
         </form>
     </div>
     <div class="header-links">
-        <a class="header__link" href="{{ route('profile.show') }}">マイページ</a>
+        <a class="header__link-mypage" href="{{ route('profile.show') }}">マイページ</a>
     </div>
     <div class="header-links">
         <a class="header__link-create" href="{{ route('create') }}">出品</a>
@@ -34,7 +34,7 @@
         <div class="profile-image-container">
             <!-- プロフィール画像の表示 -->
             <img id="profile-image-preview"
-                src="{{ $user->profile_image ? asset('storage/' . $user->profile_image) : asset('storage/profile_images/default.png') }}"
+                src="{{ $user->profile_image ? asset('storage/profile_images/' . $user->profile_image) : asset('storage/profile_images/default.png') }}"
                 alt="" class="profile-picture" />
             
             <!-- 非表示のファイル入力 -->
@@ -48,7 +48,6 @@
             @enderror
         </div>
 
-        <!-- ユーザー名 -->
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">ユーザー名</span>
@@ -61,7 +60,6 @@
             </div>
         </div>
 
-        <!-- 郵便番号 -->
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">郵便番号</span>
@@ -74,7 +72,6 @@
             </div>
         </div>
 
-        <!-- 住所 -->
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">住所</span>
@@ -87,7 +84,6 @@
             </div>
         </div>
 
-        <!-- 建物名 -->
         <div class="form-group">
             <div class="form__group-title">
                 <span class="form__label--item">建物名</span>
@@ -104,7 +100,6 @@
     </form>
 
     <script>
-    // プロフィール画像のプレビューを表示
     function previewImage(event) {
         const file = event.target.files[0];
         if (file) {

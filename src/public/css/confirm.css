@@ -20,7 +20,7 @@
 .image-picture {
     max-width: 200px;
     height: auto;
-    margin: 0 50px 20px 0
+    margin: 0 50px 50px 0
 }
 
 .item-name {
@@ -35,6 +35,7 @@
 }
 
 .payment-details {
+    padding-bottom: 20px;
     margin-bottom: 20px;
     border-bottom: 1px solid #000;
 }
@@ -136,4 +137,29 @@
     cursor: pointer;
     font-weight: bold;
     margin-top: 50px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .purchase-container{
+        width: 100%;
+    }
+
+    .container-group {
+        margin-right: 20px;
+    }
+
+    .item-image {
+        width: 70%;
+        margin-right: 20px;
+    }
+
+    .item-info {
+        width: 70%;
+    }
+
+
+    .image-picture {
+        max-width: 100%;
+        margin-right: 20px;
+    }
 }
