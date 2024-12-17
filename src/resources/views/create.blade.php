@@ -55,7 +55,7 @@
                     </span>
                     @endforeach
                 </div>
-                <input type="hidden" name="category_ids" id="selected-category-ids" value="">
+                <input type="hidden" name="category_ids" id="selected-category-ids" value="{{ old('category_ids', '') }}">
                 @error('category_ids')
                     <div class="error-message">{{ $message }}</div>
                 @enderror
@@ -65,10 +65,10 @@
                 <div class="form__select">
                     <select class="form__select-group" name="condition">
                         <option value=""hidden>選択してください</option>
-                        <option value="1">良好</option>
-                        <option value="2">目立った傷や汚れなし</option>
-                        <option value="3">やや傷や汚れあり</option>
-                        <option value="4">状態が悪い</option>
+                        <option value="1" {{ old('condition') == '1' ? 'selected' : '' }}>良好</option>
+                        <option value="2" {{ old('condition') == '2' ? 'selected' : '' }}>目立った傷や汚れなし</option>
+                        <option value="3" {{ old('condition') == '3' ? 'selected' : '' }}>やや傷や汚れあり</option>
+                        <option value="4" {{ old('condition') == '4' ? 'selected' : '' }}>状態が悪い</option>
                     </select>
                 </div>
                 @error('condition')
@@ -139,6 +139,19 @@
     // 選択されたカテゴリーIDを隠しフィールドに設定
     document.getElementById('selected-category-ids').value = selectedCategories.join(',');
 }
+
+    // ページが再読み込みされた際に選択されたカテゴリーを反映させる
+    window.onload = function() {
+        const selectedCategories = document.getElementById('selected-category-ids').value.split(',');
+        const tags = document.querySelectorAll('.category__tag .tag');
+
+        // 初期選択状態を反映
+        tags.forEach(tag => {
+            if (selectedCategories.includes(tag.getAttribute('data-id'))) {
+                tag.classList.add('selected');
+            }
+        });
+    };
 
     // 画像プレビューの表示
     function previewImage(event) {
