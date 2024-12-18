@@ -30,20 +30,15 @@ class RegisteredUserController extends Controller
      */
     public function store(RegisterRequest $request)
     {
-        // バリデーション済みのデータを取得
         $validatedData = $request->validated();
-
-        // ユーザーを作成
         $user = User::create([
             'name' => $validatedData['name'],
             'email' => $validatedData['email'],
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        // ユーザー登録後にログイン
         auth()->login($user);
 
-        // プロフィールページにリダイレクト
         return redirect()->route('profile.edit');
     }
 }
