@@ -66,7 +66,7 @@ class PurchaseController extends Controller
         $item->save();
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
-        $amount = $item->price * 100;
+        $amount = (int)$item->price;
         $paymentMethod = $request->input('payment_method');
         $paymentMethods = ['card'];
         if ($paymentMethod === 'konbini') {
