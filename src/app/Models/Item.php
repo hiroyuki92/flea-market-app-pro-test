@@ -18,6 +18,7 @@ class Item extends Model
         'description',
         'image_url',
         'condition',
+        'sold_out',
     ];
 
     public function user()

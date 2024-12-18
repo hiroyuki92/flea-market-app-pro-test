@@ -62,8 +62,7 @@ class PurchaseController extends Controller
             ['user_id' => $user->id, 'item_id' => $item_id]
         );
         Purchase::create($purchaseData);
-        $item->sold_out = true;
-        $item->save();
+        $item->update(['sold_out' => true]);
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $amount = (int)$item->price;
@@ -91,7 +90,6 @@ class PurchaseController extends Controller
         'cancel_url' => route('profile.show', ['item_id' => $item_id]),
     ]);
 
-    // Stripeの決済画面にリダイレクト
     return redirect()->away($session->url);
     }
 

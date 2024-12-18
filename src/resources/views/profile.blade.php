@@ -48,7 +48,7 @@
                 {{ $item->name }}
             </div>
             @if($item->sold_out)
-            <div class="sold-out-label">Sold Out</div>
+            <div class="sold-out-label">Sold</div>
             @endif
         </div>
         @endforeach

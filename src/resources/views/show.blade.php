@@ -81,7 +81,7 @@
         </div>
         <div class="purchase-button-group">
             @if ($item->sold_out)
-            <div class="sold-out">Sold Out</div>
+            <div class="sold-out">Sold</div>
             @else
             <a href="{{ url('/purchase/' . $item->id) }}" class="purchase-button">購入手続きへ</a>
             @endif

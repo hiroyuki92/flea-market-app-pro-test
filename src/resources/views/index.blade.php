@@ -63,7 +63,7 @@
                 {{ $item->name }}
             </div>
             @if($item->sold_out)
-            <div class="sold-out-label">Sold Out</div>
+            <div class="sold-out-label">Sold</div>
             @endif
         </div>
         @endforeach
@@ -74,11 +74,15 @@
                 <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
                 <img class="item-image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
                 </a>
-                <div class="item-name">
-                {{ $item->name }}
-                </div>
             </div>
+            <div class="item-name">
+                {{ $item->name }}
+            </div>
+            @if($item->sold_out)
+            <div class="sold-out-label">Sold</div>
+            @endif
         </div>
+    </div>
     @endforeach
     <script>
         function showProducts(type) {
