@@ -33,12 +33,45 @@ php artisan migrate
 ``` bash
 php artisan db:seed
 ```
+### Stripe決済機能の設定
+1. Stripeアカウントの準備
+   - [Stripe Dashboard](https://dashboard.stripe.com/register)でアカウントを作成
+   - テストモードになっていることを確認（右上のスイッチで切り替え可能）
+   - Developers > API keysセクションからAPIキーを取得:
+     - シークレットキー（sk_test_...）
+     - 公開可能キー（pk_test_...）
+
+2. テスト環境用の環境変数設定
+   - `.env.testing`ファイルに以下を追加：
+   ```env
+   STRIPE_SECRET=sk_test_あなたのシークレットキー
+   STRIPE_KEY=pk_test_あなたの公開可能キー
+   ```
+
+3. 動作確認
+```bash
+php artisan test --filter=StripeTest
+```
+
+### 注意事項
+- シークレットキーは絶対に公開リポジトリにコミットしないでください
+
+### トラブルシューティング
+
+1. Stripeの`Expired API Key provided`エラーが出る場合
+   - Stripeダッシュボードで新しいAPIキーを生成してください
+   
+2. Stripeの`Authentication error`が出る場合
+   - シークレットキーが正しく設定されているか確認してください
+   - テストモードのキーを使用していることを確認してください
+
 
 ## 使用技術(実行環境)
 - PHP8.3.0
 - Laravel8.83.27
 - MySQL8.0.26
 - nginx 1.21.1
+- Stripe決済システム
 
 ## ER図
 ```mermaid
