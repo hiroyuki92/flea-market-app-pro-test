@@ -27,7 +27,7 @@ class GetMyListTest extends TestCase
 
         $this->items = Item::take(5)->get();
         $this->likedItems = $this->items->take(3);
-        $this->notLikedItems = $this->items->skip(3)->take(2);
+        $this->notLikedItems = $this->items->diff($this->likedItems);
 
         foreach ($this->likedItems as $item) {
             Favorite::create([
@@ -60,5 +60,30 @@ class GetMyListTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($soldItem->name);
         $response->assertSee('Sold');
+    }
+
+    public function test_mylist_own_products_do_not_appear_in_the_list()
+    {
+        $ownItem = $this->notLikedItems->first();
+        $ownItem->update(['user_id' => $this->user->id]);
+        $this->actingAs($this->user);
+        $response = $this->get(route('index'));
+        $response->assertStatus(200);
+
+        $response->assertDontSee($ownItem->name);
+        $response->assertViewHas('items', function ($items) use ($ownItem) {
+            return !$items->contains('id', $ownItem->id);
+        });
+
+    }
+
+    public function
+    test_guest_user_sees_no_items_in_mylist()
+    {
+        $response = $this->get(route('index'));
+        $response->assertStatus(200);
+        foreach ($this->likedItems as $item) {
+        $response->assertDontSee('item-card mylist', false);
+    }
     }
 }

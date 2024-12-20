@@ -68,8 +68,8 @@
         </div>
         @endforeach
         <!--マイリスト商品（いいねした商品） -->
-        @foreach ($items as $item)
-        <div class="item-card {{ in_array($item->id, $myListItems->pluck('id')->toArray()) ? 'mylist' : '' }}"  style="display:none;">
+        @foreach ($myListItems as $item)
+        <div class="item-card mylist" style="display:none;">
             <div class="item-image">
                 <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
                 <img class="item-image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
