@@ -14,13 +14,22 @@ class UserFactory extends Factory
      */
     public function definition()
     {
+        $defaultImagePath = base_path('tests/fixtures/images/default.jpg');
+        $destinationPath = storage_path('app/public/profile_images/default.jpg');
+        if (!file_exists(dirname($destinationPath))) {
+            mkdir(dirname($destinationPath), 0755, true);
+        }
+
+        if (!file_exists($destinationPath) && file_exists($defaultImagePath)) {
+        copy($defaultImagePath, $destinationPath);
+        }
         return [
             'name' => $this->faker->name(),
             'email' => $this->faker->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
-            'profile_image' => '' . $this->faker->image('public/storage/profile_images', 640, 480, null, false),
+            'profile_image' => 'default.jpg',
             'postal_code' => $this->faker->numerify('###-####'),
             'address_line' => $this->faker->address(),
             'building' => $this->faker->secondaryAddress(),

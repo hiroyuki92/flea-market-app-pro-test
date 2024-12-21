@@ -122,6 +122,7 @@ class ItemsTableSeeder extends Seeder
             'description' => $itemData['description'],
             'condition' => $itemData['condition'],
             'image_url' => $itemData['image_url'],
+            'sold_out' => false,
         ]);
         $item->categories()->attach($itemData['categories']);
     }
