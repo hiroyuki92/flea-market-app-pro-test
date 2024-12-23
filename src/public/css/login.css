@@ -64,3 +64,8 @@ h2 {
     font-size: 15px;
     text-decoration: none;
 }
+
+.form__error {
+    color: #FF5555;
+    text-align: left;
+}
