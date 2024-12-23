@@ -9,7 +9,7 @@
     <div class="register-form__heading">
         <h2>会員登録</h2>
     </div>
-    <form class="form" action="/register" method="post">
+    <form class="form" action="/register" method="post"  novalidate>
         @csrf
         <div class="form__group">
             <div class="form__group-title">
@@ -54,14 +54,12 @@
         </div>
     </div>
 
-    <!-- 確認用パスワード -->
     <div class="form__group">
         <div class="form__group-title">
             <span class="form__label--item">確認用パスワード</span>
         </div>
         <div class="form__group-content">
             <input class="form__input" type="password" name="password_confirmation" />
-            <!-- ここでpassword_confirmationフィールドのエラーを表示 -->
             @error('password_confirmation')
                 <div class="form__error">{{ $message }}</div>
             @enderror
