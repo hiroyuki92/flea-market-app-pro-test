@@ -44,7 +44,7 @@
             <button type="button" class="picture-select-btn" onclick="document.getElementById('profile-image').click();">画像を選択する</button>
             
             @error('profile_image')
-                <div class="error">{{ $message }}</div>
+                <div class="error-message">{{ $message }}</div>
             @enderror
         </div>
 

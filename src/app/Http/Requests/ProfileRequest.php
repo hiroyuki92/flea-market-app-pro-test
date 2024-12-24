@@ -24,11 +24,11 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'profile_image' => 'nullable|image|mimes:jpeg,png|max:2048', // 画像は必須、jpeg, pngの形式で最大2MB
-            'name' => 'required|string|max:255', // ユーザー名は必須、最大255文字
-            'postal_code' => 'required|regex:/^\d{3}-\d{4}$/', // 郵便番号は必須、ハイフンを含む8文字の形式
-            'address_line' => 'required|string|max:255', // 住所は必須、最大255文字
-            'building' => 'required|string|max:255', // 建物名は必須、最大255文字
+            'profile_image' => 'nullable|image|mimes:jpeg,png|max:2048',
+            'name' => 'required|string|max:255',
+            'postal_code' => 'required|regex:/^\d{3}-\d{4}$/',
+            'address_line' => 'required|string|max:255',
+            'building' => 'required|string|max:255',
         ];
     }
     /**
@@ -39,7 +39,6 @@ class ProfileRequest extends FormRequest
     public function messages()
     {
         return [
-            'profile_image.required' => 'プロフィール画像は必須です。',
             'profile_image.image' => '有効な画像ファイルを選択してください。',
             'profile_image.mimes' => '画像はjpeg, png形式で選択してください。',
             'profile_image.max' => '画像のサイズは2MB以下にしてください。',
