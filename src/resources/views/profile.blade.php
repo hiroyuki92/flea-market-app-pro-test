@@ -56,7 +56,7 @@
         @foreach ($purchases as $purchase)
             <div class="item-card purchased" style="display: none;">
                 <div class="item-image">
-                    <img class="item-image-picture"  src="{{ asset('storage/' . $purchase->item->image_url) }}" alt="{{ $purchase->item->name }}">
+                    <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $purchase->item->image_url) }}" alt="{{ $purchase->item->name }}">
                 </div>
                 <div class="item-name">{{ $purchase->item->name }}</div>
             </div>
