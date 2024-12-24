@@ -81,7 +81,10 @@ erDiagram
         varchar(255) name 
         varchar(255) email UK
         varchar(255) password 
-        varchar(255) profile_image 
+        varchar(255) profile_image
+	varchar(10) postal_code 
+        varchar(255) address_line 
+        varchar(255) building
         datetime created_at 
         datetime updated_at
 　　　　　boolean first_login  
@@ -89,11 +92,7 @@ erDiagram
 
     ITEMS {
         bigint id PK 
-        bigint category_id FK
         bigint user_id FK
-        bigint address_id FK 
-	bigint favorites_id FK 
-	bigint comments_id FK 
         VARCHAR(255) name 
         VARCHAR(255) brand 
         decimal price 
@@ -101,7 +100,8 @@ erDiagram
         VARCHAR(255) image_url
 	int condition 
         datetime created_at 
-        datetime updated_at 
+        datetime updated_at
+	boolean sold_out 
     }
     
     CATEGORIES {
@@ -111,24 +111,24 @@ erDiagram
         datetime updated_at 
  　　}
 
+    CATEGORY_ITEM {
+        bigint id PK
+	bigint item_id FK
+	bigint category_id FK 
+        datetime created_at 
+        datetime updated_at 
+ 　　}
+
     PURCHASES{
         bigint id PK
         bigint user_id FK
         bigint item_id FK
-        bigint address_id FK
+        varchar(10) shipping_postal_code 
+        varchar(255) shipping_address_line 
+        varchar(255) shipping_building
         int　payment_method　
         datetime created_at 
         datetime updated_at
-    }
-
-    ADDRESSES {
-        bigint id PK 
-        bigint user_id FK
-        varchar(10) postal_code 
-        varchar(255) address_line 
-        varchar(255) building
-        datetime created_at 
-        datetime updated_at 
     }
 
     COMMENTS {
@@ -149,18 +149,15 @@ erDiagram
     }
 
     %% リレーションシップの定義
-    USERS ||--o{ ADDRESSES : ""
     USERS ||--o{ PURCHASES : ""
     USERS ||--o{ ITEMS : ""
     USERS ||--o{ COMMENTS : ""
     USERS ||--o{ FAVORITES : ""
-    CATEGORIES ||--o{ ITEMS : ""
+    CATEGORIES ||--o{ CATEGORY_ITEM : ""
+    ITEMS ||--o{ CATEGORY_ITEM : ""
     ITEMS ||--o{ COMMENTS : ""
     ITEMS ||--o{ FAVORITES : ""
-    ITEMS ||--o{ USERS : ""
-    ITEMS ||--o{ PURCHASES : ""
-    ADDRESSES ||--o{ ITEMS : ""
-    ADDRESSES ||--o{ PURCHASES : ""
+    ITEMS ||--o| PURCHASES : ""
 
 ```
 
