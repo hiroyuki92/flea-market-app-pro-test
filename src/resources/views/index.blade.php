@@ -47,13 +47,15 @@
 @section('content')
 <div class="item-list">
     <div class="item-list__heading">
-        <div class="tab active" onclick="showProducts('recommended')">おすすめ</div>
-        <div class="tab" onclick="showProducts('mylist')">マイリスト</div>
+        <a href="/?tab=recommended" class="tab {{ request()->query('tab', 'recommended') === 'recommended' ? 'active' : '' }}" 
+           onclick="showProducts('recommended', event)">おすすめ</a>
+        <a href="/?tab=mylist" class="tab {{ request()->query('tab') === 'mylist' ? 'active' : '' }}"
+           onclick="showProducts('mylist', event)">マイリスト</a>
     </div>
     <div class="item-grid">
         <!-- おすすめ商品の表示 -->
         @foreach ($items as $item)
-        <div class="item-card recommended">
+        <div class="item-card recommended" style="{{ request()->query('tab') === 'mylist' ? 'display:none;' : '' }}">
             <div class="item-image">
                 <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
                     <img class="item-image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
@@ -69,10 +71,10 @@
         @endforeach
         <!--マイリスト商品（いいねした商品） -->
         @foreach ($myListItems as $item)
-        <div class="item-card mylist" style="display:none;">
+        <div class="item-card mylist" style="{{ request()->query('tab') !== 'mylist' ? 'display:none;' : '' }}">
             <div class="item-image">
                 <a href="{{ route('item.show', ['item_id' => $item->id]) }}">
-                <img class="item-image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
+                    <img class="item-image-picture" src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
                 </a>
             </div>
             <div class="item-name">
@@ -82,42 +84,45 @@
             <div class="sold-out-label">Sold</div>
             @endif
         </div>
+        @endforeach
     </div>
-    @endforeach
-    <script>
-        function showProducts(type) {
-            const recommendedItems = document.querySelectorAll('.item-card.recommended');
-            const mylistItems = document.querySelectorAll('.item-card.mylist');
-            const tabs = document.querySelectorAll('.tab');
-
-            // タブのアクティブ状態を更新
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            if (type === 'recommended') {
-                tabs[0].classList.add('active');
-            } else {
-                tabs[1].classList.add('active');
-            }
-
-            // 商品の表示/非表示を切り替え
-            recommendedItems.forEach(item => {
-                item.style.display = type === 'recommended' ? 'block' : 'none';
-            });
-            mylistItems.forEach(item => {
-                item.style.display = type === 'mylist' ? 'block' : 'none';
-            });
-        }
-    </script>
-    <script>
-        document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // ページリロードを防ぐ
-            document.getElementById('searchForm').submit();  // フォーム送信
-        }
-    });
-    </script>
-
 </div>
 
-@endsection('content')
+<script>
+    function showProducts(type, event) {
+        event.preventDefault(); // デフォルトのリンク遷移を防ぐ
+        
+        const recommendedItems = document.querySelectorAll('.item-card.recommended');
+        const mylistItems = document.querySelectorAll('.item-card.mylist');
+        const tabs = document.querySelectorAll('.tab');
+
+        // URLを更新
+        const newUrl = `/?tab=${type}`;
+        window.history.pushState({}, '', newUrl);
+
+        // タブのアクティブ状態を更新
+        tabs.forEach(tab => {
+            tab.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        // 商品の表示/非表示を切り替え
+        recommendedItems.forEach(item => {
+            item.style.display = type === 'recommended' ? 'block' : 'none';
+        });
+        mylistItems.forEach(item => {
+            item.style.display = type === 'mylist' ? 'block' : 'none';
+        });
+    }
+</script>
+
+<script>
+    document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            document.getElementById('searchForm').submit();
+        }
+    });
+</script>
+
+@endsection

@@ -19,11 +19,14 @@ public function index(Request $request)
         ->where('user_id', '!=', Auth::id())  // 自分が出品した商品を除外
         ->get();
 
-    // ログインしているユーザーがいいねした商品（マイリスト）を取得
+    // マイリスト（いいねした商品）の取得
+    $myListItems = collect(); // デフォルトは空のコレクション
     if (Auth::check()) {
-        $myListItems = Auth::user()->favorites()->get();
-    } else {
-        $myListItems = collect(); // ログインしていない場合は空のコレクション
+        $myListItems = Auth::user()->favorites()
+            ->when($keyword, function ($query) use ($keyword) {
+                $query->where('name', 'LIKE', '%' . $keyword . '%');
+            })
+            ->get();
     }
 
     return view('index', compact('items', 'myListItems',  'keyword'));
