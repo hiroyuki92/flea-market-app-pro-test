@@ -3,8 +3,9 @@
 ## 環境構築
 **Dockerビルド**
 1. `git clone git@github.com:hiroyuki92/flea-market-app.git`
-2. DockerDesktopアプリを立ち上げる
-3. `docker-compose up -d --build`
+2. `cd flea-market-app`     クローンしたディレクトリに移動する
+3. DockerDesktopアプリを立ち上げる
+4. `docker-compose up -d --build`
 
 **Laravel環境構築**
 1. `docker-compose exec php bash`
@@ -33,6 +34,20 @@ php artisan migrate
 ``` bash
 php artisan db:seed
 ```
+
+8. ストレージリンクの作成
+``` bash
+php artisan storage:link
+```
+
+9. テストの実行
+``` bash
+php artisan test
+```
+
+### 特記事項
+シーディングで作成したuserデータのパスワードは全て「password」と設定しています。
+
 ### Stripe決済機能の設定
 1. Stripeアカウントの準備
    - [Stripe Dashboard](https://dashboard.stripe.com/register)でアカウントを作成
@@ -42,28 +57,14 @@ php artisan db:seed
      - 公開可能キー（pk_test_...）
 
 2. テスト環境用の環境変数設定
-   - `.env.testing`ファイルに以下を追加：
+   - `.env`と`.env.testing`ファイルに以下を追加：
    ```env
    STRIPE_SECRET=sk_test_あなたのシークレットキー
    STRIPE_KEY=pk_test_あなたの公開可能キー
    ```
 
-3. 動作確認
-```bash
-php artisan test --filter=StripeTest
-```
-
-### 注意事項
+### Stripe決済機能の設定の注意事項
 - シークレットキーは絶対に公開リポジトリにコミットしないでください
-
-### トラブルシューティング
-
-1. Stripeの`Expired API Key provided`エラーが出る場合
-   - Stripeダッシュボードで新しいAPIキーを生成してください
-   
-2. Stripeの`Authentication error`が出る場合
-   - シークレットキーが正しく設定されているか確認してください
-   - テストモードのキーを使用していることを確認してください
 
 
 ## 使用技術(実行環境)
