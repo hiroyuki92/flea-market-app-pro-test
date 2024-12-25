@@ -33,6 +33,7 @@ class UserFactory extends Factory
             'postal_code' => $this->faker->numerify('###-####'),
             'address_line' => $this->faker->address(),
             'building' => $this->faker->secondaryAddress(),
+            'role' => 'user',
         ];
     }
 
@@ -46,6 +47,38 @@ class UserFactory extends Factory
         return $this->state(function (array $attributes) {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    /**
+     * Define an admin state.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function admin()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => 'admin', // 管理者ユーザー
+                'email' => 'admin@example.com',
+                'name' => '管理者ユーザー',
+            ];
+        });
+    }
+
+    /**
+     * Define a regular user state.
+     *
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function regularUser()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'role' => 'user', // 一般ユーザー
+                'email' => 'user@example.com',
+                'name' => '一般ユーザー',
             ];
         });
     }
