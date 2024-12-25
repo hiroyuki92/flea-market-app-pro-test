@@ -50,7 +50,7 @@ class UserProfileTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $response = $this->get(route('profile.show'));
+        $response = $this->get(route('profile.show', ['tab' => 'sell']));
         $response->assertStatus(200);
 
         // 出品商品数の確認
@@ -60,14 +60,6 @@ class UserProfileTest extends TestCase
             $displayedItemsCount,
         );
 
-        $purchasedItemsCount = $this->user->purchases()->count();
-        $this->assertEquals(2, $purchasedItemsCount);
-
-        $response->assertSee('<img', false)
-                ->assertSee($this->user->profile_image, false);
-
-        $response->assertSee('テストユーザー');
-
         $response->assertSee('出品した商品');
         $userItems = Item::where('user_id', $this->user->id)->get();
         foreach ($userItems as $item) {
@@ -76,12 +68,22 @@ class UserProfileTest extends TestCase
             $response->assertSee('<img', false);
         }
 
+        // 購入商品の確認
+        $response = $this->get(route('profile.show', ['tab' => 'buy']));
+        $response->assertStatus(200);
+        $purchasedItemsCount = $this->user->purchases()->count();
+        $this->assertEquals(2, $purchasedItemsCount);
+
         $response->assertSee('購入した商品');
         foreach ($otherUserItems as $item) {
             $response->assertSee($item->name);
-
             $response->assertSee($item->image_url, false);
             $response->assertSee('<img', false);
         }
+
+        // プロフィール情報の確認
+        $response->assertSee('<img', false)
+            ->assertSee($this->user->profile_image, false);
+        $response->assertSee('テストユーザー');
     }
 }

@@ -71,18 +71,21 @@ class PurchaseTest extends TestCase
         $this->actingAs($this->user);
         $result = $this->purchaseItem();
         $item = $result['item'];
-        $response = $this->get(route('profile.show'));
+        $response = $this->get(route('profile.show', ['tab' => 'buy']));
         $response->assertStatus(200);
-        // 購入商品一覧セクションに商品が表示されているか確認
-        $response->assertSee('class="item-card purchased"', false)
-            ->assertSee('style="display: none;"', false)
+
+        $response
+            ->assertSee('class="item-card purchased"', false)
             ->assertSee('class="item-image"', false)
             ->assertSee('class="item-image-picture"', false)
             ->assertSee($item->name);
 
-        $response->assertViewHas('purchases', function($purchases) use ($item) {
-        return $purchases->contains('item_id', $item->id);
+        $response->assertViewHas('purchases', function ($purchases) use ($item) {
+        return $purchases->contains(function ($purchase) use ($item) {
+            return $purchase->item_id === $item->id;
+            });
         });
     }
 }
+
 
