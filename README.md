@@ -25,21 +25,29 @@ DB_PASSWORD=laravel_pass
 php artisan key:generate
 ```
 
-6. マイグレーションの実行
+6. マイグレーションとシーディングの実行
 ``` bash
-php artisan migrate
-```
+php artisan migrate --seed
+```  
+　実行すると以下の初期データが作成されます  
+  - 管理者ユーザー  
+	メールアドレス: admin@example.com  
+	パスワード: password  
+	権限: 管理者  
+  - 一般ユーザー  
+	メールアドレス: user@example.com  
+	パスワード: password  
+	権限: 一般ユーザー  
+  - ランダムな一般ユーザー  
+	ダミーユーザーが10人生成されます。  
+	メールアドレスや名前はランダムに設定されています。  
+	パスワード: password  
 
-7. シーディングの実行
-``` bash
-php artisan db:seed
-```
-
-8. ストレージリンクの作成
+7. ストレージリンクの作成
 ``` bash
 php artisan storage:link
 ```
-9. Stripe決済機能の設定 
+8. Stripe決済機能の設定 
  
  	⚫︎Stripeアカウントの準備
   	 - [Stripe Dashboard](https://dashboard.stripe.com/register)でアカウントを作成
@@ -63,10 +71,6 @@ php artisan storage:link
 php artisan test
 ```
 
-### 特記事項
-シーディングで作成したuserデータのパスワードは全て「password」と設定しています。
-
-
 ## 使用技術(実行環境)
 - PHP8.3.0
 - Laravel8.83.27
@@ -86,6 +90,7 @@ erDiagram
 	varchar(10) postal_code 
         varchar(255) address_line 
         varchar(255) building
+	varchar(255) role
         datetime created_at 
         datetime updated_at
 　　　　　boolean first_login  
