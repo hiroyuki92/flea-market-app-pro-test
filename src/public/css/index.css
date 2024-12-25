@@ -13,12 +13,10 @@
     margin-right: 10%;
     font-size: 20px;
     color: black;
-    /* デフォルトの文字色 */
 }
 
 .tab.active {
     color: red;
-    /* アクティブ時の文字色を赤に */
 }
 
 .item-grid {

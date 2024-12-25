@@ -99,7 +99,6 @@ class UserRegistrationTest extends TestCase
 
         $response = $this->post('/register', $userData);
 
-        // データベースにユーザーが登録されたことを確認
         $this->assertDatabaseHas('users', [
             'name' => $userData['name'],
             'email' => $userData['email']

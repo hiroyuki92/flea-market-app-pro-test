@@ -51,14 +51,12 @@ class ListingProductRegistrationTest extends TestCase
 
     $response->assertRedirect();
 
-    // ストレージ内の保存パスを動的に取得
     $files = Storage::disk('public')->files('item_images');
     $this->assertNotEmpty($files, '画像が保存されていません');
 
     $storedFile = $files[0];
     $fileName = basename($storedFile);
 
-    // データベースの確認 (items テーブル)
     $this->assertDatabaseHas('items', [
         'name' => 'テスト商品',
         'brand' => 'ブランド',
@@ -69,7 +67,6 @@ class ListingProductRegistrationTest extends TestCase
         'user_id' => $this->user->id,
     ]);
 
-    // データベースの確認 (category_item テーブル)
     $savedItem = Item::latest()->first();
 
     $this->assertDatabaseHas('category_item', [

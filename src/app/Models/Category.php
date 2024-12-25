@@ -9,9 +9,8 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name'];  // カテゴリ名をfillableに設定
+    protected $fillable = ['name'];
 
-    // 商品とのリレーション
     public function items()
     {
         return $this->belongsToMany(Item::class, 'category_item');

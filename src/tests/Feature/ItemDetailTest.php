@@ -83,12 +83,10 @@ class ItemDetailTest extends TestCase
         $response->assertStatus(200);
         $response->assertViewHas('item');
     
-        // 各カテゴリの表示を確認
         foreach ($item->categories as $category) {
             $response->assertSee($category->name);
         }
 
-        // カテゴリの数が正しいことを確認
         $expectedCategoryCount = $item->categories->count();
         $this->assertEquals($expectedCategoryCount, $item->categories()->count(),
         'Category count mismatch');

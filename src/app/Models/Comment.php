@@ -8,15 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Comment extends Model
 {
     use HasFactory;
-    protected $fillable = ['user_id', 'item_id', 'content'];  // コメントの内容
+    protected $fillable = ['user_id', 'item_id', 'content'];
 
-    // ユーザーとのリレーション
     public function user()
     {
         return $this->belongsTo(User::class);
     }
-
-    // 商品とのリレーション
+    
     public function item()
     {
         return $this->belongsTo(Item::class);

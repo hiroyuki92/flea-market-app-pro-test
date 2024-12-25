@@ -24,9 +24,9 @@ class ProfileController extends Controller
      */
     public function edit()
     {
-        $user = Auth::user();  // ログインしているユーザーを取得
+        $user = Auth::user();
 
-        return view('edit', compact('user'));  // 編集フォームを表示
+        return view('edit', compact('user'));
     }
 
     /**
@@ -37,7 +37,7 @@ class ProfileController extends Controller
      */
     public function update(ProfileRequest $request)
     {
-        $user = Auth::user();  // ログインしているユーザーを取得
+        $user = Auth::user();
 
         // 画像がアップロードされている場合
         if ($request->hasFile('profile_image')) {
@@ -50,7 +50,7 @@ class ProfileController extends Controller
             $imagePath = $request->file('profile_image')->store('profile_images', 'public');
 
             // プロフィール画像のパスを保存
-            $user->profile_image = basename($imagePath);  // ストレージに保存されたファイル名を保存
+            $user->profile_image = basename($imagePath);
         }
 
         $user->name = $request->name;

@@ -87,11 +87,8 @@
     padding-left: 30px;
     font-size: 20px;
     display: flex;
-    /* アイコンとテキストを横並びに */
     flex-direction: column;
-    /* アイコンを縦に並べる */
     align-items: center;
-    /* 水平中央に配置 */
 }
 
 .purchase-button-group {

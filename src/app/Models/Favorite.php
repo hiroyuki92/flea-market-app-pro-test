@@ -11,13 +11,11 @@ class Favorite extends Model
 
     protected $fillable = ['user_id', 'item_id'];
 
-    // ユーザーとのリレーション
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // 商品とのリレーション
     public function item()
     {
         return $this->belongsTo(Item::class);

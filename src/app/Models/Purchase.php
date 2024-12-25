@@ -16,13 +16,11 @@ class Purchase extends Model
         'shipping_building',
         'payment_method'];
 
-    // ユーザーとのリレーション
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    // 商品とのリレーション
     public function item()
     {
         return $this->belongsTo(Item::class);
