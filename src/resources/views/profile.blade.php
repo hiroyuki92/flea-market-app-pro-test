@@ -34,8 +34,8 @@
         </div>
     </div>
     <div class="item-list__heading">
-        <div class="tab active" onclick="showProducts('listed')">出品した商品</div>
-        <div class="tab" onclick="showProducts('purchased')">購入した商品</div>
+        <a href="{{ url('mypage?tab=sell') }}" class="tab {{ request('tab') === 'sell' ? 'active' : '' }}">出品した商品</a>
+    <a href="{{ url('mypage?tab=buy') }}" class="tab {{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
     </div>
     <div class="item-grid">
         <!-- 出品した商品 -->
@@ -54,7 +54,7 @@
         @endforeach
         <!-- 購入した商品 -->
         @foreach ($purchases as $purchase)
-            <div class="item-card purchased" style="display: none;">
+            <div class="item-card purchased">
                 <div class="item-image">
                     <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $purchase->item->image_url) }}" alt="{{ $purchase->item->name }}">
                 </div>
@@ -63,31 +63,6 @@
         @endforeach
         
     </div>
-    <script>
-        function showProducts(type) {
-            const listedItems = document.querySelectorAll('.item-card.listed');
-            const purchasedItems = document.querySelectorAll('.item-card.purchased');
-            const tabs = document.querySelectorAll('.tab');
-
-            // タブのアクティブ状態を更新
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            if (type === 'listed') {
-                tabs[0].classList.add('active');
-            } else {
-                tabs[1].classList.add('active');
-            }
-
-            // 商品の表示/非表示を切り替え
-            listedItems.forEach(item => {
-                item.style.display = type === 'listed' ? 'block' : 'none';
-            });
-            purchasedItems.forEach(item => {
-                item.style.display = type === 'purchased' ? 'block' : 'none';
-            });
-        }
-    </script>
     <script>
         document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {
         if (event.key === 'Enter') {

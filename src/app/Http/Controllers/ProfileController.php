@@ -9,12 +9,16 @@ use Illuminate\Support\Facades\Storage;
 
 class ProfileController extends Controller
 {
-    public function show()
+    public function show(Request $request)
     {
-        $user = auth()->user();
-        $purchases = $user->purchases;
-        $items = $user->items;
-        return view('profile', compact('purchases', 'items'));
+        $tab = $request->input('tab', 'sell');
+        $user = Auth::user();
+
+        // データの取得
+        $items = $tab === 'sell' ? $user->items : [];
+        $purchases = $tab === 'buy' ? $user->purchases()->with('item')->get() : [];
+
+        return view('profile', compact('purchases', 'items', 'tab'));
     }
 
     /**
