@@ -39,6 +39,24 @@ php artisan db:seed
 ``` bash
 php artisan storage:link
 ```
+9. Stripe決済機能の設定 
+ 
+ 	⚫︎Stripeアカウントの準備
+  	 - [Stripe Dashboard](https://dashboard.stripe.com/register)でアカウントを作成
+  	 - テストモードになっていることを確認（右上のスイッチで切り替え可能）
+  	 - Developers > API keysセクションからAPIキーを取得:
+  	   - シークレットキー（sk_test_...）
+   	   - 公開可能キー（pk_test_...）
+
+ 	⚫︎テスト環境用の環境変数設定
+   	- `.env`と`.env.testing`ファイルに以下を追加：
+ 	  ```env
+   		STRIPE_SECRET=sk_test_あなたのシークレットキー
+   		STRIPE_KEY=pk_test_あなたの公開可能キー
+   		```
+
+	#### Stripe決済機能の設定の注意事項
+	- シークレットキーは絶対に公開リポジトリにコミットしないでください
 
 9. テストの実行
 ``` bash
@@ -47,24 +65,6 @@ php artisan test
 
 ### 特記事項
 シーディングで作成したuserデータのパスワードは全て「password」と設定しています。
-
-### Stripe決済機能の設定
-1. Stripeアカウントの準備
-   - [Stripe Dashboard](https://dashboard.stripe.com/register)でアカウントを作成
-   - テストモードになっていることを確認（右上のスイッチで切り替え可能）
-   - Developers > API keysセクションからAPIキーを取得:
-     - シークレットキー（sk_test_...）
-     - 公開可能キー（pk_test_...）
-
-2. テスト環境用の環境変数設定
-   - `.env`と`.env.testing`ファイルに以下を追加：
-   ```env
-   STRIPE_SECRET=sk_test_あなたのシークレットキー
-   STRIPE_KEY=pk_test_あなたの公開可能キー
-   ```
-
-### Stripe決済機能の設定の注意事項
-- シークレットキーは絶対に公開リポジトリにコミットしないでください
 
 
 ## 使用技術(実行環境)
