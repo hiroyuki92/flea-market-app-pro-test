@@ -19,6 +19,19 @@ class ItemsTableSeeder extends Seeder
 {
     $userIds = User::pluck('id')->toArray();
     $faker = app(Faker::class);
+    if (!Storage::disk('public')->exists('item_images')) {
+        Storage::disk('public')->makeDirectory('item_images');
+    }
+
+    // シーダー用の画像をコピー
+    $seederImages = glob(database_path('seeders/images/*'));
+    foreach ($seederImages as $image) {
+        $fileName = mb_substr($image, strrpos($image, '/') + 1);
+        Storage::disk('public')->put(
+            "item_images/{$fileName}", 
+            file_get_contents($image)
+        );
+    }
     $items = [
         [
             'name' => '腕時計',
