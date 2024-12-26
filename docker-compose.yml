@@ -32,6 +32,7 @@ services:
             - app-network
 
     mysql:
+        platform: linux/amd64
         image: mysql:8.0.26
         environment:
             MYSQL_ROOT_PASSWORD: root
@@ -47,6 +48,7 @@ services:
             - app-network
 
     phpmyadmin:
+        platform: linux/amd64
         image: phpmyadmin/phpmyadmin
         environment:
             - PMA_ARBITRARY=1
@@ -61,6 +63,7 @@ services:
             - app-network
 
     mailhog:
+        platform: linux/amd64
         image: mailhog/mailhog
         ports:
             - "1025:1025"

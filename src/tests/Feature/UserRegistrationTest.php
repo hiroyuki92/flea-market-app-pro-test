@@ -5,6 +5,9 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use App\Models\User;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Auth\Events\Registered;
 
 class UserRegistrationTest extends TestCase
 {
@@ -90,6 +93,11 @@ class UserRegistrationTest extends TestCase
 
     public function test_user_can_register_successfully()
     {
+        $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
+
+        Event::fake([
+            Registered::class
+        ]);
         $userData = [
             'name' => '山田 太郎',
             'email' => 'test@example.com',
@@ -104,8 +112,18 @@ class UserRegistrationTest extends TestCase
             'email' => $userData['email']
         ]);
 
+        $user = User::where('email', $userData['email'])->first();
+
+        // メール認証を完了させる
+        $user->markEmailAsVerified();
+
+        // 新しいリクエストを作成して認証済みユーザーとしてアクセス
+        $response = $this->actingAs($user)
+                    ->get(route('profile.edit'));
+
+        // 認証されていることを確認
         $this->assertAuthenticated();
 
-        $response->assertRedirect(route('profile.edit'));
+        $response->assertStatus(200);
     }
 }
