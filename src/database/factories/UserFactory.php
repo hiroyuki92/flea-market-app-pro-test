@@ -31,7 +31,7 @@ class UserFactory extends Factory
             'remember_token' => Str::random(10),
             'profile_image' => 'default.jpg',
             'postal_code' => $this->faker->numerify('###-####'),
-            'address_line' => $this->faker->address(),
+            'address_line' => $this->faker->prefecture . $this->faker->city . $this->faker->streetAddress,
             'building' => $this->faker->secondaryAddress(),
             'role' => 'user',
         ];

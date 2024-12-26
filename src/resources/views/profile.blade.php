@@ -34,8 +34,8 @@
         </div>
     </div>
     <div class="item-list__heading">
-        <a href="{{ url('mypage?tab=sell') }}" class="tab {{ request('tab') === 'sell' ? 'active' : '' }}">出品した商品</a>
-    <a href="{{ url('mypage?tab=buy') }}" class="tab {{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
+        <a href="{{ url('mypage?tab=sell') }}" class="tab {{ request('tab') === 'sell' || is_null(request('tab')) ? 'active' : '' }}">出品した商品</a>
+        <a href="{{ url('mypage?tab=buy') }}" class="tab {{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
     </div>
     <div class="item-grid">
         <!-- 出品した商品 -->
