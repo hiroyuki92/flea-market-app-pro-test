@@ -10,7 +10,10 @@
 **Laravel環境構築**
 1. `docker-compose exec php bash`
 2. `composer install`
-3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。または、新しく.envファイルを作成
+3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。
+```bash
+cp .env.example .env
+```
 4. .envに以下の環境変数を追加
 ``` text
 DB_CONNECTION=mysql
@@ -66,7 +69,34 @@ php artisan storage:link
 	#### Stripe決済機能の設定の注意事項
 	- シークレットキーは絶対に公開リポジトリにコミットしないでください
 
-9. テストの実行
+9. メール認証機能の設定  
+    #### 機能概要
+	このアプリケーションには、ユーザー登録時にメールアドレスを確認するためのメール認証機能が実装されています。この機能により、不正なアカウント作成を防ぎ、アプリケーションのセキュリティを向上させます。
+
+    #### 開発環境でのメール確認方法
+	このプロジェクトでは、開発環境でのメール確認にMailHogを使用します。以下の手順でセットアップを行ってください。
+
+	1. MailHogをインストールします。
+   		- **macOSの場合**:
+     		```bash
+     		brew install mailhog
+     		```
+  	 	- **Linuxの場合**:
+     		公式リリースページからバイナリをダウンロードしてください。
+     		[https://github.com/mailhog/MailHog/releases](https://github.com/mailhog/MailHog/releases)
+   		- **Windowsの場合**:
+     		公式ページからバイナリをダウンロードして実行します。
+
+	2. MailHogを起動します。
+   		```bash
+   		mailhog
+
+	- **デフォルトポート**: `1025`
+	- **Web UI**: [http://localhost:8025](http://localhost:8025)  
+	送信されたメールはMailHogのWeb UI (http://localhost:8025) で確認できます。
+
+   
+11. テストの実行
 ``` bash
 php artisan test
 ```
@@ -77,6 +107,7 @@ php artisan test
 - MySQL8.0.26
 - nginx 1.21.1
 - Stripe決済システム
+- MailHog（開発環境でのメール送信テスト用）
 
 ## ER図
 ```mermaid
