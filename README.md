@@ -10,11 +10,15 @@
 **Laravel環境構築**
 1. `docker-compose exec php bash`
 2. `composer install`
-3. 「.env.example」ファイルを 「.env」ファイルに命名を変更。
+3. 「.env.example」ファイルをコピーして 「.env」ファイルに命名を変更。
 ```bash
 cp .env.example .env
 ```
-4. .envに以下の環境変数を追加
+4. 「.env.testing.example」ファイルをコピーして 「.env.testing」ファイルに命名を変更。
+```bash
+cp .env.testing.example .env.testing
+```
+5. .envに以下の環境変数を追加
 ``` text
 DB_CONNECTION=mysql
 DB_HOST=mysql
@@ -23,9 +27,10 @@ DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
-5. アプリケーションキーの作成
+5. 各環境のアプリケーションキーを生成
 ``` bash
-php artisan key:generate
+php artisan key:generate        # .env用
+php artisan key:generate --env=testing  # .env.testing用
 ```
 
 6. マイグレーションとシーディングの実行
