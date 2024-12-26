@@ -47,8 +47,12 @@
 @section('content')
 <div class="item-list">
     <div class="item-list__heading">
-        <a href="/?tab=recommended" class="tab {{ request()->query('tab', 'recommended') === 'recommended' ? 'active' : '' }}">おすすめ</a>
-        <a href="/?tab=mylist" class="tab {{ request()->query('tab') === 'mylist' ? 'active' : '' }}">マイリスト</a>
+        <a href="{{ url('/?tab=recommended&keyword=' . request('keyword')) }}" class="tab {{ request()->query('tab', 'recommended') === 'recommended' ? 'active' : '' }}">
+        おすすめ
+        </a>
+        <a href="{{ url('/?tab=mylist&keyword=' . request('keyword')) }}" class="tab {{ request()->query('tab') === 'mylist' ? 'active' : '' }}">
+        マイリスト
+        </a>
     </div>
     <div class="item-grid">
         <!-- おすすめ商品の表示 -->

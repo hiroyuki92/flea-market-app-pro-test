@@ -29,7 +29,8 @@ public function index(Request $request)
             ->get();
     }
 
-    return view('index', compact('items', 'myListItems',  'keyword'));
+    $queryParams = $request->only(['keyword']);
+    return view('index', compact('items', 'myListItems',  'keyword', 'queryParams'));
     }
 
 public function create()
