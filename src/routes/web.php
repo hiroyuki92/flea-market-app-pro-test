@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\VerificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,15 +25,46 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store'])->name('l
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 Route::get('/', [ItemController::class, 'index'])->name('index');
 Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show');
+Route::middleware(['auth'])->group(function () {
+    Route::get('/email/verify', [VerificationController::class, 'show'])
+        ->name('verification.notice');
+        
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+        ->middleware(['signed'])
+        ->name('verification.verify');
+        
+    Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
+        ->middleware(['throttle:6,1'])
+        ->name('verification.send');
+});
 
 Route::middleware('auth')->group(function () {
+    // メール認証関連
+    Route::get('/email/verify', [VerificationController::class, 'show'])
+        ->name('verification.notice');
+        
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+        ->middleware(['signed'])
+        ->name('verification.verify');
+        
+    Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
+        ->middleware(['throttle:6,1'])
+        ->name('verification.send');
+
+    // プロフィール関連
     Route::get('/mypage', [ProfileController::class, 'show'])->name('profile.show');
     Route::get('/mypage/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/mypage/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // 出品関連
     Route::get('/sell', [ItemController::class, 'create'])->name('create');
     Route::post('/sell', [ItemController::class, 'store'])->name('item.store');
+
+    // 商品詳細関連
     Route::post('/item/{item_id}/toggle-like', [ItemController::class, 'toggleLike'])->name('item.toggleLike');
     Route::post('/item/{item_id}/comment', [CommentController::class, 'store'])->name('comment.store');
+
+    // 購入関連
     Route::get('/purchase/{item_id}', [PurchaseController::class, 'show'])->name('purchase.index');
     Route::get('/purchase/address/{item_id}', [PurchaseController::class, 'edit'])->name('address.edit');
     Route::put('/purchase/address/{item_id}', [PurchaseController::class, 'update'])->name('address.update');

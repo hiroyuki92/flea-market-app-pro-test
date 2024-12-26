@@ -37,8 +37,16 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($validatedData['password']),
         ]);
 
-        auth()->login($user);
+        // メール送信: ユーザーにメール認証通知を送信
+    try {
+        $user->sendEmailVerificationNotification();
+    } catch (\Exception $e) {
+        \Log::error('Verification email could not be sent: ' . $e->getMessage());
+    }
 
-        return redirect()->route('profile.edit');
+    auth()->login($user);
+
+    return redirect()->route('verification.notice');
+        /* return redirect()->route('profile.edit'); */
     }
 }
