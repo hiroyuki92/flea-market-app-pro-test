@@ -1,5 +1,5 @@
 *.log
 *.tmp
 
-docker/mysql/data/
+docker/mysql/data/*
 src/.env.testing
