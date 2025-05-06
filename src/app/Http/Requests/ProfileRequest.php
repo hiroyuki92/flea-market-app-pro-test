@@ -31,6 +31,7 @@ class ProfileRequest extends FormRequest
             'building' => 'required|string|max:255',
         ];
     }
+
     /**
      * バリデーションエラーメッセージをカスタマイズする
      *

@@ -4,17 +4,16 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\ValidationException;
-use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
     /**
      * ユーザーをログインさせる
      *
-     * @param  \App\Http\Requests\LoginRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(LoginRequest $request)
@@ -40,6 +39,7 @@ class AuthenticatedSessionController extends Controller
             'email' => ['ログイン情報が登録されていません。'],
         ]);
     }
+
     /**
      * ユーザーをログアウトさせる
      */
@@ -56,6 +56,7 @@ class AuthenticatedSessionController extends Controller
     {
         $user = User::factory()->create();
         Auth::login($user);
+
         return redirect()->route('index');
     }
 }

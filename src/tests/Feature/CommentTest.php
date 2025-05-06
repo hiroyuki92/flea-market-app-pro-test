@@ -2,19 +2,17 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\Item;
-use App\Models\Category;
 use App\Models\User;
-use App\Models\Comment;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class CommentTest extends TestCase
 {
     use RefreshDatabase;
 
     private $user;
+
     private $items;
 
     protected function setUp(): void
@@ -25,7 +23,6 @@ class CommentTest extends TestCase
         $this->seed(\Database\Seeders\ItemsTableSeeder::class);
         $this->items = Item::all();
     }
-
 
     public function test_a_logged_in_user_can_post_a_comment()
     {
@@ -65,7 +62,7 @@ class CommentTest extends TestCase
         $this->actingAs($this->user);
         $item = $this->items->first();
         $response = $this->post(route('comment.store', $item->id), [
-            'comment' => ''
+            'comment' => '',
         ]);
         $response->assertRedirect();
         $response->assertSessionHasErrors(['comment']);
@@ -81,7 +78,7 @@ class CommentTest extends TestCase
         $item = $this->items->first();
         $longComment = str_repeat('a', 256);
         $response = $this->post(route('comment.store', $item->id), [
-            'comment' => $longComment
+            'comment' => $longComment,
         ]);
         $response->assertRedirect();
         $response->assertSessionHasErrors(['comment']);

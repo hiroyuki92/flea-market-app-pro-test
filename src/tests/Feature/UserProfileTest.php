@@ -2,19 +2,18 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\Item;
-use App\Models\Category;
-use App\Models\User;
 use App\Models\Purchase;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class UserProfileTest extends TestCase
 {
     use RefreshDatabase;
 
     private $user;
+
     private $otherUser;
 
     protected function setUp(): void
@@ -22,10 +21,10 @@ class UserProfileTest extends TestCase
         parent::setUp();
         $this->seed(\Database\Seeders\CategoriesTableSeeder::class);
         $this->user = User::factory()->create([
-            'name' => 'テストユーザー'
+            'name' => 'テストユーザー',
         ]);
         $this->otherUser = User::factory()->create([
-            'name' => '出品者ユーザー'
+            'name' => '出品者ユーザー',
         ]);
         $this->seed(\Database\Seeders\ItemsTableSeeder::class);
     }
@@ -33,7 +32,7 @@ class UserProfileTest extends TestCase
     public function test_can_get_user_with_all_related_data()
     {
         $seededItemsCount = Item::where('user_id', $this->user->id)->count();
-        
+
         $otherUserItems = Item::where('user_id', '!=', $this->user->id)
             ->take(2)
             ->get();

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Http\Requests\ProfileRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,7 +36,6 @@ class ProfileController extends Controller
     /**
      * ユーザーのプロフィールを更新
      *
-     * @param  \App\Http\Requests\ProfileRequest  $request
      * @return \Illuminate\Http\RedirectResponse
      */
     public function update(ProfileRequest $request)
@@ -47,7 +46,7 @@ class ProfileController extends Controller
         if ($request->hasFile('profile_image')) {
             // 古い画像を削除（もし存在すれば）
             if ($user->profile_image) {
-                Storage::delete('public/profile_images/' . $user->profile_image);
+                Storage::delete('public/profile_images/'.$user->profile_image);
             }
 
             // 新しい画像を保存

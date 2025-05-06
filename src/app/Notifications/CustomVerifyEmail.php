@@ -2,12 +2,11 @@
 
 namespace App\Notifications;
 
-
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Carbon;
-use Illuminate\Bus\Queueable;
+use Illuminate\Support\Facades\URL;
 
 class CustomVerifyEmail extends Notification
 {
@@ -45,8 +44,8 @@ class CustomVerifyEmail extends Notification
         $verificationUrl = $this->verificationUrl($notifiable);
 
         return (new MailMessage)
-        ->subject('メールアドレスの確認')
-        ->view('auth.verify-email', ['url' => $verificationUrl]);
+            ->subject('メールアドレスの確認')
+            ->view('auth.verify-email', ['url' => $verificationUrl]);
     }
 
     protected function verificationUrl($notifiable)

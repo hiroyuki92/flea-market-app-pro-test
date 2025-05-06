@@ -2,23 +2,25 @@
 
 namespace Tests\Feature;
 
-use Tests\TestCase;
-use App\Models\User;
-use App\Models\Item;
 use App\Models\Favorite;
-use App\Models\Category;
+use App\Models\Item;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class GetMyListTest extends TestCase
 {
     use RefreshDatabase;
 
     private $user;
+
     private $items;
+
     private $likedItems;
+
     private $notLikedItems;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->seed(\Database\Seeders\CategoriesTableSeeder::class);
@@ -32,7 +34,7 @@ class GetMyListTest extends TestCase
         foreach ($this->likedItems as $item) {
             Favorite::create([
                 'user_id' => $this->user->id,
-                'item_id' => $item->id
+                'item_id' => $item->id,
             ]);
         }
     }
@@ -72,18 +74,17 @@ class GetMyListTest extends TestCase
 
         $response->assertDontSee($ownItem->name);
         $response->assertViewHas('items', function ($items) use ($ownItem) {
-            return !$items->contains('id', $ownItem->id);
+            return ! $items->contains('id', $ownItem->id);
         });
 
     }
 
-    public function
-    test_guest_user_sees_no_items_in_mylist()
+    public function test_guest_user_sees_no_items_in_mylist()
     {
         $response = $this->get(route('index'));
         $response->assertStatus(200);
         foreach ($this->likedItems as $item) {
-        $response->assertDontSee('item-card mylist', false);
-    }
+            $response->assertDontSee('item-card mylist', false);
+        }
     }
 }

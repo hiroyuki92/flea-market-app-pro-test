@@ -1,13 +1,13 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\VerificationController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Auth\VerificationController;
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,11 +28,11 @@ Route::get('/item/{item_id}', [ItemController::class, 'show'])->name('item.show'
 Route::middleware(['auth'])->group(function () {
     Route::get('/email/verify', [VerificationController::class, 'show'])
         ->name('verification.notice');
-        
+
     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
         ->middleware(['signed'])
         ->name('verification.verify');
-        
+
     Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
         ->middleware(['throttle:6,1'])
         ->name('verification.send');
@@ -42,11 +42,11 @@ Route::middleware('auth')->group(function () {
     // メール認証関連
     Route::get('/email/verify', [VerificationController::class, 'show'])
         ->name('verification.notice');
-        
+
     Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
         ->middleware(['signed'])
         ->name('verification.verify');
-        
+
     Route::post('/email/verification-notification', [VerificationController::class, 'resend'])
         ->middleware(['throttle:6,1'])
         ->name('verification.send');
@@ -71,13 +71,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/purchase/{item_id}', [PurchaseController::class, 'store'])->name('purchase.store');
     // 購入成功時
     Route::get('/purchase/success/{item_id}', function ($item_id) {
-    // 購入処理が成功した場合の処理
-    return "購入が成功しました！ 商品ID: " . $item_id;
+        // 購入処理が成功した場合の処理
+        return '購入が成功しました！ 商品ID: '.$item_id;
     })->name('purchase.success');
 
     // 購入キャンセル時
     Route::get('/purchase/cancel/{item_id}', function ($item_id) {
-    // 購入がキャンセルされた場合の処理
-    return "購入がキャンセルされました。 商品ID: " . $item_id;
+        // 購入がキャンセルされた場合の処理
+        return '購入がキャンセルされました。 商品ID: '.$item_id;
     })->name('purchase.cancel');
 });

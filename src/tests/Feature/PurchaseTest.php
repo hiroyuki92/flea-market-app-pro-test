@@ -2,20 +2,19 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\Item;
-use App\Models\Category;
 use App\Models\User;
-use App\Models\Purchase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class PurchaseTest extends TestCase
 {
     use RefreshDatabase;
 
     private $user;
+
     private $anotherUser;
+
     private $validPurchaseData = [
         'shipping_postal_code' => '123-4567',
         'shipping_address_line' => '東京都渋谷区',
@@ -36,15 +35,15 @@ class PurchaseTest extends TestCase
     {
         $item = Item::where('user_id', '!=', $this->user->id)->first();
         $this->assertEquals(0, $item->sold_out);
-        
+
         $response = $this->post(route('purchase.store', $item->id), $this->validPurchaseData);
         $response->assertStatus(302);
-        
+
         $this->assertDatabaseHas('purchases', [
             'user_id' => $this->user->id,
             'item_id' => $item->id,
         ]);
-        
+
         return ['response' => $response, 'item' => $item];
     }
 
@@ -52,7 +51,7 @@ class PurchaseTest extends TestCase
     {
         $this->actingAs($this->user);
         $result = $this->purchaseItem();
-        
+
         $this->assertEquals(1, $result['item']->fresh()->sold_out);
     }
 
@@ -81,11 +80,9 @@ class PurchaseTest extends TestCase
             ->assertSee($item->name);
 
         $response->assertViewHas('purchases', function ($purchases) use ($item) {
-        return $purchases->contains(function ($purchase) use ($item) {
-            return $purchase->item_id === $item->id;
+            return $purchases->contains(function ($purchase) use ($item) {
+                return $purchase->item_id === $item->id;
             });
         });
     }
 }
-
-

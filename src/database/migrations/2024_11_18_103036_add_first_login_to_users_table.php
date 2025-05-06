@@ -14,8 +14,8 @@ class AddFirstLoginToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-        $table->boolean('first_login')->default(true);  // 新規ユーザーかどうかを判定するフラグ
-    });
+            $table->boolean('first_login')->default(true);  // 新規ユーザーかどうかを判定するフラグ
+        });
     }
 
     /**
@@ -26,7 +26,7 @@ class AddFirstLoginToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-        $table->dropColumn('first_login');
-    });
+            $table->dropColumn('first_login');
+        });
     }
 }

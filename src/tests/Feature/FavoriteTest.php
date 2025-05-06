@@ -2,20 +2,20 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use App\Models\Item;
-use App\Models\Category;
-use App\Models\User;
 use App\Models\Favorite;
+use App\Models\Item;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class FavoriteTest extends TestCase
 {
     use RefreshDatabase;
 
     private $user;
+
     private $items;
+
     private $likedItems;
 
     protected function setUp(): void
@@ -48,7 +48,7 @@ class FavoriteTest extends TestCase
         $item = $this->items->first();
         Favorite::create([
             'user_id' => $this->user->id,
-            'item_id' => $item->id
+            'item_id' => $item->id,
         ]);
         $response = $this->get(route('item.show', $item->id));
         $response->assertSee('fas fa-star liked', false);
@@ -62,7 +62,7 @@ class FavoriteTest extends TestCase
 
         Favorite::create([
             'user_id' => $this->user->id,
-            'item_id' => $item->id
+            'item_id' => $item->id,
         ]);
 
         $initialCount = $item->favorites()->count();

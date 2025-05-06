@@ -62,4 +62,3 @@ class ExhibitionRequest extends FormRequest
         ];
     }
 }
-

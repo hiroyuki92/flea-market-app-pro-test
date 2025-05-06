@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -17,6 +17,6 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         $this->call([
             CategoriesTableSeeder::class,
-            ItemsTableSeeder::class,UsersTableSeeder::class,]);
+            ItemsTableSeeder::class, UsersTableSeeder::class, ]);
     }
 }

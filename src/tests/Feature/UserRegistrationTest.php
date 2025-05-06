@@ -2,12 +2,11 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class UserRegistrationTest extends TestCase
 {
@@ -25,13 +24,13 @@ class UserRegistrationTest extends TestCase
             'name' => '', // 空のデータを送信
             'email' => 'test@example.com',
             'password' => 'password123',
-            'password_confirmation' => 'password123'
+            'password_confirmation' => 'password123',
         ]);
 
         $response->assertStatus(302);
         $response->assertRedirect();
         $response->assertSessionHasErrors([
-            'name' => 'お名前を入力してください'
+            'name' => 'お名前を入力してください',
         ]);
     }
 
@@ -41,7 +40,7 @@ class UserRegistrationTest extends TestCase
             'name' => 'Test User',
             'email' => '', // 空のデータを送信
             'password' => 'password123',
-            'password_confirmation' => 'password123'
+            'password_confirmation' => 'password123',
         ]);
 
         $response->assertStatus(302);
@@ -55,12 +54,12 @@ class UserRegistrationTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => '', // 空のデータを送信
-            'password_confirmation' => 'password123'
+            'password_confirmation' => 'password123',
         ]);
 
         $response->assertStatus(302);
         $response->assertRedirect();
-        $response->assertSessionHasErrors(['password'=> 'パスワードを入力してください']);
+        $response->assertSessionHasErrors(['password' => 'パスワードを入力してください']);
     }
 
     public function test_password_must_be_at_least_8_characters()
@@ -69,7 +68,7 @@ class UserRegistrationTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'short', // 7文字未満のパスワード
-            'password_confirmation' => 'short'
+            'password_confirmation' => 'short',
         ]);
 
         $response->assertStatus(302);
@@ -83,7 +82,7 @@ class UserRegistrationTest extends TestCase
             'name' => 'Test User',
             'email' => 'test@example.com',
             'password' => 'password123', // パスワード
-            'password_confirmation' => 'different_password' // 異なる確認用パスワード
+            'password_confirmation' => 'different_password', // 異なる確認用パスワード
         ]);
 
         $response->assertStatus(302);
@@ -96,20 +95,20 @@ class UserRegistrationTest extends TestCase
         $this->withoutMiddleware(\Illuminate\Auth\Middleware\EnsureEmailIsVerified::class);
 
         Event::fake([
-            Registered::class
+            Registered::class,
         ]);
         $userData = [
             'name' => '山田 太郎',
             'email' => 'test@example.com',
             'password' => 'password123',
-            'password_confirmation' => 'password123'
+            'password_confirmation' => 'password123',
         ];
 
         $response = $this->post('/register', $userData);
 
         $this->assertDatabaseHas('users', [
             'name' => $userData['name'],
-            'email' => $userData['email']
+            'email' => $userData['email'],
         ]);
 
         $user = User::where('email', $userData['email'])->first();
@@ -119,7 +118,7 @@ class UserRegistrationTest extends TestCase
 
         // 新しいリクエストを作成して認証済みユーザーとしてアクセス
         $response = $this->actingAs($user)
-                    ->get(route('profile.edit'));
+            ->get(route('profile.edit'));
 
         // 認証されていることを確認
         $this->assertAuthenticated();

@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Comment;
-use App\Models\Item;
-use Illuminate\Http\Request;
 use App\Http\Requests\CommentRequest;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
@@ -20,5 +18,4 @@ class CommentController extends Controller
 
         return redirect()->route('item.show', ['item_id' => $item_id]);
     }
-
 }

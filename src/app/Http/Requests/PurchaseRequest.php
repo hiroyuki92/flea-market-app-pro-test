@@ -27,7 +27,7 @@ class PurchaseRequest extends FormRequest
             'payment_method' => 'required|in:konbini,card',
         ];
     }
-    
+
     public function messages()
     {
         return [

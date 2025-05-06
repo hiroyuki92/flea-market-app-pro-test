@@ -2,21 +2,21 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
 use App\Models\Item;
-use App\Models\Category;
 use App\Models\User;
-use App\Models\Purchase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class PaymentMethodTest extends TestCase
 {
     use RefreshDatabase;
 
     private $user;
+
     private $anotherUser;
+
     private $item;
+
     private $validPurchaseData = [
         'shipping_postal_code' => '123-4567',
         'shipping_address_line' => '東京都渋谷区',
@@ -42,7 +42,7 @@ class PaymentMethodTest extends TestCase
         $this->assertDatabaseHas('purchases', [
             'user_id' => $this->user->id,
             'item_id' => $this->item->id,
-            'payment_method' => $this->validPurchaseData['payment_method']
+            'payment_method' => $this->validPurchaseData['payment_method'],
         ]);
     }
 }

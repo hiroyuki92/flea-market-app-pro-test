@@ -2,24 +2,23 @@
 
 namespace Tests\Feature;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
-use App\Models\User;
 use App\Models\Item;
-use App\Models\Category;
+use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class GetProductListTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     protected $user;
+
     protected $anotherUser;
 
     protected function setUp(): void
     {
         parent::setUp();
-        
+
         // 共通のセットアップ処理
         $this->user = User::factory()->create();
         $this->anotherUser = User::factory()->create();
@@ -32,7 +31,7 @@ class GetProductListTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        
+
         $items = Item::all();
         $expectedCount = 10;
         $this->assertEquals($expectedCount, $items->count(),
@@ -62,4 +61,3 @@ class GetProductListTest extends TestCase
         $response->assertSee('Other User Item');
     }
 }
-
