@@ -12,7 +12,9 @@
         <ul class="item-list">
         @foreach ($itemsInTransaction as $item)
             <li class="item-link">
-                {{ $item->name }}
+                <a href="{{ route('transaction.show', ['item_id' => $item->id]) }}" class="item-link-text">
+                    {{ $item->name }}
+                </a>
             </li>
         @endforeach
         </ul>

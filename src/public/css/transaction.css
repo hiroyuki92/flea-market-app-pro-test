@@ -26,13 +26,17 @@
 
 .item-link {
     text-decoration: none;
-    color: #000;
     background-color: #ccc;
     text-align: center;
     margin-bottom: 20px;
     padding: 5px 0;
     border-radius: 5px;
     font-size: 20px;
+}
+
+.item-link-text {
+    text-decoration: none;
+    color: #000;
 }
 
 .main-content {
