@@ -36,6 +36,7 @@
     <div class="item-list__heading">
         <a href="{{ url('mypage?tab=sell') }}" class="tab {{ request('tab') === 'sell' || is_null(request('tab')) ? 'active' : '' }}">出品した商品</a>
         <a href="{{ url('mypage?tab=buy') }}" class="tab {{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
+        <a href="{{ url('mypage?tab=transaction') }}" class="tab {{ request('tab') === 'transaction' ? 'active' : '' }}">取引中の商品</a>
     </div>
     <div class="item-grid">
         <!-- 出品した商品 -->
@@ -61,7 +62,15 @@
                 <div class="item-name">{{ $purchase->item->name }}</div>
             </div>
         @endforeach
-        
+        <!-- 取引中の商品 -->
+        @foreach ($all_transactions as $item)
+            <div class="item-card purchased">
+                <div class="item-image">
+                    <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
+                </div>
+                <div class="item-name">{{ $item->name }}</div>
+            </div>
+        @endforeach
     </div>
     <script>
         document.querySelector('input[name="keyword"]').addEventListener('keydown', function(event) {

@@ -17,8 +17,25 @@ class ProfileController extends Controller
         // データの取得
         $items = $tab === 'sell' ? $user->items : [];
         $purchases = $tab === 'buy' ? $user->purchases()->with('item')->get() : [];
+        $transactions = $tab === 'transaction' ?
+        $user->items()
+            ->where('in_transaction', 1)
+            ->get() : collect();
 
-        return view('profile', compact('purchases', 'items', 'tab'));
+        $purchases_in_transaction = $tab === 'transaction' ? $user->purchases()
+        ->whereHas('item', function ($query) {
+            $query->where('in_transaction', 1); // 購入した商品が取引中か確認
+        })
+        ->with('item')
+        ->get() : collect();
+
+        $purchases_in_transaction_items = $purchases_in_transaction->map(function ($purchase) {
+        return $purchase->item;
+    });
+
+        $all_transactions = $transactions->merge($purchases_in_transaction_items);
+
+        return view('profile', compact('purchases', 'items', 'all_transactions', 'tab'));
     }
 
     /**
