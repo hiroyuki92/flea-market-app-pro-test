@@ -9,23 +9,30 @@
 <div class="transaction-container">
     <aside class="sidebar">
         <div class="sidebar-item">その他の取引</div>
+        <ul class="item-list">
+        @foreach ($itemsInTransaction as $item)
+            <li class="item-link">
+                {{ $item->name }}
+            </li>
+        @endforeach
+        </ul>
     </aside>
     <main class="main-content">
         <div class="transaction-header">
             <div class="user-info">
-                <div class="avatar"></div>
-                <h1 class="transaction-title">「ユーザー名」さんとの取引画面</h1>
+                <img class="profile-picture"src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"  alt="ユーザーのプロフィール写真">
+                <h1 class="transaction-title">{{ $buyer->name }}さんとの取引画面</h1>
             </div>
             <button class="complete-button">取引を完了する</button>
         </div>
 
-        <div class="product-section">
-            <div class="product-image">
-                <div class="image-placeholder">商品画像</div>
+        <div class="item-section">
+            <div class="item-image">
+                <img class="item-image-picture" src="{{ asset('storage/item_images/' . $transaction->item->image_url) }}" alt="{{ $transaction->item->name }}">
             </div>
-            <div class="product-details">
-                <h2 class="product-name">商品名</h2>
-                <p class="product-price">商品価格</p>
+            <div class="item-details">
+                <h2 class="item-name">{{ $transaction->item->name }}</h2>
+                <p class="item-price">¥{{ number_format($transaction->item->price) }}(税込)</p>
             </div>
         </div>
 

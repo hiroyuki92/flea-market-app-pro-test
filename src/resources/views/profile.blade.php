@@ -66,7 +66,9 @@
         @foreach ($all_transactions as $item)
             <div class="item-card purchased">
                 <div class="item-image">
-                    <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
+                    <a href="{{ route('transaction.show', ['item_id' => $item->id]) }}">
+                        <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
+                    </a>
                 </div>
                 <div class="item-name">{{ $item->name }}</div>
             </div>

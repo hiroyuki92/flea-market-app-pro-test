@@ -83,5 +83,5 @@ Route::middleware('auth')->group(function () {
     })->name('purchase.cancel');
 
     // 取引関連
-    Route::get('/transaction', [TransactionChatController::class, 'index'])->name('transaction.show');
+    Route::get('/transaction/{item_id}', [TransactionChatController::class, 'index'])->name('transaction.show');
 });
