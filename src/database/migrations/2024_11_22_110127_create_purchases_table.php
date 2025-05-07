@@ -15,12 +15,12 @@ class CreatePurchasesTable extends Migration
     {
         Schema::create('purchases', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // users テーブルとのリレーション
-            $table->foreignId('item_id')->constrained()->onDelete('cascade');  // 商品ID
-            $table->string('shipping_postal_code', 10);  // 郵便番号
-            $table->string('shipping_address_line');  // 住所
-            $table->string('shipping_building');  // 建物名
-            $table->enum('payment_method', ['konbini', 'card']); // 支払い方法の選択肢を制限
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('item_id')->constrained()->onDelete('cascade');
+            $table->string('shipping_postal_code', 10);
+            $table->string('shipping_address_line');
+            $table->string('shipping_building');
+            $table->enum('payment_method', ['konbini', 'card']);
             $table->timestamps();
         });
     }

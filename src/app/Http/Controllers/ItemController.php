@@ -45,7 +45,6 @@ class ItemController extends Controller
 
     public function store(ExhibitionRequest $request)
     {
-        // 画像名を事前に初期化
         $imageName = null;
 
         // 画像がアップロードされている場合

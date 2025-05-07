@@ -62,8 +62,12 @@ class PurchaseController extends Controller
             $shippingAddress,
             ['user_id' => $user->id, 'item_id' => $item_id]
         );
-        Purchase::create($purchaseData);
-        $item->update(['sold_out' => true]);
+        $purchase = Purchase::create($purchaseData);
+        $item = $purchase->item;
+        $item->update([
+            'sold_out' => true,
+            'in_transaction' => Item::STATUS_IN_TRANSACTION, // 取引中
+        ]);
 
         Stripe::setApiKey(env('STRIPE_SECRET'));
         $amount = (int) $item->price;

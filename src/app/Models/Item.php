@@ -19,6 +19,7 @@ class Item extends Model
         'image_url',
         'condition',
         'sold_out',
+        'in_transaction',
     ];
 
     public function user()
@@ -56,6 +57,24 @@ class Item extends Model
         if (! empty($keyword)) {
             $query->where('name', 'like', '%'.$keyword.'%')
                 ->orWhere('description', 'like', '%'.$keyword.'%');
+        }
+    }
+
+    const STATUS_UNSOLD = 0;
+    const STATUS_IN_TRANSACTION = 1;
+    const STATUS_SOLD = 2;
+
+    public function getStatusTextAttribute()
+    {
+        switch ($this->in_transaction) {
+            case self::STATUS_UNSOLD:
+                return '未取引';
+            case self::STATUS_IN_TRANSACTION:
+                return '取引中';
+            case self::STATUS_SOLD:
+                return '取引完了';
+            default:
+                return '不明';
         }
     }
 }
