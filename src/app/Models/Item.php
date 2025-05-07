@@ -52,6 +52,11 @@ class Item extends Model
         return $this->hasOne(Purchase::class);
     }
 
+    public function chats()
+    {
+        return $this->hasOne(Chat::class);
+    }
+
     public function scopeKeywordSearch($query, $keyword)
     {
         if (! empty($keyword)) {
