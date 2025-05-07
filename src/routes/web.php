@@ -7,6 +7,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
+use App\Http\Controllers\TransactionChatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -80,4 +81,7 @@ Route::middleware('auth')->group(function () {
         // 購入がキャンセルされた場合の処理
         return '購入がキャンセルされました。 商品ID: '.$item_id;
     })->name('purchase.cancel');
+
+    // 取引関連
+    Route::get('/transaction', [TransactionChatController::class, 'index'])->name('transaction.show');
 });
