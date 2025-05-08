@@ -6,6 +6,9 @@ body {
 
 .header {
     background: #000;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
 }
 
 .header__inner {

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Models\Purchase;
 use App\Models\User;
 use App\Models\Item;
+use App\Models\Chat;
+use App\Models\Message;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -33,6 +35,63 @@ class TransactionChatController extends Controller
             return $item->id !== $transaction->item->id; // 現在表示している商品（$transaction->item）は除外
         });
 
-        return view('transaction-chat', compact('transaction', 'buyer', 'itemsInTransaction'));
+        $chat = Chat::where('item_id', $itemId)
+            ->where(function ($query) use ($buyer, $user) {
+                $query->where('buyer_id', $buyer->id)
+                    ->where('seller_id', $user->id);
+            })
+            ->first();
+
+        // チャットが存在しない場合は新しく作成
+        if (!$chat) {
+            $chat = Chat::create([
+                'item_id' => $itemId,
+                'buyer_id' => $buyer->id,
+                'seller_id' => $user->id,
+            ]);
+        }
+
+        // チャットに関連するメッセージを取得
+        $messages = Message::where('chat_id', $chat->id)->get();
+
+        return view('transaction-chat-seller', compact('transaction', 'buyer', 'itemsInTransaction', 'chat', 'messages'));
+    }
+
+    public function sellerSendMessage(Request $request, $itemId)
+    {
+        $user = Auth::user();
+        $transaction = Purchase::where('item_id', $itemId)
+        ->with('item')
+        ->first();
+        if (!$transaction) {
+            abort(404); // 取引が存在しない場合
+        }
+        $buyer = User::find($transaction->user_id);
+        if (!$buyer) {
+            abort(404); // 購入者が見つからない場合
+        }
+
+        $chat = Chat::where('item_id', $itemId)
+        ->where(function ($query) use ($user, $buyer) {
+            $query->where('buyer_id', $buyer->id)
+                ->where('seller_id', $user->id);
+        })
+        ->first();
+
+        if (!$chat) {
+        $chat = Chat::create([
+            'item_id' => $itemId,
+            'buyer_id' => $buyer->id,
+            'seller_id' => $user->id,
+        ]);
+    }
+
+        $message = Message::create([
+            'chat_id' => $chat->id,
+            'sender_id' => $user->id,
+            'message' => $request->input('message'),
+        ]);
+
+        return redirect()->route('transaction.show', ['item_id' => $itemId]);
     }
 }

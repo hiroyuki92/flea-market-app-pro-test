@@ -14,7 +14,6 @@ class AddAddressFieldsToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            // プロフィール画像、郵便番号、住所、建物名のカラムを追加
             $table->string('profile_image')->nullable()->after('password');  // プロフィール画像
             $table->string('postal_code', 10)->nullable()->after('profile_image');  // 郵便番号
             $table->string('address_line')->nullable()->after('postal_code');  // 住所

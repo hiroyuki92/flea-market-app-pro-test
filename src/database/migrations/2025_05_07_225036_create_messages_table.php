@@ -18,6 +18,7 @@ class CreateMessagesTable extends Migration
             $table->foreignId('chat_id')->constrained()->onDelete('cascade');
             $table->foreignId('sender_id')->constrained('users')->onDelete('cascade');
             $table->text('message');
+            $table->string('profile_image')->nullable();
             $table->timestamps();
         });
     }
