@@ -32,7 +32,7 @@ class TransactionChatController extends Controller
 
         // 現在表示している商品を除外
         $itemsInTransaction = $itemsInTransaction->filter(function ($item) use ($transaction) {
-            return $item->id !== $transaction->item->id; // 現在表示している商品（$transaction->item）は除外
+            return $item->id !== $transaction->item->id;
         });
 
         $chat = Chat::where('item_id', $itemId)
@@ -51,7 +51,6 @@ class TransactionChatController extends Controller
             ]);
         }
 
-        // チャットに関連するメッセージを取得
         $messages = Message::where('chat_id', $chat->id)->get();
 
         return view('transaction-chat-seller', compact('transaction', 'buyer', 'itemsInTransaction', 'chat', 'messages'));
@@ -91,6 +90,27 @@ class TransactionChatController extends Controller
             'sender_id' => $user->id,
             'message' => $request->input('message'),
         ]);
+
+        return redirect()->route('transaction.show', ['item_id' => $itemId]);
+    }
+
+    public function update(Request $request)
+    {
+        $messageModel = Message::find($request->message_id);
+        if (!$messageModel) {
+            // メッセージが見つからない場合、エラーメッセージを返す
+            return redirect()->back()->withErrors('Message not found');
+        }
+
+        $messageModel->update(['message' => $request->message]);
+
+        $chat = $messageModel->chat;
+        $itemId = $chat ? $chat->item_id : null;
+
+        // item_id が取得できなかった場合のエラーハンドリング
+        if (!$itemId) {
+            return redirect()->back()->withErrors('Item ID not found');
+        }
 
         return redirect()->route('transaction.show', ['item_id' => $itemId]);
     }

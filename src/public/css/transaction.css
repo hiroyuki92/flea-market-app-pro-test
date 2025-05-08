@@ -146,8 +146,8 @@
 }
 
 .chat-section-content {
-    max-height: calc(100vh - 220px); /* スクロール可能にする高さを設定 */
-    overflow-y: auto; /* メッセージ部分をスクロール可能にする */
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
     margin-bottom: 100px;
 }
 
@@ -165,7 +165,6 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    margin-bottom: 10px;
 }
 
 .user-name {
@@ -178,7 +177,7 @@
     border-radius: 50%;
     overflow: hidden;
     margin: 0 20px;
-    background-color: #D9D9D9;
+    background-color: #e0e0e0;
 }
 
 .message-box {
@@ -191,15 +190,23 @@
 }
 
 .message-box-right {
-    margin-left: auto;
-    display: flex;
-    justify-content: flex-end;
+    width: 100%;
+    min-height: 50px;
+    padding: 10px;
+    resize: vertical;
+    overflow: auto;
     background-color: #e0e0e0;
     border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 20px;
+    border: 1px solid #ccc;
+}
+
+.update-form {
+    display: flex;
+    align-items: flex-start;
+    padding: 5px 20px;
     max-width: 70%;
-    min-height: 50px;
+    margin-left: auto;
+    justify-content: flex-end;
 }
 
 .message-actions {
@@ -207,6 +214,7 @@
     justify-content: flex-end;
     margin-bottom: 20px;
     clear: both;
+    padding: 0 20px;
 }
 
 .action-link {

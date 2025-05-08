@@ -53,15 +53,19 @@
                             <div class="user-name">{{ $buyer->name }}</div>
                             <img class="seller-picture"src="{{ asset('storage/profile_images/' . $message->sender->profile_image) }}"  alt="ユーザーのプロフィール写真">
                         </div>
-                        <div class="message-box-right">
-                            {{ $message->message }}
-                        </div>
+                        <form class="update-form" action="/transaction/update" method="post">
+                            @csrf
+                            @method('PATCH')
+                            <textarea class="message-box-right" name="message" id="message-text">{{ $message->message }}</textarea>
+                            <input type="hidden" name="message_id" value="{{ $message->id }}">
+                            <button class="update-form__button-submit" type="submit">編集</button>
+                        </form>
+                        <!-- <div class="message-actions">
+                            <span class="action-link">編集</span>
+                            <span class="action-link">削除</span>
+                        </div> -->
                     </div>
                 @endforeach
-                <div class="message-actions">
-                    <span class="action-link">編集</span>
-                    <span class="action-link">削除</span>
-                </div>
             </div>
             <div class="message-input-container">
                 <form class="message-input-text" method="POST" action="{{ route('transaction.sellerSendMessage', ['item_id' => $transaction->item->id]) }}" enctype="multipart/form-data">
@@ -80,5 +84,9 @@
             </div>
         </div>
     </main>
+    <script>
+    const messageTextarea = document.getElementById('message-text');
+    messageTextarea.value = '新しいメッセージ内容';
+    </script>
 </div>
 @endsection('content')
