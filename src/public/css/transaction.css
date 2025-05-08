@@ -285,6 +285,14 @@
     margin-right: 20px;
 }
 
+.message-picture {
+    max-width: 100px;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
 #preview {
     display: block;
 }

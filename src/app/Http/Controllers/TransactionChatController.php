@@ -78,17 +78,25 @@ class TransactionChatController extends Controller
         ->first();
 
         if (!$chat) {
-        $chat = Chat::create([
-            'item_id' => $itemId,
-            'buyer_id' => $buyer->id,
-            'seller_id' => $user->id,
-        ]);
-    }
+            $chat = Chat::create([
+                'item_id' => $itemId,
+                'buyer_id' => $buyer->id,
+                'seller_id' => $user->id,
+            ]);
+        }
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('image_url', 'public');
+            $imageName = basename($imagePath);
+        } else {
+            $imageName = null;
+        }
 
         $message = Message::create([
             'chat_id' => $chat->id,
             'sender_id' => $user->id,
             'message' => $request->input('message'),
+            'image_url' => $imageName,
         ]);
 
         return redirect()->route('transaction.show', ['item_id' => $itemId]);
