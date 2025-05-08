@@ -53,17 +53,36 @@
                             <div class="user-name">{{ $buyer->name }}</div>
                             <img class="seller-picture"src="{{ asset('storage/profile_images/' . $message->sender->profile_image) }}"  alt="ユーザーのプロフィール写真">
                         </div>
-                        <form class="update-form" action="/transaction/update" method="post">
-                            @csrf
-                            @method('PATCH')
-                            <textarea class="message-box-right" name="message" id="message-text">{{ $message->message }}</textarea>
-                            <input type="hidden" name="message_id" value="{{ $message->id }}">
-                            <button class="update-form__button-submit" type="submit">編集</button>
-                        </form>
-                        <!-- <div class="message-actions">
-                            <span class="action-link">編集</span>
-                            <span class="action-link">削除</span>
-                        </div> -->
+                        <div class="message-box-right">{{ $message->message }}</div>
+                            <div class="button-group">
+                                <button class="update-form__button-submit" onclick="openEditModal({{ $message->id }}, '{{ addslashes($message->message) }}')">編集</button>
+                                <form class="delete-form" action="/transaction/delete" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                    <input type="hidden" name="message_id" value="{{ $message->id }}">
+                                    <div class="button-group">
+                                        <button class="delete-form__button-submit" type="submit">削除</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div id="edit-modal" class="modal">
+                            <div class="modal-content">
+                                <span class="close-button" onclick="closeEditModal()">&times;</span>
+                                <div class="modal-title">メッセージを編集</div>
+                                
+                                <form id="edit-form" action="/transaction/update" method="post">
+                                    @csrf
+                                    @method('PATCH')
+                                    <textarea id="edit-message-text" name="message" class="edit-textarea"></textarea>
+                                    <input type="hidden" id="edit-message-id" name="message_id" value="">
+                                    
+                                    <div class="modal-buttons">
+                                        <button type="button" onclick="closeEditModal()">キャンセル</button>
+                                        <button type="submit" class="save-button">保存</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 @endforeach
             </div>
@@ -75,9 +94,13 @@
                     <input type="hidden" name="seller_id" value="{{ Auth::id() }}">
                     <textarea class="message-input"  name="message" placeholder="取引メッセージを記入してください">{{ old('message') }}</textarea>
                     <div class="input-actions">
-                        <button class="image-button">画像を追加</button>
-                        <button class="btn" style="background-color: white;">
-                            <i class="bi bi-send" style="color: gray; font-size: 32px;"></i>
+                        <img id="preview" class="preview" src="" alt="選択した画像のプレビュー" style="display: none;" />
+                        <div class="image-button">
+                            <label for="imageUpload" class="img-input__btn">画像を追加</label>
+                            <input type="file" id="imageUpload" class="img-upload" name="image" accept="image/*" onchange="previewImage(event)" />
+                        </div>
+                        <button class="btn" style="background-color: transparent;">
+                            <i class="bi bi-send" style="color: gray; font-size: 32px; "></i>
                         </button>
                     </div>
                 </form>
@@ -85,8 +108,52 @@
         </div>
     </main>
     <script>
-    const messageTextarea = document.getElementById('message-text');
-    messageTextarea.value = '新しいメッセージ内容';
+    // 編集モーダルを開く
+    function openEditModal(messageId, messageText) {
+        // モーダルを表示
+        document.getElementById('edit-modal').style.display = 'block';
+        
+        // フォームに値をセット
+        document.getElementById('edit-message-id').value = messageId;
+        document.getElementById('edit-message-text').value = messageText.replace(/\\'/g, "'");
+        
+        // テキストエリアにフォーカス
+        document.getElementById('edit-message-text').focus();
+        }
+        
+        // 編集モーダルを閉じる
+        function closeEditModal() {
+            document.getElementById('edit-modal').style.display = 'none';
+        }
+        
+        // モーダル外をクリックした時に閉じる
+        window.onclick = function(event) {
+            var modal = document.getElementById('edit-modal');
+            if (event.target == modal) {
+                closeEditModal();
+            }
+        }
+
+        // 画像プレビューの表示
+            function previewImage(event) {
+            const file = event.target.files[0]; // 最初のファイルを取得
+            const previewImageElement = document.getElementById('preview');
+            
+            if (file) {
+                const reader = new FileReader();
+                // 画像を読み込む
+                reader.onload = function(e) {
+                    // 読み込んだ画像のデータURLをimgタグにセット
+                    previewImageElement.src = e.target.result;
+                    // プレビュー部分を表示
+                    previewImageElement.style.display = 'block';
+                };
+                reader.readAsDataURL(file); // 画像をData URLとして読み込む
+            } else {
+                // 画像が選択されていない場合、プレビューを非表示にする
+                previewImageElement.style.display = 'none';
+            }
+        }
     </script>
 </div>
 @endsection('content')

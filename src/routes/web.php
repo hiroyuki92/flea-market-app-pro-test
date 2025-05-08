@@ -86,4 +86,5 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction/{item_id}', [TransactionChatController::class, 'index'])->name('transaction.show');
     Route::post('/transaction/{item_id}/seller-message', [TransactionChatController::class, 'sellerSendMessage'])->name('transaction.sellerSendMessage');
     Route::patch('/transaction/update', [TransactionChatController::class, 'update']);
+    Route::delete('/transaction/delete', [TransactionChatController::class, 'destroy']);
 });

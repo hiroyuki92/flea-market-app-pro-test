@@ -114,4 +114,25 @@ class TransactionChatController extends Controller
 
         return redirect()->route('transaction.show', ['item_id' => $itemId]);
     }
+
+    public function destroy(Request $request)
+    {
+        $messageModel = Message::find($request->message_id);
+        if (!$messageModel) {
+            // メッセージが見つからない場合、エラーメッセージを返す
+            return redirect()->back()->withErrors('Message not found');
+        }
+
+        $messageModel->delete();
+
+        $chat = $messageModel->chat;
+        $itemId = $chat ? $chat->item_id : null;
+
+        // item_id が取得できなかった場合のエラーハンドリング
+        if (!$itemId) {
+            return redirect()->back()->withErrors('Item ID not found');
+        }
+
+        return redirect()->route('transaction.show', ['item_id' => $itemId]);
+    }
 }
