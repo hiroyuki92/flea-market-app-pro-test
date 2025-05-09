@@ -54,7 +54,7 @@ class TransactionChatController extends Controller
 
         $messages = Message::where('chat_id', $chat->id)->get();
 
-        return view('transaction-chat-seller', compact('transaction', 'buyer', 'itemsInTransaction', 'chat', 'messages'));
+        return view('transaction-chat-seller', compact('transaction', 'buyer', 'itemsInTransaction', 'chat', 'messages', 'user'));
     }
 
     public function sellerSendMessage(TransactionRequest $request, $itemId)
