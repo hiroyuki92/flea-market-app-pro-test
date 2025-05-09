@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Item;
 use App\Models\Chat;
 use App\Models\Message;
+use App\Http\Requests\TransactionRequest;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -56,7 +57,7 @@ class TransactionChatController extends Controller
         return view('transaction-chat-seller', compact('transaction', 'buyer', 'itemsInTransaction', 'chat', 'messages'));
     }
 
-    public function sellerSendMessage(Request $request, $itemId)
+    public function sellerSendMessage(TransactionRequest $request, $itemId)
     {
         $user = Auth::user();
         $transaction = Purchase::where('item_id', $itemId)

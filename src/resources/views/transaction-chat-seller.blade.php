@@ -91,6 +91,12 @@
                 @endforeach
             </div>
             <div class="message-input-container">
+                @error('message')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
+                @error('image')
+                    <div class="error-message">{{ $message }}</div>
+                @enderror
                 <form class="message-input-text" method="POST" action="{{ route('transaction.sellerSendMessage', ['item_id' => $transaction->item->id]) }}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="item_id" value="{{ $transaction->item->id }}">

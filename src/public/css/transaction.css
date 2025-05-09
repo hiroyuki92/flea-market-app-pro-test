@@ -204,6 +204,14 @@
     border: 1px solid #ccc;
 }
 
+.message-picture {
+    max-width: 100px;
+    height: auto;
+    border-radius: 5px;
+    object-fit: cover;
+    margin-top: 10px;
+}
+
 .update-form__button-submit,
 .delete-form__button-submit{
     padding: 10px 0;
@@ -227,9 +235,18 @@
     right: 20px;
     align-items: center;
     z-index: 1000;
-    justify-content: end;
     margin-left: 20%;
     background-color: #fff;
+}
+
+.error-message {
+    color: #fff;
+    font-size: 20px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    background-color: #ff7a7a;
+    width: 100%;
+    padding: 5px 15px;
 }
 
 .message-input-text{
@@ -283,14 +300,6 @@
     border-radius: 5px;
     object-fit: cover;
     margin-right: 20px;
-}
-
-.message-picture {
-    max-width: 100px;
-    height: auto;
-    border-radius: 5px;
-    object-fit: cover;
-    margin-top: 10px;
 }
 
 #preview {
