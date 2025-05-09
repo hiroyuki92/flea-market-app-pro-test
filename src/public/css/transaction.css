@@ -45,7 +45,6 @@
 }
 
 .main-content {
-    flex: 1;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -59,7 +58,6 @@
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid #e0e0e0;
-    margin-top: 70px;
 }
 
 .user-info {
@@ -143,12 +141,13 @@
     flex: 1;
     padding: 20px;
     position: relative;
+    margin-bottom: 80px;
 }
 
 .chat-section-content {
-    max-height: calc(100vh - 220px);
-    overflow-y: auto;
-    margin-bottom: 100px;
+    /* max-height: calc(100vh - 220px); */
+    /* overflow-y: auto; */
+    /* margin-bottom: 80px */;
 }
 
 .message-row {
