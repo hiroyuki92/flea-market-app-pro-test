@@ -36,24 +36,9 @@ class ProfileController extends Controller
 
         $all_transactions = $transactions->merge($purchases_in_transaction_items);
 
-        // 未読メッセージカウントの初期化
-        $itemsWithUnreadCount = [];
-        if ($tab === 'transaction') {
-            // 取引中の商品IDを収集
-            $transactionItemIds = $all_transactions->pluck('id');
-            
-            // 未読メッセージカウントの取得
-            $chats = Chat::whereIn('item_id', $transactionItemIds)
-                ->withUnreadCount($user->id) // Chatモデルに定義したスコープを使用
-                ->get();
-            foreach ($chats as $chat) {
-                $itemsWithUnreadCount[$chat->item_id] = ($itemsWithUnreadCount[$chat->item_id] ?? 0) + $chat->unread_count;
-            }
-        }
-
-        $itemsWithUnreadMessages = count(array_filter($itemsWithUnreadCount, function($count) {
-            return $count > 0;
-        }));
+        $unreadInfo = Chat::getUnreadMessagesForUserTransactions($user->id);
+        $itemsWithUnreadCount = $unreadInfo['itemsWithUnreadCount'];
+        $itemsWithUnreadMessages = $unreadInfo['itemsWithUnreadMessages'];
 
         return view('profile', compact('purchases', 'items', 'all_transactions', 'tab', 'itemsWithUnreadCount', 'itemsWithUnreadMessages'));
     }
