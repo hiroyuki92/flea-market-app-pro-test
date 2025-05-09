@@ -64,11 +64,17 @@
         @endforeach
         <!-- 取引中の商品 -->
         @foreach ($all_transactions as $item)
-            <div class="item-card purchased">
+            <div class="item-card transaction">
                 <div class="item-image">
-                    <a href="{{ route('transaction.show', ['item_id' => $item->id]) }}">
-                        <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
-                    </a>
+                    @if($item->user_id === Auth::id())
+                        <a href="{{ route('transaction.show', ['item_id' => $item->id]) }}">
+                            <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
+                        </a>
+                    @else
+                        <a href="{{ route('transaction.show.buyer', ['item_id' => $item->id]) }}">
+                            <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">
+                        </a>
+                    @endif
                 </div>
                 <div class="item-name">{{ $item->name }}</div>
             </div>

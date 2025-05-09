@@ -141,13 +141,7 @@
     flex: 1;
     padding: 20px;
     position: relative;
-    margin-bottom: 80px;
-}
-
-.chat-section-content {
-    /* max-height: calc(100vh - 220px); */
-    /* overflow-y: auto; */
-    /* margin-bottom: 80px */;
+    margin-bottom: 150px;
 }
 
 .message-row {
@@ -172,6 +166,8 @@
 
 .user-name {
     margin: 0 10px;
+    font-weight: bold;
+    font-size: 20px;
 }
 
 .seller-picture {
@@ -192,7 +188,8 @@
     min-height: 50px;
 }
 
-.message-box-right {
+.message-box-right,
+.message-box-left {
     width: 50%;
     min-height: 50px;
     padding: 10px;
@@ -209,6 +206,14 @@
     border-radius: 5px;
     object-fit: cover;
     margin-top: 10px;
+}
+
+.message-left {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    align-items: flex-start;
+    width: 100%;
 }
 
 .update-form__button-submit,
@@ -229,11 +234,10 @@
 
 .message-input-container {
     position: fixed;
-    bottom:20px;
+    bottom:0px;
     left: 20px;
     right: 20px;
     align-items: center;
-    z-index: 1000;
     margin-left: 20%;
     background-color: #fff;
 }
@@ -250,7 +254,7 @@
 
 .message-input-text{
     display: flex;
-    margin-top: 20px;
+    margin: 20px 0;
 }
 
 .message-input {

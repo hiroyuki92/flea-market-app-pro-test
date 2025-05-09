@@ -85,6 +85,10 @@ Route::middleware('auth')->group(function () {
     // 取引関連
     Route::get('/transaction/{item_id}', [TransactionChatController::class, 'index'])->name('transaction.show');
     Route::post('/transaction/{item_id}/seller-message', [TransactionChatController::class, 'sellerSendMessage'])->name('transaction.sellerSendMessage');
+
+    Route::get('/transaction/{item_id}/buyer', [TransactionChatController::class, 'show'])->name('transaction.show.buyer');
+    Route::post('/transaction/{item_id}/buyer-message', [TransactionChatController::class, 'buyerSendMessage'])->name('transaction.buyerSendMessage');
+
     Route::patch('/transaction/update', [TransactionChatController::class, 'update']);
     Route::delete('/transaction/delete', [TransactionChatController::class, 'destroy']);
 });

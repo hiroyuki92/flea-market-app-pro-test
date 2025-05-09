@@ -121,7 +121,16 @@ class TransactionChatController extends Controller
             return redirect()->back()->withErrors('Item ID not found');
         }
 
-        return redirect()->route('transaction.show', ['item_id' => $itemId]);
+        $user = Auth::user();
+        $item = Item::find($itemId);
+
+        if ($item && $item->user_id == $user->id) {
+            // ユーザーが出品者の場合（出品者用ページにリダイレクト）
+            return redirect()->route('transaction.show', ['item_id' => $itemId]);
+        } else {
+            // ユーザーが購入者の場合（購入者用ページにリダイレクト）
+            return redirect()->route('transaction.show.buyer', ['item_id' => $itemId]);
+        }
     }
 
     public function destroy(Request $request)
@@ -142,6 +151,112 @@ class TransactionChatController extends Controller
             return redirect()->back()->withErrors('Item ID not found');
         }
 
-        return redirect()->route('transaction.show', ['item_id' => $itemId]);
+        $user = Auth::user();
+        $item = Item::find($itemId);
+
+        if ($item && $item->user_id == $user->id) {
+            // ユーザーが出品者の場合（出品者用ページにリダイレクト）
+            return redirect()->route('transaction.show', ['item_id' => $itemId]);
+        } else {
+            // ユーザーが購入者の場合（購入者用ページにリダイレクト）
+            return redirect()->route('transaction.show.buyer', ['item_id' => $itemId]);
+        }
+    }
+
+    public function show(Request $request, $itemId)
+    {
+        $user = Auth::user();
+        $transaction = Purchase::where('item_id', $itemId)
+        ->where('user_id', $user->id)
+        ->with('item')
+        ->first();
+        
+        if (!$transaction) {
+            abort(404); // 取引が存在しないか、現在のユーザーが購入者でない場合
+        }
+        
+        $seller = User::find($transaction->item->user_id);
+        if (!$seller) {
+            abort(404); // 出品者が見つからない場合
+        }
+
+        $purchasesInTransaction = Purchase::where('user_id', $user->id)
+        ->whereHas('item', function ($query) {
+            $query->where('in_transaction', 1);
+        })
+        ->with('item')
+        ->get();
+
+        $otherItemsInTransaction = $purchasesInTransaction->filter(function ($purchase) use ($transaction) {
+            return $purchase->item_id !== $transaction->item_id;
+        })->map(function ($purchase) {
+            return $purchase->item;
+        });
+
+        $chat = Chat::where('item_id', $itemId)
+        ->where(function ($query) use ($user, $seller) {
+            $query->where('buyer_id', $user->id)
+                ->where('seller_id', $seller->id);
+        })
+        ->first();
+
+        if (!$chat) {
+            $chat = Chat::create([
+                'item_id' => $itemId,
+                'buyer_id' => $user->id,
+                'seller_id' => $seller->id,
+            ]);
+        }
+
+        $messages = Message::where('chat_id', $chat->id)->get();
+
+        return view('transaction-chat-buyer', compact('transaction', 'seller', 'otherItemsInTransaction', 'chat', 'messages', 'user'));
+    }
+
+    public function buyerSendMessage(TransactionRequest $request, $itemId)
+    {
+        $user = Auth::user();
+        $transaction = Purchase::where('item_id', $itemId)
+        ->where('user_id', $user->id)
+        ->with('item')
+        ->first();
+        if (!$transaction) {
+            abort(404); // 取引が存在しない場合
+        }
+        $seller = User::find($transaction->item->user_id);
+        if (!$seller) {
+            abort(404); // 出品者が見つからない場合
+        }
+
+        $chat = Chat::where('item_id', $itemId)
+        ->where(function ($query) use ($user, $seller) {
+            $query->where('buyer_id', $user->id)
+                ->where('seller_id', $seller->id);
+        })
+        ->first();
+
+        if (!$chat) {
+            $chat = Chat::create([
+                'item_id' => $itemId,
+                'buyer_id' => $user->id,
+                'seller_id' => $seller->id,
+            ]);
+        }
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('image_url', 'public');
+            $imageName = basename($imagePath);
+        } else {
+            $imageName = null;
+        }
+
+        Message::create([
+            'chat_id' => $chat->id,
+            'sender_id' => $user->id,
+            'message' => $request->input('message'),
+            'image_url' => $imageName,
+        ]);
+
+        return redirect()->route('transaction.show.buyer', ['item_id' => $itemId]);
     }
 }

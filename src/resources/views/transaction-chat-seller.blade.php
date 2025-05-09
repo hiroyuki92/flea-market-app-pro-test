@@ -25,7 +25,6 @@
                 <img class="profile-picture"src="{{ asset('storage/profile_images/' . $buyer->profile_image) }}"  alt="ユーザーのプロフィール写真">
                 <h1 class="transaction-title">{{ $buyer->name }}さんとの取引画面</h1>
             </div>
-            <button class="complete-button">取引を完了する</button>
         </div>
 
         <div class="item-section">
