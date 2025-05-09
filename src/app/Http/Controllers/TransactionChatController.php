@@ -54,6 +54,12 @@ class TransactionChatController extends Controller
 
         $messages = Message::where('chat_id', $chat->id)->get();
 
+        $messages->each(function ($message) {
+            if (!$message->is_read) {
+                $message->markAsRead();
+            }
+        });
+
         return view('transaction-chat-seller', compact('transaction', 'buyer', 'itemsInTransaction', 'chat', 'messages', 'user'));
     }
 

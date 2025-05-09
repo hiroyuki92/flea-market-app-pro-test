@@ -15,4 +15,20 @@ class Chat extends Model
     {
         return $this->hasMany(Message::class);
     }
+
+    public function unreadMessagesFor($userId)
+    {
+        return $this->messages()
+                    ->where('sender_id', '!=', $userId)
+                    ->where('is_read', false)
+                    ->count();
+    }
+
+    public function scopeWithUnreadCount($query, $userId)
+    {
+        return $query->withCount(['messages as unread_count' => function($query) use ($userId) {
+            $query->where('sender_id', '!=', $userId)
+                ->where('is_read', false);
+        }]);
+    }
 }

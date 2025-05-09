@@ -20,4 +20,11 @@ class Message extends Model
     {
         return $this->belongsTo(User::class, 'sender_id');
     }
+
+    // メッセージを既読にするメソッド
+    public function markAsRead()
+    {
+        $this->is_read = true;
+        $this->save();
+    }
 }

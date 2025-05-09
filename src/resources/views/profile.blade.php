@@ -36,7 +36,11 @@
     <div class="item-list__heading">
         <a href="{{ url('mypage?tab=sell') }}" class="tab {{ request('tab') === 'sell' || is_null(request('tab')) ? 'active' : '' }}">出品した商品</a>
         <a href="{{ url('mypage?tab=buy') }}" class="tab {{ request('tab') === 'buy' ? 'active' : '' }}">購入した商品</a>
-        <a href="{{ url('mypage?tab=transaction') }}" class="tab {{ request('tab') === 'transaction' ? 'active' : '' }}">取引中の商品</a>
+        <a href="{{ url('mypage?tab=transaction') }}" class="tab {{ request('tab') === 'transaction' ? 'active' : '' }}">取引中の商品
+            @if($itemsWithUnreadMessages > 0)
+                <span class="badge bg-danger">{{ $itemsWithUnreadMessages }}</span>
+            @endif
+        </a>
     </div>
     <div class="item-grid">
         <!-- 出品した商品 -->
@@ -66,6 +70,11 @@
         @foreach ($all_transactions as $item)
             <div class="item-card transaction">
                 <div class="item-image">
+                    @if(isset($itemsWithUnreadCount[$item->id]) && $itemsWithUnreadCount[$item->id] > 0)
+                        <div class="unread-badge-overlay">
+                            <span class="badge rounded-circle bg-danger">{{ $itemsWithUnreadCount[$item->id] }}</span>
+                        </div>
+                    @endif
                     @if($item->user_id === Auth::id())
                         <a href="{{ route('transaction.show', ['item_id' => $item->id]) }}">
                             <img class="item-image-picture"  src="{{ asset('storage/item_images/' . $item->image_url) }}" alt="{{ $item->name }}">

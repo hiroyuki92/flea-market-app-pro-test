@@ -6,6 +6,7 @@ use App\Http\Requests\ProfileRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use App\Models\Chat;
 
 class ProfileController extends Controller
 {
@@ -30,12 +31,31 @@ class ProfileController extends Controller
         ->get() : collect();
 
         $purchases_in_transaction_items = $purchases_in_transaction->map(function ($purchase) {
-        return $purchase->item;
-    });
+            return $purchase->item;
+        });
 
         $all_transactions = $transactions->merge($purchases_in_transaction_items);
 
-        return view('profile', compact('purchases', 'items', 'all_transactions', 'tab'));
+        // 未読メッセージカウントの初期化
+        $itemsWithUnreadCount = [];
+        if ($tab === 'transaction') {
+            // 取引中の商品IDを収集
+            $transactionItemIds = $all_transactions->pluck('id');
+            
+            // 未読メッセージカウントの取得
+            $chats = Chat::whereIn('item_id', $transactionItemIds)
+                ->withUnreadCount($user->id) // Chatモデルに定義したスコープを使用
+                ->get();
+            foreach ($chats as $chat) {
+                $itemsWithUnreadCount[$chat->item_id] = ($itemsWithUnreadCount[$chat->item_id] ?? 0) + $chat->unread_count;
+            }
+        }
+
+        $itemsWithUnreadMessages = count(array_filter($itemsWithUnreadCount, function($count) {
+            return $count > 0;
+        }));
+
+        return view('profile', compact('purchases', 'items', 'all_transactions', 'tab', 'itemsWithUnreadCount', 'itemsWithUnreadMessages'));
     }
 
     /**
