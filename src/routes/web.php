@@ -8,6 +8,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\TransactionChatController;
+use App\Http\Controllers\RatingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -91,4 +92,8 @@ Route::middleware('auth')->group(function () {
 
     Route::patch('/transaction/update', [TransactionChatController::class, 'update']);
     Route::delete('/transaction/delete', [TransactionChatController::class, 'destroy']);
+    
+    // 取引評価関連
+    Route::post('/submit-buyer-rating', [RatingController::class, 'submitBuyerRating'])->name('submit.buyer.rating');
+    Route::post('/submit-seller-rating', [RatingController::class, 'submitSellerRating'])->name('submit.seller.rating');
 });

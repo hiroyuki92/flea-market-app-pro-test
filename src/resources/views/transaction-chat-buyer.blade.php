@@ -32,15 +32,20 @@
                         <h2>取引が完了しました。</h2>
                     </div>
                     <p class="popup-message">今回の取引相手はどうでしたか？</p>
-                    <div class="star-rating">
-                        <span class="star" data-value="1">&#9733;</span>
-                        <span class="star" data-value="2">&#9733;</span>
-                        <span class="star" data-value="3">&#9733;</span>
-                        <span class="star" data-value="4">&#9733;</span>
-                        <span class="star" data-value="5">&#9733;</span>
-                    </div>
+                    <form action="{{ route('submit.buyer.rating') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="purchase_id" value="{{ $transaction->id }}">
+                        <input type="hidden" name="rating" value="">
+                        <div class="star-rating">
+                            <span class="star" data-value="1">&#9733;</span>
+                            <span class="star" data-value="2">&#9733;</span>
+                            <span class="star" data-value="3">&#9733;</span>
+                            <span class="star" data-value="4">&#9733;</span>
+                            <span class="star" data-value="5">&#9733;</span>
+                        </div>
 
-                    <button class="submit-btn" onclick="submitRating()">送信する</button>
+                        <button class="submit-btn" onclick="submitRating()">送信する</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -234,16 +239,32 @@
 
             // 評価星を選択できるようにする
             const stars = document.querySelectorAll('.star');
+            let selectedRating = null;
+
             stars.forEach(star => {
                 star.addEventListener('click', function() {
                     const value = this.getAttribute('data-value');
+                    selectedRating = value;
+
                     // すべての星の選択をリセット
                     stars.forEach(star => star.classList.remove('selected'));
+
                     // 選択した星にクラスを追加
                     for (let i = 0; i < value; i++) {
                         stars[i].classList.add('selected');
                     }
                 });
+            });
+
+            // フォーム送信前に評価が選ばれているかチェック
+            document.querySelector('form').addEventListener('submit', function(event) {
+                if (!selectedRating) {
+                    event.preventDefault();  // フォーム送信を防ぐ
+                    alert("評価を選択してください"); // 警告メッセージを表示
+                } else {
+                    // フォームの hidden フィールドに選択された評価をセット
+                    document.querySelector('input[name="rating"]').value = selectedRating;
+                }
             });
 
             // 評価を送信する関数
@@ -252,6 +273,7 @@
                 if (selectedStar) {
                     const rating = selectedStar.getAttribute('data-value');
                     console.log("送信された評価: " + rating);
+
                     // ここでサーバーに評価を送信する処理を追加
 
                     closePopup(); // 送信後、ポップアップを閉じる
