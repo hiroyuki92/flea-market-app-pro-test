@@ -12,6 +12,9 @@ class RatingController extends Controller
         $purchase = Purchase::findOrFail($request->input('purchase_id'));
 
         $purchase->buyer_rating = $request->input('rating');
+        if ($purchase->buyer_rating && !$purchase->completed) {
+            $purchase->completed = true; // 購入者の評価だけで取引完了
+        }
         $purchase->save();
 
 
@@ -24,8 +27,7 @@ class RatingController extends Controller
         $purchase = Purchase::findOrFail($request->input('purchase_id'));
         
         $purchase->seller_rating = $request->input('rating');
-        
-        // 両者が評価した場合、取引完了
+
         if ($purchase->buyer_rating && $purchase->seller_rating) {
             $purchase->completed = true;
         }

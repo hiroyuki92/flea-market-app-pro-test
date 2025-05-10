@@ -25,6 +25,30 @@
                 <img class="profile-picture"src="{{ asset('storage/profile_images/' . $buyer->profile_image) }}"  alt="ユーザーのプロフィール写真">
                 <h1 class="transaction-title">{{ $buyer->name }}さんとの取引画面</h1>
             </div>
+            @if ($showPopup)
+                <div id="rating-popup" class="popup" onclick="closePopup(event)">
+                    <div class="popup-content" onclick="event.stopPropagation()">
+                        <div class="popup-header">
+                            <h2>取引が完了しました。</h2>
+                        </div>
+                        <p class="popup-message">今回の取引相手はどうでしたか？</p>
+                        <form action="{{ route('submit.seller.rating') }}" method="POST">
+                            @csrf
+                            <input type="hidden" name="purchase_id" value="{{ $transaction->id }}">
+                            <input type="hidden" name="rating" value="">
+                            <div class="star-rating">
+                                <span class="star" data-value="1">&#9733;</span>
+                                <span class="star" data-value="2">&#9733;</span>
+                                <span class="star" data-value="3">&#9733;</span>
+                                <span class="star" data-value="4">&#9733;</span>
+                                <span class="star" data-value="5">&#9733;</span>
+                            </div>
+
+                            <button class="submit-btn" onclick="submitRating()">送信する</button>
+                        </form>
+                    </div>
+                </div>
+            @endif
         </div>
 
         <div class="item-section">
@@ -201,6 +225,67 @@
                 previewImageElement.style.display = 'none';
             }
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 取引完了した場合、ポップアップを自動で開く
+            @if($showPopup)
+                openPopup();  // ポップアップを表示
+            @endif
+        });
+
+        // ポップアップを表示する関数
+        function openPopup() {
+            document.getElementById("rating-popup").style.display = "flex";
+        }
+
+        // ポップアップを閉じる関数
+        function closePopup(event) {
+            if (event.target === document.getElementById("rating-popup")) {
+                document.getElementById("rating-popup").style.display = "none";
+            }
+        }
+
+        // 評価星を選択できるようにする
+        const stars = document.querySelectorAll('.star');
+            let selectedRating = null;
+
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    selectedRating = value;
+
+                    // すべての星の選択をリセット
+                    stars.forEach(star => star.classList.remove('selected'));
+
+                    // 選択した星にクラスを追加
+                    for (let i = 0; i < value; i++) {
+                        stars[i].classList.add('selected');
+                    }
+                });
+            });
+
+            // フォーム送信前に評価が選ばれているかチェック
+            document.querySelector('form').addEventListener('submit', function(event) {
+                if (!selectedRating) {
+                    event.preventDefault();
+                    alert("評価を選択してください");
+                } else {
+                    document.querySelector('input[name="rating"]').value = selectedRating;
+                }
+            });
+
+            // 評価を送信する関数
+            function submitRating() {
+                const selectedStar = document.querySelector('.star.selected');
+                if (selectedStar) {
+                    const rating = selectedStar.getAttribute('data-value');
+                    console.log("送信された評価: " + rating);
+
+                    closePopup();
+                } else {
+                    alert("評価を選択してください");
+                }
+            }
     </script>
 </div>
 @endsection('content')

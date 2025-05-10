@@ -259,10 +259,9 @@
             // フォーム送信前に評価が選ばれているかチェック
             document.querySelector('form').addEventListener('submit', function(event) {
                 if (!selectedRating) {
-                    event.preventDefault();  // フォーム送信を防ぐ
-                    alert("評価を選択してください"); // 警告メッセージを表示
+                    event.preventDefault();
+                    alert("評価を選択してください");
                 } else {
-                    // フォームの hidden フィールドに選択された評価をセット
                     document.querySelector('input[name="rating"]').value = selectedRating;
                 }
             });
@@ -274,9 +273,7 @@
                     const rating = selectedStar.getAttribute('data-value');
                     console.log("送信された評価: " + rating);
 
-                    // ここでサーバーに評価を送信する処理を追加
-
-                    closePopup(); // 送信後、ポップアップを閉じる
+                    closePopup();
                 } else {
                     alert("評価を選択してください");
                 }

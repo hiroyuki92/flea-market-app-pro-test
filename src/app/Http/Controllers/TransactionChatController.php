@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 
 class TransactionChatController extends Controller
 {
+    // 出品者のチャット画面
     public function index(Request $request, $itemId)
     {
         $user = Auth::user();
@@ -60,7 +61,9 @@ class TransactionChatController extends Controller
             }
         });
 
-        return view('transaction-chat-seller', compact('transaction', 'buyer', 'itemsInTransaction', 'chat', 'messages', 'user'));
+        $showPopup = $transaction->completed && !$transaction->seller_rating;
+
+        return view('transaction-chat-seller', compact('transaction', 'buyer', 'itemsInTransaction', 'chat', 'messages', 'user', 'showPopup'));
     }
 
     public function sellerSendMessage(TransactionRequest $request, $itemId)
@@ -169,6 +172,7 @@ class TransactionChatController extends Controller
         }
     }
 
+    // 購入者のチャット画面
     public function show(Request $request, $itemId)
     {
         $user = Auth::user();
