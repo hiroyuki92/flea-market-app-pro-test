@@ -21,6 +21,8 @@ class CreatePurchasesTable extends Migration
             $table->string('shipping_address_line');
             $table->string('shipping_building');
             $table->enum('payment_method', ['konbini', 'card']);
+            $table->boolean('completed')->default(false);
+            $table->integer('rating')->nullable();
             $table->timestamps();
         });
     }

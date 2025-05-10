@@ -25,7 +25,25 @@
                 <img class="profile-picture"src="{{ asset('storage/profile_images/' . $seller->profile_image) }}"  alt="ユーザーのプロフィール写真">
                 <h1 class="transaction-title">{{ $seller->name }}さんとの取引画面</h1>
             </div>
-            <button class="complete-button">取引を完了する</button>
+            <button class="complete-button" onclick="openPopup()">取引を完了する</button>
+            <div id="rating-popup" class="popup">
+                <div class="popup-content">
+                    <!-- <span class="close-btn" onclick="closePopup()">×</span> -->
+                    <div class="popup-header">
+                        <h2>取引が完了しました。</h2>
+                    </div>
+                    <p>今回の取引相手はどうでしたか？</p>
+                    <div class="star-rating">
+                        <span class="star" data-value="1">&#9733;</span>
+                        <span class="star" data-value="2">&#9733;</span>
+                        <span class="star" data-value="3">&#9733;</span>
+                        <span class="star" data-value="4">&#9733;</span>
+                        <span class="star" data-value="5">&#9733;</span>
+                    </div>
+
+                    <button class="submit-btn" onclick="submitRating()">送信する</button>
+                </div>
+            </div>
         </div>
 
         <div class="item-section">
@@ -199,6 +217,44 @@
                 } else {
                     // 画像が選択されていない場合、プレビューを非表示にする
                     previewImageElement.style.display = 'none';
+                }
+            }
+
+            // ポップアップを表示する関数
+            function openPopup() {
+                document.getElementById("rating-popup").style.display = "flex";
+            }
+
+            // ポップアップを閉じる関数
+            function closePopup() {
+                document.getElementById("rating-popup").style.display = "none";
+            }
+
+            // 評価星を選択できるようにする
+            const stars = document.querySelectorAll('.star');
+            stars.forEach(star => {
+                star.addEventListener('click', function() {
+                    const value = this.getAttribute('data-value');
+                    // すべての星の選択をリセット
+                    stars.forEach(star => star.classList.remove('selected'));
+                    // 選択した星にクラスを追加
+                    for (let i = 0; i < value; i++) {
+                        stars[i].classList.add('selected');
+                    }
+                });
+            });
+
+            // 評価を送信する関数
+            function submitRating() {
+                const selectedStar = document.querySelector('.star.selected');
+                if (selectedStar) {
+                    const rating = selectedStar.getAttribute('data-value');
+                    console.log("送信された評価: " + rating);
+                    // ここでサーバーに評価を送信する処理を追加
+
+                    closePopup(); // 送信後、ポップアップを閉じる
+                } else {
+                    alert("評価を選択してください");
                 }
             }
         </script>
