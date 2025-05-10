@@ -32,9 +32,11 @@ class TransactionChatController extends Controller
         ->where('in_transaction', 1)
         ->get();
 
-        // 現在表示している商品を除外
         $itemsInTransaction = $itemsInTransaction->filter(function ($item) use ($transaction) {
-            return $item->id !== $transaction->item->id;
+            $isCompletedForSeller = Purchase::where('item_id', $item->id)
+                ->excludeCompletedForSeller()  // 出品者目線で取引完了したアイテムを除外
+                ->exists();
+            return $isCompletedForSeller && $item->id !== $transaction->item->id;// 現在表示している商品を除外
         });
 
         $chat = Chat::where('item_id', $itemId)

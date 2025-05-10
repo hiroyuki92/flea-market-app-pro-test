@@ -67,7 +67,7 @@
             </div>
         @endforeach
         <!-- 取引中の商品 -->
-        @foreach ($all_transactions as $item)
+        @foreach ($sortedItems as $item)
             <div class="item-card transaction">
                 <div class="item-image">
                     @if(isset($itemsWithUnreadCount[$item->id]) && $itemsWithUnreadCount[$item->id] > 0)

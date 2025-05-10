@@ -85,5 +85,16 @@ class Chat extends Model
             'itemsWithUnreadCount' => $itemsWithUnreadCount,
             'itemsWithUnreadMessages' => $itemsWithUnreadMessages
         ];
+
+    }
+
+    /**
+     * チャットメッセージを時間順に並べるスコープ
+     */
+    public function scopeOrderMessagesByTime($query)
+    {
+        return $query->with(['messages' => function ($query) {
+            $query->orderBy('created_at', 'desc');
+        }]);
     }
 }

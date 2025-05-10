@@ -23,21 +23,14 @@ class ProfileController extends Controller
         $user->items()
             ->where('in_transaction', 1)
             ->whereHas('purchases', function ($query) {
-            $query->where('completed', false) // 取引完了していない商品を表示
-                ->orWhere(function ($query) {
-                    $query->where('completed', true)
-                        ->whereNull('seller_rating');
-            });
-        })
-        ->get() : collect();
+                $query->excludeCompletedForSeller();
+            })
+            ->get() : collect();
 
         $purchases_in_transaction = $tab === 'transaction' ? $user->purchases()
-        ->whereHas('item', function ($query) {
-            $query->where('in_transaction', 1)
-                ->where('completed', false);
-        })
-        ->with('item')
-        ->get() : collect();
+            ->excludeCompletedForBuyer()
+            ->with('item')
+            ->get() : collect();
 
         $purchases_in_transaction_items = $purchases_in_transaction->map(function ($purchase) {
             return $purchase->item;
@@ -45,11 +38,30 @@ class ProfileController extends Controller
 
         $all_transactions = $transactions->merge($purchases_in_transaction_items);
 
+          // メッセージを時間順に並べる
+        $itemsWithMessages = $all_transactions->map(function ($item) use ($user) {
+            $chat = Chat::where('item_id', $item->id)
+                ->where(function ($query) use ($user) {
+                    $query->where('buyer_id', $user->id)
+                        ->orWhere('seller_id', $user->id);
+                })
+                ->orderMessagesByTime()  // メッセージを時間順に並べる
+                ->first();
+
+            if ($chat) {
+                $item->last_message_time = $chat->messages->first()->created_at ?? null;  // 最新のメッセージの時間を取得
+            }
+
+            return $item;
+        });
+        // メッセージの届いた時間順にアイテムを並べる
+        $sortedItems = $itemsWithMessages->sortByDesc('last_message_time');
+
         $unreadInfo = Chat::getUnreadMessagesForUserTransactions($user->id);
         $itemsWithUnreadCount = $unreadInfo['itemsWithUnreadCount'];
         $itemsWithUnreadMessages = $unreadInfo['itemsWithUnreadMessages'];
 
-        return view('profile', compact('purchases', 'items', 'all_transactions', 'tab', 'itemsWithUnreadCount', 'itemsWithUnreadMessages'));
+        return view('profile', compact('purchases', 'items', 'tab', 'itemsWithUnreadCount','itemsWithUnreadMessages', 'sortedItems'));
     }
 
     /**
