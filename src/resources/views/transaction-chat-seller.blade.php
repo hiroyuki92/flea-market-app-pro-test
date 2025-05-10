@@ -264,15 +264,22 @@
                 });
             });
 
-            // フォーム送信前に評価が選ばれているかチェック
-            document.querySelector('form').addEventListener('submit', function(event) {
-                if (!selectedRating) {
-                    event.preventDefault();
-                    alert("評価を選択してください");
-                } else {
-                    document.querySelector('input[name="rating"]').value = selectedRating;
+            /// チャットメッセージ送信時の処理
+            function handleMessageSubmit(event) {
+                // 評価フォームのチェックをスキップ
+                if (!document.getElementById("rating-popup")) {
+                    return true;
                 }
-            });
+
+                // 評価が選ばれているか確認
+                const selectedRating = document.querySelector('.star.selected');
+                if (!selectedRating) {
+                    alert("評価を選択してください");
+                    event.preventDefault();
+                    return false;
+                }
+                return true;
+            }
 
             // 評価を送信する関数
             function submitRating() {
