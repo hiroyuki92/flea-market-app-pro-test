@@ -125,10 +125,25 @@ class ItemsTableSeeder extends Seeder
             ],
         ];
 
-        foreach ($items as $itemData) {
-            $randomUserId = $faker->randomElement($userIds);
+        for ($i = 0; $i < 5; $i++) {
+            $itemData = $items[$i];
             $item = Item::create([
-                'user_id' => $randomUserId,
+                'user_id' => 1, // user_id=1に固定
+                'name' => $itemData['name'],
+                'brand' => $itemData['brand'],
+                'price' => $itemData['price'],
+                'description' => $itemData['description'],
+                'condition' => $itemData['condition'],
+                'image_url' => $itemData['image_url'],
+                'sold_out' => false,
+            ]);
+            $item->categories()->attach($itemData['categories']);
+        }
+
+        for ($i = 5; $i < count($items); $i++) {
+            $itemData = $items[$i];
+            $item = Item::create([
+                'user_id' => 2, // user_id=2に固定
                 'name' => $itemData['name'],
                 'brand' => $itemData['brand'],
                 'price' => $itemData['price'],

@@ -39,6 +39,22 @@ class UserFactory extends Factory
     }
 
     /**
+     * ユーザーに特定のメールアドレスを設定
+     *
+     * @param string $email
+     * @return \Illuminate\Database\Eloquent\Factories\Factory
+     */
+    public function withEmail($email)
+    {
+        return $this->state(function (array $attributes) use ($email) {
+            return [
+                'email' => $email,
+            ];
+        });
+    }
+
+
+    /**
      * Indicate that the model's email address should be unverified.
      *
      * @return \Illuminate\Database\Eloquent\Factories\Factory
@@ -52,35 +68,4 @@ class UserFactory extends Factory
         });
     }
 
-    /**
-     * Define an admin state.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function admin()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'role' => 'admin', // 管理者ユーザー
-                'email' => 'admin@example.com',
-                'name' => '管理者ユーザー',
-            ];
-        });
-    }
-
-    /**
-     * Define a regular user state.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
-     */
-    public function regularUser()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'role' => 'user', // 一般ユーザー
-                'email' => 'user@example.com',
-                'name' => '一般ユーザー',
-            ];
-        });
-    }
 }
