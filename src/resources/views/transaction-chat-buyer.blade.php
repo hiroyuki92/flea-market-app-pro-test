@@ -26,13 +26,12 @@
                 <h1 class="transaction-title">{{ $seller->name }}さんとの取引画面</h1>
             </div>
             <button class="complete-button" onclick="openPopup()">取引を完了する</button>
-            <div id="rating-popup" class="popup">
-                <div class="popup-content">
-                    <!-- <span class="close-btn" onclick="closePopup()">×</span> -->
+            <div id="rating-popup" class="popup" onclick="closePopup(event)">
+                <div class="popup-content"  onclick="event.stopPropagation()">
                     <div class="popup-header">
                         <h2>取引が完了しました。</h2>
                     </div>
-                    <p>今回の取引相手はどうでしたか？</p>
+                    <p class="popup-message">今回の取引相手はどうでしたか？</p>
                     <div class="star-rating">
                         <span class="star" data-value="1">&#9733;</span>
                         <span class="star" data-value="2">&#9733;</span>
@@ -226,8 +225,11 @@
             }
 
             // ポップアップを閉じる関数
-            function closePopup() {
-                document.getElementById("rating-popup").style.display = "none";
+            function closePopup(event) {
+                // 背景部分をクリックしたときにポップアップを閉じる
+                if (event.target === document.getElementById("rating-popup")) {
+                    document.getElementById("rating-popup").style.display = "none";
+                }
             }
 
             // 評価星を選択できるようにする
