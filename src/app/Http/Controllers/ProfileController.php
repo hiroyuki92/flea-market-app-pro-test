@@ -18,14 +18,23 @@ class ProfileController extends Controller
         // データの取得
         $items = $tab === 'sell' ? $user->items : [];
         $purchases = $tab === 'buy' ? $user->purchases()->with('item')->get() : [];
+
         $transactions = $tab === 'transaction' ?
         $user->items()
             ->where('in_transaction', 1)
-            ->get() : collect();
+            ->whereHas('purchases', function ($query) {
+            $query->where('completed', false) // 取引完了していない商品を表示
+                ->orWhere(function ($query) {
+                    $query->where('completed', true)
+                        ->whereNull('seller_rating');
+            });
+        })
+        ->get() : collect();
 
         $purchases_in_transaction = $tab === 'transaction' ? $user->purchases()
         ->whereHas('item', function ($query) {
-            $query->where('in_transaction', 1); // 購入した商品が取引中か確認
+            $query->where('in_transaction', 1)
+                ->where('completed', false);
         })
         ->with('item')
         ->get() : collect();
