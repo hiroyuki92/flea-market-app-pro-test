@@ -58,11 +58,14 @@ class Purchase extends Model
     // buyer と seller の評価を合算して平均を計算
     public function scopeAverageOverallRating($query, $userId)
     {
+        $sellerQuery = clone $query;
+        $buyerQuery = clone $query;
+
         // buyer と seller の評価を取得
-        $buyerRating = $query->where('user_id', $userId)->avg('seller_rating');
-        $sellerRating = $query->whereHas('item', function ($query) use ($userId) {
-            $query->where('user_id', $userId);
-        })->avg('buyer_rating');
+        $sellerRating = $sellerQuery->where('user_id', $userId)->avg('seller_rating');//自分が購入者の時の出品者からの評価
+        $buyerRating = $buyerQuery->whereHas('item', function ($subQuery) use ($userId) {
+            $subQuery->where('user_id', $userId);
+        })->avg('buyer_rating');//自分が出品者の時の購入者からの評価
 
         // 合算して平均を計算
         $totalRatings = 0;
@@ -78,7 +81,6 @@ class Purchase extends Model
             $totalCount++;
         }
 
-        // 評価がある場合、平均を計算して返す
         return $totalCount > 0 ? round($totalRatings / $totalCount) : 0; // 平均を四捨五入、評価がなければ0を返す
     }
 }

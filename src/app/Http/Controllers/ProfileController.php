@@ -66,6 +66,7 @@ class ProfileController extends Controller
         // buyerとsellerの評価を合算して総合評価を取得
         $averageOverallRating = Purchase::averageOverallRating($user->id);
 
+
         $averageOverallRating = $averageOverallRating ? $averageOverallRating : 0;
 
         return view('profile', compact('purchases', 'items', 'tab', 'itemsWithUnreadCount','itemsWithUnreadMessages', 'sortedItems', 'averageOverallRating'));
