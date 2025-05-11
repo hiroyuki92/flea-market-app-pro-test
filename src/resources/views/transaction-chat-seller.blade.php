@@ -254,6 +254,8 @@
                     const value = this.getAttribute('data-value');
                     selectedRating = value;
 
+                    document.querySelector('input[name="rating"]').value = value;
+
                     // すべての星の選択をリセット
                     stars.forEach(star => star.classList.remove('selected'));
 

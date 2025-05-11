@@ -38,14 +38,14 @@ class ProfileController extends Controller
 
         $all_transactions = $transactions->merge($purchases_in_transaction_items);
 
-          // メッセージを時間順に並べる
+        // 未読メッセージを時間順に並べる
         $itemsWithMessages = $all_transactions->map(function ($item) use ($user) {
             $chat = Chat::where('item_id', $item->id)
                 ->where(function ($query) use ($user) {
                     $query->where('buyer_id', $user->id)
                         ->orWhere('seller_id', $user->id);
                 })
-                ->orderMessagesByTime()  // メッセージを時間順に並べる
+                ->orderMessagesByTime()
                 ->first();
 
             if ($chat) {
@@ -54,6 +54,7 @@ class ProfileController extends Controller
 
             return $item;
         });
+
         // メッセージの届いた時間順にアイテムを並べる
         $sortedItems = $itemsWithMessages->sortByDesc('last_message_time');
 

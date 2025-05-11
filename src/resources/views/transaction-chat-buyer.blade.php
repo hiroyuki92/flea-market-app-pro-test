@@ -12,7 +12,7 @@
         <ul class="item-list">
             @foreach ($otherItemsInTransaction as $item)
             <li class="item-link">
-                <a href="{{ route('transaction.show', ['item_id' => $item->id]) }}" class="item-link-text">
+                <a href="{{ route('transaction.show.buyer', ['item_id' => $item->id]) }}" class="item-link-text">
                     {{ $item->name }}
                 </a>
             </li>

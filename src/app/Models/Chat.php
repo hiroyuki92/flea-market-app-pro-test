@@ -94,7 +94,8 @@ class Chat extends Model
     public function scopeOrderMessagesByTime($query)
     {
         return $query->with(['messages' => function ($query) {
-            $query->orderBy('created_at', 'desc');
+            $query->where('is_read', false)
+                ->orderBy('created_at', 'desc');
         }]);
     }
 }
