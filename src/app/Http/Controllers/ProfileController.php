@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Models\Chat;
+use App\Models\Purchase;
 
 class ProfileController extends Controller
 {
@@ -62,7 +63,12 @@ class ProfileController extends Controller
         $itemsWithUnreadCount = $unreadInfo['itemsWithUnreadCount'];
         $itemsWithUnreadMessages = $unreadInfo['itemsWithUnreadMessages'];
 
-        return view('profile', compact('purchases', 'items', 'tab', 'itemsWithUnreadCount','itemsWithUnreadMessages', 'sortedItems'));
+        // buyerとsellerの評価を合算して総合評価を取得
+        $averageOverallRating = Purchase::averageOverallRating($user->id);
+
+        $averageOverallRating = $averageOverallRating ? $averageOverallRating : 0;
+
+        return view('profile', compact('purchases', 'items', 'tab', 'itemsWithUnreadCount','itemsWithUnreadMessages', 'sortedItems', 'averageOverallRating'));
     }
 
     /**

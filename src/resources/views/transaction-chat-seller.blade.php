@@ -64,92 +64,46 @@
         <div class="chat-section">
             <div class="chat-section-content">
                 @foreach ($messages->sortBy('created_at') as $message)
-                    @if ($message->sender_id == $user->id)
-                        <div class="message-right">
-                            <div class="message-sender">
-                                <div class="user-name">{{ $message->sender->name }}</div>
-                                <img class="seller-picture"src="{{ asset('storage/profile_images/' . $message->sender->profile_image) }}"  alt="ユーザーのプロフィール写真">
-                            </div>
-                            <div class="message-box-right">
-                                {{ $message->message }}
-                            </div>
-                            @if ($message->image_url)
-                                <img class="message-picture" src="{{ asset('storage/image_url/' . $message->image_url) }}" alt="メッセージ画像">
-                            @endif
-                            <div class="button-group">
-                                <button class="update-form__button-submit" onclick="openEditModal({{ $message->id }}, '{{ addslashes($message->message) }}')">編集</button>
-                                    <form class="delete-form" action="/transaction/delete" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                        <input type="hidden" name="message_id" value="{{ $message->id }}">
-                                        <div class="button-group">
-                                            <button class="delete-form__button-submit" type="submit">削除</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div id="edit-modal" class="modal">
-                                <div class="modal-content">
-                                    <span class="close-button" onclick="closeEditModal()">&times;</span>
-                                    <div class="modal-title">メッセージを編集</div>
-                                    
-                                    <form id="edit-form" action="/transaction/update" method="post">
-                                        @csrf
-                                        @method('PATCH')
-                                        <textarea id="edit-message-text" name="message" class="edit-textarea"></textarea>
-                                        <input type="hidden" id="edit-message-id" name="message_id" value="">
-                                        
-                                        <div class="modal-buttons">
-                                            <button type="button" onclick="closeEditModal()">キャンセル</button>
-                                            <button type="submit" class="save-button">保存</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                    <div class="message-{{ $message->sender_id == $user->id ? 'right' : 'left' }}">
+                        <div class="message-sender">
+                            <div class="user-name">{{ $message->sender->name }}</div>
+                            <img class="seller-picture" src="{{ asset('storage/profile_images/' . $message->sender->profile_image) }}" alt="ユーザーのプロフィール写真">
                         </div>
-                    @else
-                        <div class="message-left">
-                            <div class="message-sender">
-                                <div class="user-name">{{ $message->sender->name }}</div>
-                                <img class="seller-picture" src="{{ asset('storage/profile_images/' . $message->sender->profile_image) }}" alt="ユーザーのプロフィール写真">
-                            </div>
-                            <div class="message-box-left">
-                                {{ $message->message }}
-                            </div>
-                            @if ($message->image_url)
-                                <img class="message-picture" src="{{ asset('storage/image_url/' . $message->image_url) }}" alt="メッセージ画像">
-                            @endif
-                            <div class="button-group">
-                                <button class="update-form__button-submit" onclick="openEditModal({{ $message->id }}, '{{ addslashes($message->message) }}')">編集</button>
-                                    <form class="delete-form" action="/transaction/delete" method="post">
-                                        @method('DELETE')
-                                        @csrf
-                                        <input type="hidden" name="message_id" value="{{ $message->id }}">
-                                        <div class="button-group">
-                                            <button class="delete-form__button-submit" type="submit">削除</button>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div id="edit-modal" class="modal">
-                                <div class="modal-content">
-                                    <span class="close-button" onclick="closeEditModal()">&times;</span>
-                                    <div class="modal-title">メッセージを編集</div>
-                                    
-                                    <form id="edit-form" action="/transaction/update" method="post">
-                                        @csrf
-                                        @method('PATCH')
-                                        <textarea id="edit-message-text" name="message" class="edit-textarea"></textarea>
-                                        <input type="hidden" id="edit-message-id" name="message_id" value="">
-                                        
-                                        <div class="modal-buttons">
-                                            <button type="button" onclick="closeEditModal()">キャンセル</button>
-                                            <button type="submit" class="save-button">保存</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+                        <div class="message-box-{{ $message->sender_id == $user->id ? 'right' : 'left' }}">
+                            {{ $message->message }}
                         </div>
-                    @endif
+                        @if ($message->image_url)
+                            <img class="message-picture" src="{{ asset('storage/image_url/' . $message->image_url) }}" alt="メッセージ画像">
+                        @endif
+                        <div class="button-group">
+                            <button class="update-form__button-submit" onclick="openEditModal({{ $message->id }}, '{{ addslashes($message->message) }}')">編集</button>
+                            <form class="delete-form" action="/transaction/delete" method="post">
+                                @method('DELETE')
+                                @csrf
+                                <input type="hidden" name="message_id" value="{{ $message->id }}">
+                                <button class="delete-form__button-submit" type="submit">削除</button>
+                            </form>
+                        </div>
+                    </div>
                 @endforeach
+                <div id="edit-modal" class="modal">
+                    <div class="modal-content">
+                        <span class="close-button" onclick="closeEditModal()">&times;</span>
+                        <div class="modal-title">メッセージを編集</div>
+                        
+                        <form id="edit-form" action="/transaction/update" method="post">
+                            @csrf
+                            @method('PATCH')
+                            <textarea id="edit-message-text" name="message" class="edit-textarea"></textarea>
+                            <input type="hidden" id="edit-message-id" name="message_id" value="">
+
+                            <div class="modal-buttons">
+                                <button type="button" onclick="closeEditModal()">キャンセル</button>
+                                <button type="submit" class="save-button">保存</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <div class="message-input-container">
                 @error('message')

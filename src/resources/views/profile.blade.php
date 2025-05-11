@@ -28,7 +28,16 @@
 <div class="profile-container">
     <div class="profile-header">
         <img class="profile-picture"src="{{ asset('storage/profile_images/' . Auth::user()->profile_image) }}"  alt="ユーザーのプロフィール写真">
-        <div class="profile-info">{{ Auth::user()->name }}</div>
+        <div class ="profile-info">
+            <div class="profile-info-name">{{ Auth::user()->name }}</div>
+            @if ($averageOverallRating > 0)
+                <div class="star-rating">
+                    @for ($i = 1; $i <= 5; $i++)
+                        <span class="star {{ $i <= $averageOverallRating ? 'filled' : 'empty' }}">&#9733;</span>
+                    @endfor
+                </div>
+            @endif
+            </div>
         <div class="profile-edit">
             <a href="/mypage/profile" class="edit-profile-btn">プロフィールを編集</a>
         </div>
