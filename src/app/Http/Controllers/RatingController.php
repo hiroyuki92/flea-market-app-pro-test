@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Purchase;
+use App\Mail\TransactionCompleted;
+use Illuminate\Support\Facades\Mail;
 
 class RatingController extends Controller
 {
@@ -17,7 +19,8 @@ class RatingController extends Controller
         }
         $purchase->save();
 
-
+        $seller = $purchase->item->user;
+        Mail::to($seller->email)->send(new TransactionCompleted($purchase));
 
         return redirect()->route('index');
     }

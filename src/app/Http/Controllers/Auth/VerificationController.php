@@ -24,7 +24,7 @@ class VerificationController extends Controller
     {
         $request->fulfill();
 
-        return redirect()->route('profile.edit')->with('verified', true);  // リダイレクト先を適切に設定
+        return redirect()->route('profile.edit')->with('verified', true);
     }
 
     public function resend(Request $request)
@@ -35,26 +35,3 @@ class VerificationController extends Controller
     }
 }
 
-/* class VerificationController extends Controller
-{
-    // 認証待ち画面を表示
-    public function show()
-    {
-        return view('auth.verify');
-    }
-
-    // メール認証処理
-    public function verify(EmailVerificationRequest $request)
-    {
-        $request->fulfill();
-        return redirect('/home'); // 認証後にリダイレクトする先を指定
-    }
-
-    // 認証メールの再送信
-    public function resend(Request $request)
-    {
-        $request->user()->sendEmailVerificationNotification();
-
-        return back()->with('message', '認証メールを再送しました。');
-    }
-} */
