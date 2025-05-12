@@ -143,9 +143,9 @@
                     @error('comment')
                     <div class="error-message">{{ $message }}</div>
                     @enderror
+                    <button type="submit" class="submit-button">コメントを送信する</button>
                 </form>
             </div>
-            <button type="submit" class="submit-button">コメントを送信する</button>
         </div>
     </div>
 </div>

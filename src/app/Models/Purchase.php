@@ -71,27 +71,23 @@ class Purchase extends Model
         $sellerQuery = clone $query;
         $buyerQuery = clone $query;
 
-        // buyer と seller の評価を取得
-        $sellerRating = $sellerQuery->where('user_id', $userId)->avg('seller_rating');//自分が購入者の時の出品者からの評価
-        $buyerRating = $buyerQuery->whereHas('item', function ($subQuery) use ($userId) {
+        // 売り手として受けた評価の合計と件数
+        $sellerStats = $sellerQuery->where('user_id', $userId)
+            ->selectRaw('SUM(seller_rating) as sum, COUNT(seller_rating) as count')
+            ->whereNotNull('seller_rating')
+            ->first();
+
+        $buyerStats = $buyerQuery->whereHas('item', function ($subQuery) use ($userId) {
             $subQuery->where('user_id', $userId);
-        })->avg('buyer_rating');//自分が出品者の時の購入者からの評価
+        })
+        ->selectRaw('SUM(buyer_rating) as sum, COUNT(buyer_rating) as count')
+        ->whereNotNull('buyer_rating')
+        ->first();
 
-        // 合算して平均を計算
-        $totalRatings = 0;
-        $totalCount = 0;
+        $totalSum = ($sellerStats->sum ?: 0) + ($buyerStats->sum ?: 0);
+        $totalCount = ($sellerStats->count ?: 0) + ($buyerStats->count ?: 0);
 
-        if (!is_null($buyerRating)) {
-            $totalRatings += $buyerRating;
-            $totalCount++;
-        }
-
-        if (!is_null($sellerRating)) {
-            $totalRatings += $sellerRating;
-            $totalCount++;
-        }
-
-        return $totalCount > 0 ? round($totalRatings / $totalCount) : 0; // 平均を四捨五入、評価がなければ0を返す
+        return $totalCount > 0 ? round($totalSum / $totalCount) : 0;
     }
 }
 
