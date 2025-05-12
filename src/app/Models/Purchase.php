@@ -28,14 +28,24 @@ class Purchase extends Model
     }
 
     /**
+     * 取引中のアイテムのみ
+     */
+    public function scopeInTransaction($query)
+    {
+        return $query->whereHas('item', function ($itemQuery) {
+            $itemQuery->where('in_transaction', 1);
+        });
+    }
+
+    /**
      * 購入者の視点で取引完了したものを除外
      */
     public function scopeExcludeCompletedForBuyer($query)
     {
-        return $query->whereHas('item', function ($query) {
-            $query->where('in_transaction', 1)
-                ->where('completed', false);
-        });
+        return $query->inTransaction()
+                    ->whereHas('item', function ($itemQuery) {
+                        $itemQuery->where('completed', false);
+                    });
     }
 
     /**
@@ -43,15 +53,15 @@ class Purchase extends Model
      */
     public function scopeExcludeCompletedForSeller($query)
     {
-        return $query->whereHas('item', function ($query) {
-        $query->where('in_transaction', 1)
-            ->where(function ($query) {
-                $query->where('completed', false)
-                    ->orWhere(function ($query) {
-                        $query->where('completed', true)
-                            ->whereNull('seller_rating');  // seller_ratingがnullの商品
-                    });
+        return $query->inTransaction()
+        ->whereHas('item', function ($itemQuery) {
+            $itemQuery->where(function ($conditionQuery) {
+                $conditionQuery->where('completed', false)
+                ->orWhere(function ($ratingQuery) {
+                    $ratingQuery->where('completed', true)
+                            ->whereNull('seller_rating');
                 });
+            });
         });
     }
 

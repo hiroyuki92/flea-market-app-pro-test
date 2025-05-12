@@ -193,11 +193,9 @@ class TransactionChatController extends Controller
         }
 
         $purchasesInTransaction = Purchase::where('user_id', $user->id)
-        ->whereHas('item', function ($query) {
-            $query->where('in_transaction', 1);
-        })
-        ->with('item')
-        ->get();
+            ->excludeCompletedForBuyer() // PurchaseModelのscopeを使用して未完了商品を抽出
+            ->with('item')
+            ->get();
 
         $otherItemsInTransaction = $purchasesInTransaction->filter(function ($purchase) use ($transaction) {
             return $purchase->item_id !== $transaction->item_id;
