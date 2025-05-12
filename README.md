@@ -117,10 +117,9 @@ php artisan test
 ```
 
 ## 使用技術(実行環境)
-- PHP8.3.0
-- Laravel8.83.27
-- MySQL8.0.26
-- nginx 1.21.1
+- Laravel8.83.27   
+- MySQL8.0.26（Dockerコンテナ）  
+- nginx 1.21.1（Dockerコンテナ）   
 - Stripe決済システム
 - MailHog（開発環境でのメール送信テスト用）
 
