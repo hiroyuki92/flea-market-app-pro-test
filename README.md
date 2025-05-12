@@ -2,8 +2,8 @@
 
 ## 環境構築
 **Dockerビルド**
-1. `git clone git@github.com:hiroyuki92/flea-market-app.git`
-2. `cd flea-market-app`     クローンしたディレクトリに移動する
+1. `git@github.com:hiroyuki92/flea-market-app-pro-test.git`
+2. `cd flea-market-app-pro-test`     クローンしたディレクトリに移動する
 3. DockerDesktopアプリを立ち上げる
 4. `docker-compose up -d --build`
 
@@ -37,19 +37,20 @@ php artisan key:generate --env=testing  # .env.testing用
 ``` bash
 php artisan migrate --seed
 ```  
-　実行すると以下の初期データが作成されます  
-  - 管理者ユーザー  
-	メールアドレス: admin@example.com  
-	パスワード: password  
-	権限: 管理者  
-  - 一般ユーザー  
-	メールアドレス: user@example.com  
-	パスワード: password  
-	権限: 一般ユーザー  
-  - ランダムな一般ユーザー  
-	ダミーユーザーが10人生成されます。  
-	メールアドレスや名前はランダムに設定されています。  
-	パスワード: password  
+　実行すると以下の初期データが作成されます   
+  - 一般ユーザー（３人）  
+	ダミーユーザーが3人生成されます。  
+	⚫︎一般ユーザー（一人目）CO01〜CO05を出品    
+	メールアドレス: user1@example.com    
+	パスワード: password
+
+	⚫︎一般ユーザー（二人目）CO06〜CO10を出品    
+	メールアドレス: user2@example.com    
+	パスワード: password 
+
+	⚫︎一般ユーザー（三人目）  
+	メールアドレス: user3@example.com    
+	パスワード: password 
 
 7. ストレージリンクの作成
 ``` bash
@@ -123,52 +124,56 @@ erDiagram
         varchar(255) email UK
         varchar(255) password 
         varchar(255) profile_image
-	varchar(10) postal_code 
+        varchar(10) postal_code 
         varchar(255) address_line 
         varchar(255) building
-	varchar(255) role
+        varchar(255) role
         datetime created_at 
         datetime updated_at
-　　　　　boolean first_login  
+        boolean first_login  
     }
 
     ITEMS {
         bigint id PK 
         bigint user_id FK
-        VARCHAR(255) name 
-        VARCHAR(255) brand 
+        varchar(255) name 
+        varchar(255) brand 
         decimal price 
         text description 
-        VARCHAR(255) image_url
-	int condition 
+        varchar(255) image_url
+        int condition 
         datetime created_at 
         datetime updated_at
-	boolean sold_out 
+        boolean sold_out
+	boolean in_transaction
     }
-    
+
     CATEGORIES {
         bigint id PK 
         varchar(255) name UK
         datetime created_at 
         datetime updated_at 
- 　　}
+    }
 
     CATEGORY_ITEM {
         bigint id PK
-	bigint item_id FK
-	bigint category_id FK 
+        bigint item_id FK
+        bigint category_id FK 
         datetime created_at 
         datetime updated_at 
- 　　}
+    }
 
-    PURCHASES{
+    PURCHASES {
         bigint id PK
         bigint user_id FK
         bigint item_id FK
         varchar(10) shipping_postal_code 
         varchar(255) shipping_address_line 
         varchar(255) shipping_building
-        int　payment_method　
+        int payment_method
+	int buyer_rating
+	int seller_rating
+	boolean completed
         datetime created_at 
         datetime updated_at
     }
@@ -200,6 +205,7 @@ erDiagram
     ITEMS ||--o{ COMMENTS : ""
     ITEMS ||--o{ FAVORITES : ""
     ITEMS ||--o| PURCHASES : ""
+
 
 ```
 
