@@ -2,7 +2,7 @@
 
 ## 環境構築
 **Dockerビルド**
-1. `git@github.com:hiroyuki92/flea-market-app-pro-test.git`
+1. `git clone git@github.com:hiroyuki92/flea-market-app-pro-test.git`
 2. `cd flea-market-app-pro-test`     クローンしたディレクトリに移動する
 3. DockerDesktopアプリを立ち上げる
 4. `docker-compose up -d --build`
@@ -27,13 +27,22 @@ DB_DATABASE=laravel_db
 DB_USERNAME=laravel_user
 DB_PASSWORD=laravel_pass
 ```
-5. 各環境のアプリケーションキーを生成
+6. .env.testingに以下の環境変数を追加
+``` text
+DB_CONNECTION=mysql
+DB_HOST=mysql
+DB_PORT=3306
+DB_DATABASE=demo_test
+DB_USERNAME=laravel_user
+DB_PASSWORD=laravel_pass
+```
+7. 各環境のアプリケーションキーを生成
 ``` bash
 php artisan key:generate        # .env用
 php artisan key:generate --env=testing  # .env.testing用
 ```
 
-6. マイグレーションとシーディングの実行
+8. マイグレーションとシーディングの実行
 ``` bash
 php artisan migrate --seed
 ```  
@@ -52,11 +61,11 @@ php artisan migrate --seed
 	メールアドレス: user3@example.com    
 	パスワード: password 
 
-7. ストレージリンクの作成
+9. ストレージリンクの作成
 ``` bash
 php artisan storage:link
 ```
-8. Stripe決済機能の設定 
+10. Stripe決済機能の設定 
  
  	⚫︎Stripeアカウントの準備
   	 - [Stripe Dashboard](https://dashboard.stripe.com/register)でアカウントを作成
@@ -75,7 +84,7 @@ php artisan storage:link
 	#### Stripe決済機能の設定の注意事項
 	- シークレットキーは絶対に公開リポジトリにコミットしないでください
 
-9. メール認証機能の設定  
+11. メール認証機能の設定  
     #### 機能概要
 	このアプリケーションには、ユーザー登録時にメールアドレスを確認するためのメール認証機能が実装されています。この機能により、不正なアカウント作成を防ぎ、アプリケーションのセキュリティを向上させます。
 
@@ -102,7 +111,7 @@ php artisan storage:link
 	送信されたメールはMailHogのWeb UI (http://localhost:8025) で確認できます。
 
    
-11. テストの実行
+12. テストの実行
 ``` bash
 php artisan test
 ```
