@@ -28,8 +28,8 @@ class PaymentMethodTest extends TestCase
     {
         parent::setUp();
         $this->seed(\Database\Seeders\CategoriesTableSeeder::class);
-        $this->user = User::factory()->create();
-        $this->anotherUser = User::factory()->create();
+        $this->user = User::factory()->create(['id' => 1]);
+        $this->anotherUser = User::factory()->create(['id' => 2]);
         $this->seed(\Database\Seeders\ItemsTableSeeder::class);
         $this->item = Item::where('user_id', '!=', $this->user->id)->first();
     }

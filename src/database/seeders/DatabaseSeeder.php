@@ -14,9 +14,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory()->withEmail('user1@example.com')->create();
-        User::factory()->withEmail('user2@example.com')->create();
-        User::factory()->withEmail('user3@example.com')->create();
+        User::factory()->create([
+            'id' => 1,
+            'email' => 'user1@example.com'
+        ]);
+        User::factory()->create([
+            'id' => 2,
+            'email' => 'user2@example.com'
+        ]);
+        User::factory()->create([
+            'id' => 3,
+            'email' => 'user3@example.com'
+        ]);
         $this->call([
             CategoriesTableSeeder::class,
             ItemsTableSeeder::class, ]);

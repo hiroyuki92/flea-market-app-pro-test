@@ -17,7 +17,8 @@ class ItemDetailTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create(['id' => 1]);
+        User::factory()->create(['id' => 2]);
         $this->seed(\Database\Seeders\CategoriesTableSeeder::class);
         $this->seed(\Database\Seeders\ItemsTableSeeder::class);
         $items = Item::take(3)->get();

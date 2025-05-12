@@ -20,9 +20,8 @@ class GetProductListTest extends TestCase
         parent::setUp();
 
         // 共通のセットアップ処理
-        $this->user = User::factory()->create();
-        $this->anotherUser = User::factory()->create();
-        $this->actingAs($this->user);
+        $this->user = User::factory()->create(['id' => 1]);
+        $this->anotherUser = User::factory()->create(['id' => 2]);
         $this->seed(\Database\Seeders\CategoriesTableSeeder::class);
         $this->seed(\Database\Seeders\ItemsTableSeeder::class);
     }
@@ -51,6 +50,7 @@ class GetProductListTest extends TestCase
 
     public function test_own_products_do_not_appear_in_the_list()
     {
+        $this->actingAs($this->user);
         $items = Item::take(2)->get();
         $items[0]->update(['user_id' => $this->user->id, 'name' => 'My Item']);
         $items[1]->update(['user_id' => $this->anotherUser->id, 'name' => 'Other User Item']);

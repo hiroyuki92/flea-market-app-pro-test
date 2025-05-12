@@ -23,7 +23,8 @@ class AddressUpdateTest extends TestCase
     {
         parent::setUp();
         $this->seed(\Database\Seeders\CategoriesTableSeeder::class);
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->create(['id' => 1]);
+        User::factory()->create(['id' => 2]);
         $this->seed(\Database\Seeders\ItemsTableSeeder::class);
         $this->item = Item::first();
     }

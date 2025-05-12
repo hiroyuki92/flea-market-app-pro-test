@@ -21,9 +21,11 @@ class UserProfileTest extends TestCase
         parent::setUp();
         $this->seed(\Database\Seeders\CategoriesTableSeeder::class);
         $this->user = User::factory()->create([
+            'id' => 1,
             'name' => 'テストユーザー',
         ]);
         $this->otherUser = User::factory()->create([
+            'id' => 2,
             'name' => '出品者ユーザー',
         ]);
         $this->seed(\Database\Seeders\ItemsTableSeeder::class);
