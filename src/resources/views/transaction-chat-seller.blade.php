@@ -75,15 +75,17 @@
                         @if ($message->image_url)
                             <img class="message-picture" src="{{ asset('storage/image_url/' . $message->image_url) }}" alt="メッセージ画像">
                         @endif
-                        <div class="button-group">
-                            <button class="update-form__button-submit" onclick="openEditModal({{ $message->id }}, '{{ addslashes($message->message) }}')">編集</button>
-                            <form class="delete-form" action="/transaction/delete" method="post">
-                                @method('DELETE')
-                                @csrf
-                                <input type="hidden" name="message_id" value="{{ $message->id }}">
-                                <button class="delete-form__button-submit" type="submit">削除</button>
-                            </form>
-                        </div>
+                        @if ($message->sender_id == $user->id)
+                            <div class="button-group">
+                                <button class="update-form__button-submit" onclick="openEditModal({{ $message->id }}, '{{ addslashes($message->message) }}')">編集</button>
+                                <form class="delete-form" action="/transaction/delete" method="post">
+                                    @method('DELETE')
+                                    @csrf
+                                    <input type="hidden" name="message_id" value="{{ $message->id }}">
+                                    <button class="delete-form__button-submit" type="submit">削除</button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 @endforeach
                 <div id="edit-modal" class="modal">
@@ -117,7 +119,7 @@
                     <input type="hidden" name="item_id" value="{{ $transaction->item->id }}">
                     <input type="hidden" name="buyer_id" value="{{ $buyer->id }}">
                     <input type="hidden" name="seller_id" value="{{ Auth::id() }}">
-                    <textarea class="message-input"  name="message" placeholder="取引メッセージを記入してください">{{ old('message') }}</textarea>
+                    <textarea class="message-input"  name="message" placeholder="取引メッセージを記入してください" required>{{ old('message') }}</textarea>
                     <div class="input-actions">
                         <img id="preview" class="preview" src="" alt="選択した画像のプレビュー" style="display: none;" />
                         <div class="image-button">
@@ -253,15 +255,23 @@
             // ページ遷移前に入力内容を保存
             document.addEventListener("DOMContentLoaded", function() {
                 const messageInput = document.querySelector('.message-input');
-                
+                const form = document.querySelector('.message-input-text');
+
                 // ページロード時にlocalStorageから入力内容を設定
-                if (localStorage.getItem('sellerMessage')) {
-                    messageInput.value = localStorage.getItem('sellerMessage');
+                const savedMessage = localStorage.getItem('sellerMessage');
+                if (savedMessage && !messageInput.value) {
+                    messageInput.value = savedMessage;
                 }
 
                 // 入力内容をlocalStorageに保存
                 messageInput.addEventListener('input', function() {
                     localStorage.setItem('sellerMessage', messageInput.value);
+                });
+
+                // フォーム送信前の処理
+                form.addEventListener('submit', function(event) {
+                    // サーバーサイドでバリデーションするので、ここではlocalStorageをクリアするだけ
+                    localStorage.removeItem('sellerMessage');
                 });
             });
     </script>
