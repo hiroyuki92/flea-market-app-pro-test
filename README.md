@@ -117,7 +117,7 @@ php artisan test
 ```
 
 今回のPro入会テストで追加した機能のtestを作成しました。  
-Chat.testとTransaction.testの二つを追加しています。
+ChatTestとTransactionTestの二つを追加しています。
 
 
 ## 使用技術(実行環境)
