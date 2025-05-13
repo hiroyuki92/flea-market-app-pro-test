@@ -15,7 +15,15 @@ class Purchase extends Model
         'shipping_postal_code',
         'shipping_address_line',
         'shipping_building',
-        'payment_method'];
+        'payment_method',
+        'buyer_rating',
+        'seller_rating',
+        'completed',
+    ];
+
+    protected $casts = [
+        'completed' => 'boolean',
+    ];
 
     public function user()
     {
