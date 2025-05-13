@@ -159,7 +159,7 @@
             </div>
         </div>
         <script>
-            // 編集モーダルを開く
+            // チャットメッセージの編集モーダルを開く
             function openEditModal(messageId, messageText) {
                 // モーダルを表示
                 document.getElementById('edit-modal').style.display = 'block';
@@ -206,12 +206,12 @@
                 }
             }
 
-            // ポップアップを表示する関数
+            // 評価入力画面ポップアップを表示する関数
             function openPopup() {
                 document.getElementById("rating-popup").style.display = "flex";
             }
 
-            // ポップアップを閉じる関数
+            // 評価入力画面ポップアップを閉じる関数
             function closePopup(event) {
                 // 背景部分をクリックしたときにポップアップを閉じる
                 if (event.target === document.getElementById("rating-popup")) {
@@ -260,6 +260,21 @@
                     alert("評価を選択してください");
                 }
             }
+
+            // ページ遷移前に入力内容を保存
+            document.addEventListener("DOMContentLoaded", function() {
+                const messageInput = document.querySelector('.message-input');
+                
+                // ページロード時にlocalStorageから入力内容を設定
+                if (localStorage.getItem('buyerMessage')) {
+                    messageInput.value = localStorage.getItem('buyerMessage');
+                }
+
+                // 入力内容をlocalStorageに保存
+                messageInput.addEventListener('input', function() {
+                    localStorage.setItem('buyerMessage', messageInput.value);
+                });
+            });
         </script>
     </main>
 @endsection
