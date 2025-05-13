@@ -116,6 +116,10 @@ php artisan storage:link
 php artisan test
 ```
 
+今回のPro入会テストで追加した機能のtestを作成しました。  
+Chat.testとTransaction.testの二つを追加しています。
+
+
 ## 使用技術(実行環境)
 - Laravel8.83.27   
 - MySQL8.0.26（Dockerコンテナ）  
@@ -203,16 +207,39 @@ erDiagram
         datetime updated_at 
     }
 
+　　CHATS {
+        bigint id PK  
+        bigint item_id FK
+        bigint buyer_id FK
+        bigint seller_id FK
+        datetime created_at 
+        datetime updated_at 
+    }
+
+    MESSAGES {
+        bigint id PK  
+        bigint chat_id FK
+        bigint sender_id FK
+        text message
+        varchar(255) image_url
+        datetime created_at 
+        datetime updated_at 
+    }
+
     %% リレーションシップの定義
     USERS ||--o{ PURCHASES : ""
     USERS ||--o{ ITEMS : ""
     USERS ||--o{ COMMENTS : ""
     USERS ||--o{ FAVORITES : ""
+    USERS ||--o{ MESSAGES : ""
+    USERS ||--o{ CHATS : "buyer_id"
+    USERS ||--o{ CHATS : "seller_id"
     CATEGORIES ||--o{ CATEGORY_ITEM : ""
     ITEMS ||--o{ CATEGORY_ITEM : ""
     ITEMS ||--o{ COMMENTS : ""
     ITEMS ||--o{ FAVORITES : ""
-    ITEMS ||--o| PURCHASES : ""
+    ITEMS ||--|| PURCHASES : ""
+    CHATS ||--o{ MESSAGES : ""
 
 
 ```
