@@ -57,8 +57,9 @@ class TransactionChatController extends Controller
 
         $messages = Message::where('chat_id', $chat->id)->get();
 
-        $messages->each(function ($message) {
-            if (!$message->is_read) {
+        $messages->each(function ($message) use ($user) {
+            if (!$message->is_read && $message->sender_id !== $user->id) {
+                // メッセージを購入者が閲覧したら既読にする
                 $message->markAsRead();
             }
         });
@@ -109,6 +110,7 @@ class TransactionChatController extends Controller
             'sender_id' => $user->id,
             'message' => $request->input('message'),
             'image_url' => $imageName,
+            'is_read' => false,
         ]);
 
         return redirect()->route('transaction.show', ['item_id' => $itemId]);
@@ -220,6 +222,12 @@ class TransactionChatController extends Controller
 
         $messages = Message::where('chat_id', $chat->id)->get();
 
+        $messages->each(function ($message) use ($user) {
+        if (!$message->is_read && $message->sender_id !== $user->id) {
+            $message->markAsRead();
+        }
+    });
+
         return view('transaction-chat-buyer', compact('transaction', 'seller', 'otherItemsInTransaction', 'chat', 'messages', 'user'));
     }
 
@@ -265,6 +273,7 @@ class TransactionChatController extends Controller
             'sender_id' => $user->id,
             'message' => $request->input('message'),
             'image_url' => $imageName,
+            'is_read' => false,
         ]);
 
         return redirect()->route('transaction.show.buyer', ['item_id' => $itemId]);
