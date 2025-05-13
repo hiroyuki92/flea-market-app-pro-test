@@ -77,6 +77,9 @@
 .transaction-title {
     font-size: 30px;
     font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .complete-button {
@@ -119,12 +122,6 @@
 
 .item-details {
     flex: 1;
-}
-
-.item-image-picture {
-    width: 100%;
-    height: auto;
-    margin-bottom: 10px;
 }
 
 .item-name {
@@ -458,4 +455,27 @@ h2 {
 
 .submit-btn:hover {
     background-color: #ff4747;
+}
+
+@media screen and (min-width: 768px) and (max-width: 850px) {
+    .sidebar {
+        top: 130px;
+    }
+
+    .sidebar-item {
+        font-size: 18px;
+    }
+
+    .profile-picture {
+        width: 80px;
+        height: 80px;
+        margin-right: 20px;
+    }
+
+    .transaction-title {
+        font-size: 24px;
+        white-space: normal;
+    }
+
+
 }

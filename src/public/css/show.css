@@ -121,18 +121,18 @@
 }
 
 .item-show-form__title {
-    margin: 20px 0 10px 0;
+    margin: 20px 0 20px 0;
     font-size: 20px;
     font-weight: bold;
 }
 
 .content__group {
     display: flex;
-    margin-bottom: 30px;
-    align-items: center;
+    margin-bottom: 10px;
 }
 
-.content__title {
+.content__title,
+.content__title-condition {
     font-weight: bold;
     margin-right: 50px;
 }
@@ -144,8 +144,11 @@
     border-radius: 50px;
     text-align: center;
     margin-right: 20px;
+    margin-bottom: 20px;
 }
-
+.content__group-comment-list {
+    margin-top: 20px;
+}
 .comment-list {
     display: flex;
 }
@@ -212,4 +215,15 @@
     border-radius: 3px;
     font-size: 15px;
     font-weight: bold;
+}
+
+@media screen and (min-width: 768px) and (max-width: 850px){
+    .content__group {
+        width: 100%;
+    }
+
+    .content__title {
+        width: 50%;
+        margin-right: 0;
+    }
 }

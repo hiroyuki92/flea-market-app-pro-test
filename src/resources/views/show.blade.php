@@ -105,7 +105,7 @@
                 </div>
             </div>
             <div class="content__group">
-                <div class="content__title">商品の状態</div>
+                <div class="content__title-condition">商品の状態</div>
                     @if ($item->condition == 1)
                     良好
                     @elseif ($item->condition == 2)
