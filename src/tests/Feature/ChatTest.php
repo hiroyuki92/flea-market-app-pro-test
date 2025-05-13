@@ -5,11 +5,13 @@ namespace Tests\Feature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Symfony\Component\DomCrawler\Crawler;
+use Carbon\Carbon;
 use Tests\TestCase;
 use App\Models\Item;
 use App\Models\Purchase;
 use App\Models\User;
 use Database\Factories\ItemFactory;
+
 
 
 
@@ -37,7 +39,7 @@ class ChatTest extends TestCase
     public function user_can_see_transaction_chat()
     {
         $item = Item::create([
-            'user_id' => $this->buyer->id,
+            'user_id' => $this->seller->id,
             'name' => 'テストアイテム',
             'brand' => 'テストブランド',
             'price' => 5000,
@@ -58,6 +60,276 @@ class ChatTest extends TestCase
         $response = $this->actingAs($this->buyer)
             ->get(route('profile.show', ['tab' => 'transaction']));
         $response->assertSee($item->name);
+    }
+
+    /**
+     * @test
+     * マイページの取り引中の商品を押下することで、取引チャット画面へ遷移することができるかテスト
+     */
+    public function user_can_see_transaction_chat_detail()
+    {
+        $item = Item::create([
+            'user_id' => $this->seller->id,
+            'name' => 'テストアイテム',
+            'brand' => 'テストブランド',
+            'price' => 5000,
+            'description' => 'これはテスト用のアイテムです。',
+            'image_url' => 'test-image.jpg',
+            'condition' => 4,
+            'in_transaction' => 1,  // 取引中の商品として設定
+        ]);
+
+        $purchase = Purchase::factory()->create([
+            'user_id' => $this->buyer->id,
+            'item_id' => $item->id,
+            'completed' => false,
+            'buyer_rating' => null,
+            'seller_rating' => null,
+        ]);
+
+        $response = $this->actingAs($this->buyer)
+            ->get(route('profile.show', ['tab' => 'transaction']));
+        $response->assertSee($item->name);
+        $crawler = new Crawler($response->getContent());
+        $link = $crawler->selectLink($item->name)
+            ->link();
+        $url = $link->getUri();
+
+        $response = $this->get($url);
+
+        $response->assertStatus(200);
+        $response->assertSee($item->name);
+        $response->assertSee($this->seller->name);
+    }
+
+    /**
+     * @test
+     * 取引チャット画面のサイドバーから別の取引画面に遷移するかテスト
+     */
+    public function user_can_see_another_transaction_chat()
+    {
+        $item1 = Item::create([
+            'user_id' => $this->seller->id,
+            'name' => 'テストアイテム1',
+            'brand' => 'テストブランド1',
+            'price' => 5000,
+            'description' => 'これはテスト用のアイテム1です。',
+            'image_url' => 'test-image1.jpg',
+            'condition' => 4,
+            'in_transaction' => 1,  // 取引中の商品として設定
+        ]);
+
+        $item2 = Item::create([
+            'user_id' => $this->seller->id,
+            'name' => 'テストアイテム2',
+            'brand' => 'テストブランド2',
+            'price' => 6000,
+            'description' => 'これはテスト用のアイテム2です。',
+            'image_url' => 'test-image2.jpg',
+            'condition' => 4,
+            'in_transaction' => 1,  // 取引中の商品として設定
+        ]);
+
+        $purchase1 = Purchase::factory()->create([
+            'user_id' => $this->buyer->id,
+            'item_id' => $item1->id,
+            'completed' => false,
+            'buyer_rating' => null,
+            'seller_rating' => null,
+        ]);
+
+        $purchase2 = Purchase::factory()->create([
+            'user_id' => $this->buyer->id,
+            'item_id' => $item2->id,
+            'completed' => false,
+            'buyer_rating' => null,
+            'seller_rating' => null,
+        ]);
+
+        $response = $this->actingAs($this->buyer)
+            ->get(route('transaction.show.buyer', ['item_id' => $item1->id]));
+        $response->assertStatus(200);
+        $response->assertSee($item1->name);
+        $response->assertSee($item2->name);
+
+        $crawler = new Crawler($response->getContent());
+        $sidebar_link = $crawler->selectLink($item2->name)->link();
+        $sidebar_url = $sidebar_link->getUri();
+        $expected_url = route('transaction.show.buyer', ['item_id' => $item2->id]);
+        $this->assertStringContainsString($expected_url, $sidebar_url);
+
+        // 2つ目の取引チャット画面に遷移
+        $response = $this->get($sidebar_url);
+
+        $response->assertStatus(200);
+        $response->assertSee($item2->name);
+
+    }
+
+    /**
+     * @test
+     * 取引中の商品の並び順は新規メッセージが来た順に表示しているかテスト
+     */
+    public function user_can_see_transaction_chat_order()
+    {
+        $item1 = Item::create([
+            'user_id' => $this->seller->id,
+            'name' => 'アイテム1',
+            'brand' => 'ブランド',
+            'price' => 5000,
+            'description' => '説明',
+            'image_url' => 'image1.jpg',
+            'condition' => 4,
+            'in_transaction' => 1,
+        ]);
+
+        $item2 = Item::create([
+            'user_id' => $this->seller->id,
+            'name' => 'アイテム2',
+            'brand' => 'ブランド',
+            'price' => 6000,
+            'description' => '説明',
+            'image_url' => 'image2.jpg',
+            'condition' => 4,
+            'in_transaction' => 1,
+        ]);
+
+        $item3 = Item::create([
+            'user_id' => $this->seller->id,
+            'name' => 'アイテム3',
+            'brand' => 'ブランド',
+            'price' => 7000,
+            'description' => '説明',
+            'image_url' => 'image3.jpg',
+            'condition' => 4,
+            'in_transaction' => 1,
+        ]);
+
+        $purchase1 = Purchase::factory()->create([
+            'user_id' => $this->buyer->id,
+            'item_id' => $item1->id,
+            'completed' => false,
+        ]);
+
+        $purchase2 = Purchase::factory()->create([
+            'user_id' => $this->buyer->id,
+            'item_id' => $item2->id,
+            'completed' => false,
+        ]);
+
+        $purchase3 = Purchase::factory()->create([
+            'user_id' => $this->buyer->id,
+            'item_id' => $item3->id,
+            'completed' => false,
+        ]);
+
+        // 各商品でのチャットを作成
+        $chat1 = \App\Models\Chat::factory()->create([
+            'item_id' => $item1->id,
+            'buyer_id' => $this->buyer->id,
+            'seller_id' => $this->seller->id,
+        ]);
+
+        $chat2 = \App\Models\Chat::factory()->create([
+            'item_id' => $item2->id,
+            'buyer_id' => $this->buyer->id,
+            'seller_id' => $this->seller->id,
+        ]);
+
+        $chat3 = \App\Models\Chat::factory()->create([
+            'item_id' => $item3->id,
+            'buyer_id' => $this->buyer->id,
+            'seller_id' => $this->seller->id,
+        ]);
+
+        // 時系列でメッセージを送信
+        // 最初にitem1にメッセージ（3時間前）
+        $message1 = \App\Models\Message::factory()->create([
+            'chat_id' => $chat1->id,
+            'sender_id' => $this->buyer->id,
+            'message' => 'アイテム1へのメッセージ',
+            'created_at' => Carbon::now()->subHours(3),
+        ]);
+
+        // 次にitem3にメッセージ（1時間前）
+        $message3 = \App\Models\Message::factory()->create([
+            'chat_id' => $chat3->id,
+            'sender_id' => $this->buyer->id,
+            'message' => 'アイテム3へのメッセージ',
+            'created_at' => Carbon::now()->subHours(1),
+        ]);
+
+        // 最後にitem2にメッセージ（5分前）
+        $message2 = \App\Models\Message::factory()->create([
+            'chat_id' => $chat2->id,
+            'sender_id' => $this->seller->id,
+            'message' => 'アイテム2へのメッセージ',
+            'created_at' => Carbon::now()->subMinutes(5),
+        ]);
+
+        $response = $this->actingAs($this->buyer)
+        ->get(route('profile.show', ['tab' => 'transaction']));
+        $content = $response->getContent();
+
+        $item2_position = strpos($content, $item2->name);
+        $item3_position = strpos($content, $item3->name);
+        $item1_position = strpos($content, $item1->name);
+        $this->assertTrue(
+            $item2_position < $item3_position && $item3_position < $item1_position,
+            '取引リストが最新メッセージ順で表示されていない'
+        );  // item2,item3,item1の順に表示されることを確認
+
+    }
+
+    /**
+     * @test
+     * 通知マークから何件メッセージが来ているかが確認できるかテスト
+     */
+    public function user_can_see_unread_message_count()
+    {
+        $item = Item::create([
+            'user_id' => $this->seller->id,
+            'name' => 'テストアイテム',
+            'brand' => 'ブランド',
+            'price' => 5000,
+            'description' => '説明',
+            'image_url' => 'image.jpg',
+            'condition' => 4,
+            'in_transaction' => 1,
+        ]);
+
+        Purchase::factory()->create([
+            'user_id' => $this->buyer->id,
+            'item_id' => $item->id,
+            'completed' => false,
+        ]);
+
+        $chat = \App\Models\Chat::factory()->create([
+            'item_id' => $item->id,
+            'buyer_id' => $this->buyer->id,
+            'seller_id' => $this->seller->id,
+        ]);
+
+        // Sellerから4件の未読メッセージを送信
+        for ($i = 1; $i <= 4; $i++) {
+            \App\Models\Message::factory()->create([
+                'chat_id' => $chat->id,
+                'sender_id' => $this->seller->id,
+                'message' => "セラーからのメッセージ{$i}",
+                'is_read' => false,
+            ]);
+        }
+
+        $response = $this->actingAs($this->buyer)
+        ->get(route('profile.show', ['tab' => 'transaction']));
+
+        $response->assertStatus(200);
+
+        $response->assertSee('4');
+    
+        $crawler = new Crawler($response->getContent());
+        $badge = $crawler->filter('.unread-badge-overlay .badge');
+        $this->assertEquals('4', $badge->text());
     }
 
 
