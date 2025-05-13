@@ -119,7 +119,7 @@
                     <input type="hidden" name="item_id" value="{{ $transaction->item->id }}">
                     <input type="hidden" name="buyer_id" value="{{ $buyer->id }}">
                     <input type="hidden" name="seller_id" value="{{ Auth::id() }}">
-                    <textarea class="message-input"  name="message" placeholder="取引メッセージを記入してください" required>{{ old('message') }}</textarea>
+                    <textarea class="message-input"  name="message" placeholder="取引メッセージを記入してください">{{ old('message') }}</textarea>
                     <div class="input-actions">
                         <img id="preview" class="preview" src="" alt="選択した画像のプレビュー" style="display: none;" />
                         <div class="image-button">
@@ -256,22 +256,25 @@
             document.addEventListener("DOMContentLoaded", function() {
                 const messageInput = document.querySelector('.message-input');
                 const form = document.querySelector('.message-input-text');
+                
+                // フォームからitem_idを取得
+                const itemId = form.querySelector('input[name="item_id"]').value;
+                const storageKey = `sellerMessage_${itemId}`; // 商品IDごとのキー
 
                 // ページロード時にlocalStorageから入力内容を設定
-                const savedMessage = localStorage.getItem('sellerMessage');
+                const savedMessage = localStorage.getItem(storageKey);
                 if (savedMessage && !messageInput.value) {
                     messageInput.value = savedMessage;
                 }
 
                 // 入力内容をlocalStorageに保存
                 messageInput.addEventListener('input', function() {
-                    localStorage.setItem('sellerMessage', messageInput.value);
+                    localStorage.setItem(storageKey, messageInput.value);
                 });
 
-                // フォーム送信前の処理
+                // フォーム送信後の処理
                 form.addEventListener('submit', function(event) {
-                    // サーバーサイドでバリデーションするので、ここではlocalStorageをクリアするだけ
-                    localStorage.removeItem('sellerMessage');
+                    localStorage.removeItem(storageKey);
                 });
             });
     </script>

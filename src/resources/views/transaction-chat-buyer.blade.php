@@ -265,26 +265,29 @@
 
             // ページ遷移前に入力内容を保存
             document.addEventListener("DOMContentLoaded", function() {
-                const messageInput = document.querySelector('.message-input');
-                const form = document.querySelector('.message-input-text');
+            const messageInput = document.querySelector('.message-input');
+            const form = document.querySelector('.message-input-text');
+            
+            // フォームからitem_idを取得
+            const itemId = form.querySelector('input[name="item_id"]').value;
+            const storageKey = `buyerMessage_${itemId}`; // 商品IDごとのキー
 
-                // ページロード時にlocalStorageから入力内容を設定
-                const savedMessage = localStorage.getItem('buyerMessage');
-                if (savedMessage && !messageInput.value) {
-                    messageInput.value = savedMessage;
-                }
+            // ページロード時にlocalStorageから入力内容を設定
+            const savedMessage = localStorage.getItem(storageKey);
+            if (savedMessage && !messageInput.value) {
+                messageInput.value = savedMessage;
+            }
 
-                // 入力内容をlocalStorageに保存
-                messageInput.addEventListener('input', function() {
-                    localStorage.setItem('buyerMessage', messageInput.value);
-                });
-
-                // フォーム送信前の処理
-                form.addEventListener('submit', function(event) {
-                    // サーバーサイドでバリデーションするので、ここではlocalStorageをクリアするだけ
-                    localStorage.removeItem('buyerMessage');
-                });
+            // 入力内容をlocalStorageに保存
+            messageInput.addEventListener('input', function() {
+                localStorage.setItem(storageKey, messageInput.value);
             });
+
+            // フォーム送信後の処理
+            form.addEventListener('submit', function(event) {
+                localStorage.removeItem(storageKey);
+            });
+        });
         </script>
     </main>
 @endsection
